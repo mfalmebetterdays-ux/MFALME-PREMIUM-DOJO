@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Create Account — TimesTable Dojo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky:#eef6ff;--sky2:#d0e8fa;--ink:#1a2638;--ink2:#3b4d63;--ink3:#7088a0;
+  --gold:#ffc107;--gold-dk:#e6a800;--navy:#1a3a6b;--blue:#1976d2;
+  --red:#e53935;--green:#00b248;--purple:#7b1fa2;
+  --r:10px;--r2:16px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(155deg,var(--navy) 0%,#1565c0 55%,#0288d1 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.auth-box{background:#fff;border-radius:22px;padding:28px 24px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+.auth-logo{font-family:'Fredoka One',cursive;font-size:26px;color:var(--navy);text-align:center;margin-bottom:4px}
+.auth-logo span{color:var(--gold)}
+.auth-tagline{font-size:12px;font-weight:700;color:var(--ink3);text-align:center;margin-bottom:22px}
+.auth-role-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px}
+.role-card{background:var(--sky);border:2.5px solid var(--sky2);border-radius:var(--r2);padding:14px 10px;text-align:center;cursor:pointer;transition:all .15s}
+.role-card:hover{border-color:var(--blue2)}
+.role-card.on{border-color:var(--blue);background:rgba(25,118,210,.08)}
+.role-card-icon{font-size:26px;margin-bottom:5px}
+.role-card-title{font-family:'Fredoka One',cursive;font-size:15px;color:var(--navy)}
+.role-card-sub{font-size:10px;font-weight:700;color:var(--ink3)}
+.field-wrap{margin-bottom:16px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-lbl{font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;display:block}
+.field-inp{width:100%;background:var(--sky);border:2.5px solid var(--sky2);border-radius:var(--r2);padding:12px 15px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--navy);outline:none}
+.field-inp:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(25,118,210,.12)}
+select.field-inp{cursor:pointer}
+.hidden{display:none!important}
+.btn{font-family:'Fredoka One',cursive;font-size:17px;border:none;cursor:pointer;padding:12px 26px;border-radius:var(--r2);display:inline-flex;align-items:center;justify-content:center;gap:7px;width:100%}
+.btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 4px 0 var(--gold-dk)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--gold-dk)}
+.auth-switch{text-align:center;margin-top:14px;font-size:13px;font-weight:600;color:var(--ink2)}
+.auth-switch a{color:var(--blue);cursor:pointer;font-weight:800;text-decoration:underline}
+.auth-err{background:rgba(229,57,53,.08);border:1.5px solid rgba(229,57,53,.25);border-radius:var(--r);padding:9px 13px;font-size:12px;font-weight:800;color:var(--red);margin-bottom:12px;display:none}
+.auth-err.on{display:block}
+.spinner{width:20px;height:20px;border:3px solid rgba(26,58,107,.2);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:480px){.field-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="auth-box">
+  <div class="auth-logo">Times<span>Dojo</span></div>
+  <div class="auth-tagline">Create your account</div>
+  <div class="auth-err" id="regErr"></div>
+  <div class="auth-role-row">
+    <div class="role-card on" data-role="student"><div class="role-card-icon">🥋</div><div class="role-card-title">Student</div><div class="role-card-sub">Earn belts</div></div>
+    <div class="role-card" data-role="tutor"><div class="role-card-icon">🎓</div><div class="role-card-title">Tutor</div><div class="role-card-sub">Coach students</div></div>
+  </div>
+  <div id="regStudentFields">
+    <div class="field-row">
+      <div class="field-wrap"><label class="field-lbl">First Name</label><input class="field-inp" id="regFirst" placeholder="Jane"></div>
+      <div class="field-wrap"><label class="field-lbl">Last Name</label><input class="field-inp" id="regLast" placeholder="Smith"></div>
+    </div>
+    <div class="field-wrap"><label class="field-lbl">Email</label><input class="field-inp" id="regEmail" type="email" placeholder="jane@school.com"></div>
+    <div class="field-wrap"><label class="field-lbl">Password</label><input class="field-inp" id="regPass" type="password" placeholder="Min 6 characters"></div>
+    <div class="field-row">
+      <div class="field-wrap"><label class="field-lbl">County</label>
+        <select class="field-inp" id="regCounty"><option value="">Select county</option><option>Nairobi</option><option>Mombasa</option><option>Kisumu</option><option>Nakuru</option><option>Eldoret</option><option>Thika</option><option>Kiambu</option><option>Machakos</option><option>Meru</option></select>
+      </div>
+      <div class="field-wrap"><label class="field-lbl">School</label><input class="field-inp" id="regSchool" placeholder="School name"></div>
+    </div>
+  </div>
+  <div id="regTutorFields" class="hidden">
+    <div class="field-row">
+      <div class="field-wrap"><label class="field-lbl">First Name</label><input class="field-inp" id="regTFirst" placeholder="John"></div>
+      <div class="field-wrap"><label class="field-lbl">Last Name</label><input class="field-inp" id="regTLast" placeholder="Doe"></div>
+    </div>
+    <div class="field-wrap"><label class="field-lbl">Email</label><input class="field-inp" id="regTEmail" type="email" placeholder="tutor@email.com"></div>
+    <div class="field-wrap"><label class="field-lbl">Password</label><input class="field-inp" id="regTPass" type="password" placeholder="Min 6 characters"></div>
+    <div class="field-wrap"><label class="field-lbl">County</label>
+      <select class="field-inp" id="regTCounty"><option value="">Select county</option><option>Nairobi</option><option>Mombasa</option><option>Kisumu</option><option>Nakuru</option><option>Eldoret</option><option>Thika</option><option>Kiambu</option><option>Machakos</option><option>Meru</option></select>
+    </div>
+    <div class="field-wrap"><label class="field-lbl">Specialisation</label>
+      <select class="field-inp" id="regTSpec"><option value="">Select specialisation</option><option>Primary (Grades 1–4)</option><option>Junior (Grades 5–7)</option><option>Senior (Grades 8–10)</option><option>All Levels</option></select>
+    </div>
+  </div>
+  <button class="btn btn-gold" id="btnRegSubmit" style="margin-top:4px">Create Account</button>
+  <div class="auth-switch">Already have an account? <a href="{% url 'dojo:login' %}">Sign In</a></div>
+  <div class="auth-switch" style="margin-top:6px"><a href="{% url 'dojo:home' %}">← Back to Home</a></div>
+</div>
+<script src="{% static 'dojo/js/csrf.js' %}"></script>
+<script>
+let regRole = 'student';
+
+document.querySelectorAll('.role-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('on'));
+    card.classList.add('on');
+    regRole = card.dataset.role;
+    document.getElementById('regStudentFields').classList.toggle('hidden', regRole !== 'student');
+    document.getElementById('regTutorFields').classList.toggle('hidden', regRole !== 'tutor');
+  });
+});
+
+document.getElementById('btnRegSubmit').addEventListener('click', async () => {
+  const errDiv = document.getElementById('regErr');
+  errDiv.classList.remove('on');
+  
+  let body = {};
+  if (regRole === 'student') {
+    body = {
+      role: 'student',
+      first_name: document.getElementById('regFirst').value.trim(),
+      last_name: document.getElementById('regLast').value.trim(),
+      email: document.getElementById('regEmail').value.trim(),
+      password: document.getElementById('regPass').value,
+      county: document.getElementById('regCounty').value,
+      school: document.getElementById('regSchool').value.trim()
+    };
+  } else {
+    body = {
+      role: 'tutor',
+      first_name: document.getElementById('regTFirst').value.trim(),
+      last_name: document.getElementById('regTLast').value.trim(),
+      email: document.getElementById('regTEmail').value.trim(),
+      password: document.getElementById('regTPass').value,
+      county: document.getElementById('regTCounty').value,
+      spec: document.getElementById('regTSpec').value
+    };
+  }
+  
+  if (!body.first_name || !body.email || !body.password) {
+    errDiv.textContent = 'Please fill in all required fields';
+    errDiv.classList.add('on');
+    return;
+  }
+  
+  if (body.password.length < 6) {
+    errDiv.textContent = 'Password must be at least 6 characters';
+    errDiv.classList.add('on');
+    return;
+  }
+  
+  const btn = document.getElementById('btnRegSubmit');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Creating Account...';
+  
+  try {
+    const r = await fetch('/api/register/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(body)
+    });
+    const data = await r.json();
+    
+    if (data.error) {
+      errDiv.textContent = data.error;
+      errDiv.classList.add('on');
+      btn.disabled = false;
+      btn.innerHTML = 'Create Account';
+      return;
+    }
+    
+    if (data.user.role === 'student') {
+      window.location.href = '/game/';
+    } else if (data.user.role === 'tutor') {
+      window.location.href = '/tutor/';
+    }
+  } catch(e) {
+    errDiv.textContent = 'Network error. Please try again.';
+    errDiv.classList.add('on');
+    btn.disabled = false;
+    btn.innerHTML = 'Create Account';
+  }
+});
+</script>
+</body>
+</html>

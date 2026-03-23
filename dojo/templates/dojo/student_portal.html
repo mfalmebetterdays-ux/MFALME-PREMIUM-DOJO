@@ -1,0 +1,875 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,viewport-fit=cover">
+<title>TimesTable Dojo — Learning Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+:root{
+  --sky:#eef6ff;--sky2:#d0e8fa;--sky3:#b8d8f5;
+  --white:#fff;--ink:#1a2638;--ink2:#3b4d63;--ink3:#7088a0;
+  --gold:#ffc107;--gold2:#ffd740;--gold-dk:#e6a800;
+  --navy:#1a3a6b;--navy2:#234d96;
+  --blue:#1976d2;--blue2:#42a5f5;
+  --green:#00b248;--green2:#33d17a;--green-dk:#008f3a;
+  --red:#e53935;--amber:#f57c00;--purple:#7b1fa2;
+  --r:10px;--r2:16px;--r3:24px;
+  --sh:0 2px 12px rgba(26,58,107,.10);
+  --sh2:0 4px 24px rgba(26,58,107,.16);
+  --sh3:0 8px 40px rgba(26,58,107,.20);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{height:100%;font-size:16px}
+body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);min-height:100%}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--sky2);border-radius:99px}
+::-webkit-scrollbar-thumb{background:var(--navy);border-radius:99px}
+.top-nav{background:var(--navy);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:80;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+.tn-logo{font-family:'Fredoka One',cursive;font-size:22px;letter-spacing:1px;color:#fff}
+.tn-logo span{color:var(--gold)}
+.tn-pill{background:rgba(255,255,255,.1);border-radius:99px;padding:6px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .2s}
+.tn-pill:hover{background:rgba(255,255,255,.2)}
+.tn-avatar{width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:14px;color:var(--navy);font-weight:bold}
+.tn-name{font-size:13px;font-weight:700;color:#fff}
+.tn-logout{font-size:13px;font-weight:700;color:rgba(255,255,255,0.75);cursor:pointer;padding:6px 12px;border-radius:var(--r);display:flex;align-items:center;gap:6px}
+.tn-logout:hover{color:#fff;background:rgba(255,255,255,.1)}
+.tn-right{display:flex;align-items:center;gap:12px}
+.btn{font-family:'Fredoka One',cursive;font-size:14px;border:none;cursor:pointer;padding:10px 20px;border-radius:var(--r2);transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 2px 0 var(--gold-dk)}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 3px 0 var(--gold-dk)}
+.btn-navy{background:var(--navy);color:#fff;box-shadow:0 2px 0 #0d1f3a}
+.btn-navy:hover{transform:translateY(-1px);box-shadow:0 3px 0 #0d1f3a}
+.btn-ghost{background:transparent;color:var(--ink2);border:2px solid var(--sky2)}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+.btn-sm{padding:6px 14px;font-size:12px}
+.btn-w{width:100%;justify-content:center}
+.btn-purple{background:var(--purple);color:#fff}
+.btn-purple:hover{background:#6a1b9a;transform:translateY(-1px)}
+.portal-container{padding:24px;max-width:1400px;margin:0 auto}
+.hero-banner{background:linear-gradient(135deg,var(--navy) 0%,#1565c0 100%);border-radius:var(--r3);padding:32px 40px;margin-bottom:28px;color:#fff;position:relative;overflow:hidden}
+.hero-banner::after{content:'✧';position:absolute;bottom:10px;right:20px;font-size:80px;opacity:.1;font-family:'Fredoka One',cursive}
+.hero-banner h1{font-family:'Fredoka One',cursive;font-size:32px;margin-bottom:8px}
+.hero-banner h1 span{color:var(--gold)}
+.hero-banner p{font-size:15px;opacity:.9;display:flex;align-items:center;gap:8px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:32px}
+.stat-box{background:#fff;border-radius:var(--r2);padding:20px;box-shadow:var(--sh);border-top:4px solid var(--gold);text-align:center;transition:all .2s}
+.stat-box:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
+.stat-number{font-family:'Fredoka One',cursive;font-size:36px;color:var(--navy)}
+.stat-label{font-size:12px;font-weight:800;text-transform:uppercase;color:var(--ink3);margin-top:6px;letter-spacing:1px}
+.tabs{display:flex;gap:8px;margin-bottom:24px;border-bottom:2px solid var(--sky2);padding-bottom:12px;flex-wrap:wrap}
+.tab{background:none;border:none;padding:10px 24px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;color:var(--ink3);transition:all .2s;border-radius:var(--r);display:flex;align-items:center;gap:8px;position:relative}
+.tab:hover{color:var(--navy);background:var(--sky2)}
+.tab.active{color:var(--navy);background:var(--sky2)}
+.tab.active::after{content:'';position:absolute;bottom:-14px;left:10%;right:10%;height:3px;background:var(--gold);border-radius:99px}
+.tab-content{display:none;animation:fadeIn .25s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:1024px){.card-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.card-grid{grid-template-columns:1fr}}
+.assignment-card{background:#fff;border-radius:var(--r2);box-shadow:var(--sh);padding:20px;border-left:4px solid var(--gold);cursor:pointer;transition:all .2s;height:100%;display:flex;flex-direction:column}
+.assignment-card:hover{transform:translateY(-4px);box-shadow:var(--sh3)}
+.assignment-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--navy);margin-bottom:10px}
+.assignment-meta{font-size:12px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.assignment-status{display:inline-block;padding:4px 12px;border-radius:99px;font-size:11px;font-weight:800;align-self:flex-start;margin-top:auto}
+.status-pending{background:rgba(245,124,0,.12);color:var(--amber)}
+.status-submitted{background:var(--sky2);color:var(--ink3)}
+.status-graded{background:rgba(0,178,72,.12);color:var(--green-dk)}
+.delete-timer-badge{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.7);color:#fff;padding:4px 10px;border-radius:99px;font-size:11px;font-family:monospace;font-weight:800}
+.delete-timer-badge.warning{background:var(--red);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+.tutor-search-section{background:#fff;border-radius:var(--r2);padding:20px;margin-bottom:24px;box-shadow:var(--sh);border-top:4px solid var(--purple)}
+.tutor-search-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.tutor-search-filters{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:768px){.tutor-search-filters{grid-template-columns:1fr}}
+.tutor-search-input{width:100%;padding:12px 16px;border:2px solid var(--sky2);border-radius:var(--r);font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:all .2s}
+.tutor-search-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(123,31,162,.1)}
+.search-btn{background:var(--purple);color:#fff;border:none;border-radius:var(--r);padding:12px 24px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
+.search-btn:hover{background:#6a1b9a;transform:translateY(-1px)}
+.tutor-card{background:#fff;border-radius:var(--r2);box-shadow:var(--sh);padding:20px;border-left:4px solid var(--purple);transition:all .2s;height:100%;display:flex;flex-direction:column}
+.tutor-card:hover{transform:translateY(-4px);box-shadow:var(--sh3)}
+.tutor-header{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.tutor-avatar{width:65px;height:65px;border-radius:50%;background:linear-gradient(135deg,var(--purple),#9c27b0);display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:26px;color:#fff;flex-shrink:0}
+.tutor-name{font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);margin-bottom:4px}
+.tutor-details{font-size:12px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.tutor-details span{display:flex;align-items:center;gap:5px}
+.tutor-rating{color:var(--gold);font-weight:bold}
+.tutor-actions{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+.req-btn{background:var(--blue);color:#fff;border:none;border-radius:var(--r);padding:8px 16px;font-family:'Fredoka One',cursive;font-size:12px;cursor:pointer;transition:all .2s}
+.req-btn:hover{background:var(--navy);transform:translateY(-1px)}
+.req-btn.requested{background:var(--green);cursor:default;opacity:.8}
+.message-card{background:#fff;border-radius:var(--r2);box-shadow:var(--sh);padding:20px;border-left:4px solid var(--blue);cursor:pointer;transition:all .2s;height:100%;display:flex;align-items:center;gap:16px}
+.message-card:hover{transform:translateY(-4px);box-shadow:var(--sh3)}
+.message-avatar{width:55px;height:55px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#42a5f5);display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:22px;color:#fff;flex-shrink:0}
+.message-info{flex:1;min-width:0}
+.message-name{font-family:'Fredoka One',cursive;font-size:16px;color:var(--navy);margin-bottom:4px}
+.message-preview{font-size:12px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.message-time{font-size:10px;color:var(--ink3);margin-top:4px}
+.message-badge{background:var(--red);color:#fff;border-radius:99px;padding:2px 8px;font-size:10px;font-weight:800}
+.grade-card{background:#fff;border-radius:var(--r2);box-shadow:var(--sh);padding:20px;border-left:4px solid var(--green);transition:all .2s;height:100%;cursor:pointer}
+.grade-card:hover{transform:translateY(-4px);box-shadow:var(--sh3)}
+.grade-score{font-family:'Fredoka One',cursive;font-size:32px;color:var(--green-dk);margin-bottom:10px}
+.grade-feedback{color:var(--ink2);margin-top:12px;padding:12px;background:var(--sky);border-radius:var(--r);font-size:13px}
+.chat-modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(4px)}
+.chat-modal.on{opacity:1;pointer-events:all}
+.chat-modal-content{background:#fff;border-radius:var(--r3);width:90%;max-width:700px;height:85vh;max-height:700px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,.3);animation:modalSlideIn .3s ease}
+@keyframes modalSlideIn{from{opacity:0;transform:scale(.95) translateY(-20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.chat-modal-header{padding:16px 20px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.chat-modal-header .tutor-info{display:flex;align-items:center;gap:12px}
+.chat-modal-header .tutor-avatar-sm{width:42px;height:42px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--navy);font-weight:bold}
+.chat-modal-header h3{font-family:'Fredoka One',cursive;font-size:18px}
+.chat-modal-close{background:rgba(255,255,255,.15);border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;color:#fff;font-size:18px;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.chat-modal-close:hover{background:rgba(255,255,255,.3);transform:scale(1.05)}
+.chat-messages-area{flex:1;overflow-y:auto;padding:20px;background:#f0f2f5}
+.message-item{display:flex;margin-bottom:12px}
+.message-item.sent{justify-content:flex-end}
+.message-item.received{justify-content:flex-start}
+.message-bubble{max-width:75%;padding:10px 14px;border-radius:18px;font-size:13px;line-height:1.4;position:relative;word-break:break-word}
+.sent .message-bubble{background:#dcf8c5;color:#111;border-bottom-right-radius:4px}
+.received .message-bubble{background:#fff;color:#111;border-bottom-left-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.05)}
+.message-time{font-size:10px;margin-top:4px;opacity:.6;display:inline-block}
+.message-sender{font-size:11px;font-weight:700;margin-bottom:4px;color:var(--navy)}
+.attachment-preview{margin-top:8px;padding:8px;background:rgba(0,0,0,.05);border-radius:var(--r);display:inline-flex;align-items:center;gap:8px}
+.attachment-preview img{max-width:150px;max-height:100px;border-radius:var(--r)}
+.attachment-preview i{font-size:24px;color:var(--navy)}
+.attachment-link{color:var(--blue);text-decoration:none;font-size:12px}
+.attachment-link:hover{text-decoration:underline}
+.chat-input-area-modal{padding:16px 20px;background:#fff;border-top:2px solid var(--sky2);display:flex;gap:12px;flex-shrink:0;flex-wrap:wrap}
+.chat-input-area-modal input{flex:1;padding:12px 16px;border:2px solid var(--sky2);border-radius:99px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;min-width:150px}
+.chat-input-area-modal input:focus{border-color:var(--blue)}
+.file-input-btn{background:var(--sky2);border:none;border-radius:99px;width:42px;height:42px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.file-input-btn:hover{background:var(--sky3);transform:scale(1.05)}
+.video-call-btn{background:var(--purple);color:#fff;border:none;border-radius:99px;width:42px;height:42px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.video-call-btn:hover{background:#6a1b9a;transform:scale(1.05)}
+.empty-chat-modal{text-align:center;padding:60px 20px;color:var(--ink3)}
+.empty-chat-modal i{font-size:56px;margin-bottom:16px;opacity:.5}
+.modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(4px)}
+.modal.on{opacity:1;pointer-events:all}
+.modal-content{background:#fff;border-radius:var(--r3);width:90%;max-width:700px;max-height:85vh;overflow-y:auto;padding:28px;animation:modalSlideIn .3s ease}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--sky2);position:sticky;top:0;background:#fff;z-index:10}
+.modal-title{font-family:'Fredoka One',cursive;font-size:24px;color:var(--navy)}
+.modal-close{background:none;border:none;font-size:28px;cursor:pointer;color:var(--ink3);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{background:var(--sky2);color:var(--navy)}
+.question-block{background:var(--sky);border-radius:var(--r);padding:18px;margin-bottom:16px}
+.question-text{font-weight:800;color:var(--navy);margin-bottom:10px}
+.answer-input{width:100%;padding:12px;border:2px solid var(--sky2);border-radius:var(--r);font-family:'Nunito',sans-serif;margin-top:8px;font-size:14px}
+.answer-input:focus{border-color:var(--blue);outline:none}
+.empty-state{text-align:center;padding:60px 20px;background:#fff;border-radius:var(--r2);color:var(--ink3)}
+.empty-icon{font-size:64px;margin-bottom:16px;opacity:.4}
+.empty-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);margin-bottom:8px}
+.empty-sub{font-size:13px}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:2000;background:var(--navy);color:#fff;padding:12px 28px;border-radius:99px;font-family:'Fredoka One',cursive;font-size:14px;opacity:0;transition:opacity .25s;box-shadow:var(--sh2);white-space:nowrap}
+#toast.show{opacity:1}
+.permission-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:2000;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.2s ease}
+.permission-modal-content{background:white;border-radius:28px;padding:32px;max-width:420px;width:90%;text-align:center;animation:slideUp 0.3s ease;box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+.permission-icon{font-size:56px;margin-bottom:20px;color:var(--gold)}
+.permission-icon i{margin:0 8px}
+.permission-modal-content h3{font-family:'Fredoka One',cursive;font-size:26px;color:var(--navy);margin-bottom:12px}
+.permission-modal-content p{color:var(--ink2);margin-bottom:24px;line-height:1.6}
+.permission-buttons{display:flex;gap:12px;justify-content:center;margin-bottom:20px}
+.permission-note{font-size:12px;color:var(--ink3);padding:12px;background:var(--sky);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px}
+.permission-note i{font-size:14px}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@media(max-width:768px){
+  .portal-container{padding:16px}
+  .hero-banner{padding:24px}
+  .hero-banner h1{font-size:24px}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:12px}
+  .tab{padding:8px 16px;font-size:13px}
+  .tn-pill .tn-name{display:none}
+  .tn-pill{padding:8px}
+  .message-bubble{max-width:85%}
+  .chat-modal-content{width:95%;height:85vh}
+  .modal-content{padding:20px}
+  .modal-title{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <div class="tn-logo">Times<span>Dojo</span></div>
+  <div class="tn-right">
+    <div class="tn-pill" id="backToGameBtn">
+      <i class="fas fa-gamepad" style="color:var(--gold)"></i>
+      <span class="tn-name">Game</span>
+    </div>
+    <div class="tn-pill" id="profileBtn">
+      <div class="tn-avatar" id="tnAvatar">S</div>
+      <span class="tn-name" id="tnName">Student</span>
+    </div>
+    <div class="tn-logout" id="logoutBtn">
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Logout</span>
+    </div>
+  </div>
+</div>
+
+<div class="portal-container">
+  <div class="hero-banner">
+    <h1>Learning <span>Hub</span></h1>
+    <p><i class="fas fa-graduation-cap"></i> Your central place for assignments, tutor communication, and learning resources</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-number" id="statsAssignments">0</div><div class="stat-label">Assignments</div></div>
+    <div class="stat-box"><div class="stat-number" id="statsCompleted">0</div><div class="stat-label">Completed</div></div>
+    <div class="stat-box"><div class="stat-number" id="statsAvgGrade">0%</div><div class="stat-label">Avg Grade</div></div>
+    <div class="stat-box"><div class="stat-number" id="statsTutors">0</div><div class="stat-label">My Tutors</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="assignments"><i class="fas fa-tasks"></i> Assignments</button>
+    <button class="tab" data-tab="tutors"><i class="fas fa-chalkboard-user"></i> My Tutors</button>
+    <button class="tab" data-tab="find-tutors"><i class="fas fa-search"></i> Find Tutors</button>
+    <button class="tab" data-tab="chat"><i class="fas fa-comments"></i> Messages</button>
+    <button class="tab" data-tab="grades"><i class="fas fa-chart-line"></i> My Grades</button>
+  </div>
+
+  <div id="assignments-tab" class="tab-content active">
+    <div class="card-grid" id="assignmentsList"></div>
+  </div>
+
+  <div id="tutors-tab" class="tab-content">
+    <div class="card-grid" id="tutorsList"></div>
+  </div>
+
+  <div id="find-tutors-tab" class="tab-content">
+    <div class="tutor-search-section">
+      <div class="tutor-search-title"><i class="fas fa-search" style="color:var(--purple)"></i> Search & Filter Available Tutors</div>
+      <div class="tutor-search-filters">
+        <input type="text" id="searchTutorName" class="tutor-search-input" placeholder="Search by name...">
+        <select id="searchTutorCounty" class="tutor-search-input">
+          <option value="">All Counties</option>
+          <option>Nairobi</option><option>Mombasa</option><option>Kisumu</option><option>Nakuru</option><option>Eldoret</option><option>Thika</option><option>Kiambu</option>
+        </select>
+        <select id="searchTutorSpec" class="tutor-search-input">
+          <option value="">All Specialisations</option>
+          <option>Primary (Grades 1–4)</option><option>Junior (Grades 5–7)</option><option>Senior (Grades 8–10)</option><option>All Levels</option>
+        </select>
+      </div>
+      <button class="search-btn" id="searchTutorsBtn"><i class="fas fa-users"></i> Search Available Tutors</button>
+    </div>
+    <div class="card-grid" id="availableTutorsList"></div>
+  </div>
+
+  <div id="chat-tab" class="tab-content">
+    <div class="card-grid" id="chatTutorsList"></div>
+  </div>
+
+  <div id="grades-tab" class="tab-content">
+    <div class="card-grid" id="gradesList"></div>
+  </div>
+</div>
+
+<!-- Chat Modal -->
+<div class="chat-modal" id="chatModal">
+  <div class="chat-modal-content">
+    <div class="chat-modal-header">
+      <div class="tutor-info" id="chatModalTutorInfo">
+        <div class="tutor-avatar-sm" id="chatModalAvatar">T</div>
+        <h3 id="chatModalTutorName">Tutor Name</h3>
+      </div>
+      <button class="chat-modal-close" id="closeChatModalBtn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="chat-messages-area" id="chatModalMessages">
+      <div class="empty-chat-modal"><i class="fas fa-comment-dots"></i><br>No messages yet</div>
+    </div>
+    <div class="chat-input-area-modal">
+      <input type="text" id="chatModalInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendChatModalMessage()">
+      <input type="file" id="chatFileInput" style="display:none" accept="image/*,.pdf,.txt,application/pdf,image/jpeg,image/png,image/gif,video/mp4">
+      <button class="file-input-btn" id="attachFileBtn" title="Attach file"><i class="fas fa-paperclip"></i></button>
+      <button class="video-call-btn" id="startVideoCallBtn" title="Start Video Call"><i class="fas fa-video"></i></button>
+      <button class="btn btn-gold btn-sm" id="sendChatModalBtn"><i class="fas fa-paper-plane"></i> Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- Assignment Modal -->
+<div class="modal" id="assignmentModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title" id="assignmentModalTitle">Assignment</div>
+      <button class="modal-close" id="closeAssignmentModalBtn">&times;</button>
+    </div>
+    <div id="assignmentModalBody"></div>
+    <button class="btn btn-gold btn-w" id="submitAssignmentBtn" style="margin-top:20px">Submit Assignment</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="{% static 'dojo/js/csrf.js' %}"></script>
+<script>
+(function() {
+  'use strict';
+
+  let STATE = {
+    user: null,
+    assignments: [],
+    tutors: [],
+    availableTutors: [],
+    currentChatTutor: null,
+    chatPollInterval: null,
+    deleteTimers: {}
+  };
+  
+  let pendingFile = null;
+
+  async function api(method, path, body, isFile = false) {
+    let opts = { method, credentials: 'include' };
+    if (!isFile) {
+      opts.headers = { 'Content-Type': 'application/json' };
+      if (body) opts.body = JSON.stringify(body);
+    } else {
+      opts.body = body;
+    }
+    try { 
+      let r = await fetch(path, opts); 
+      return await r.json(); 
+    } catch(e) { 
+      return { error: 'Network error' }; 
+    }
+  }
+  let GET = (p) => api('GET', p);
+  let POST = (p, b) => api('POST', p, b);
+  let POST_FILE = (p, b) => api('POST', p, b, true);
+
+  function toast(msg, bg = 'var(--navy)', col = '#fff') {
+    let t = document.getElementById('toast');
+    t.textContent = msg; t.style.background = bg; t.style.color = col;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  async function loadProfile() {
+    let r = await GET('/api/student/profile/');
+    if (r.error) { window.location.href = '/'; return false; }
+    STATE.user = r.user;
+    document.getElementById('tnAvatar').textContent = (STATE.user.first_name || 'S')[0].toUpperCase();
+    document.getElementById('tnName').textContent = STATE.user.first_name || 'Student';
+    return true;
+  }
+
+  // ========== ASSIGNMENTS WITH AUTO-DELETE ==========
+  async function loadAssignments() {
+    let r = await GET('/api/student/assignments/');
+    if (!r.error) {
+      STATE.assignments = r.assignments || [];
+      let completed = STATE.assignments.filter(a => a.submission && a.submission.status === 'graded').length;
+      let avgGrade = STATE.assignments.filter(a => a.submission && a.submission.status === 'graded').reduce((sum, a) => sum + (a.submission.score / a.points * 100), 0) / (completed || 1);
+      document.getElementById('statsAssignments').textContent = STATE.assignments.length;
+      document.getElementById('statsCompleted').textContent = completed;
+      document.getElementById('statsAvgGrade').textContent = Math.round(avgGrade) + '%';
+      renderAssignmentsWithAutoDelete();
+      renderGrades();
+    }
+  }
+
+  function renderAssignmentsWithAutoDelete() {
+    let container = document.getElementById('assignmentsList');
+    let now = Date.now();
+    
+    let activeAssignments = STATE.assignments.filter(a => {
+      let hasSubmission = a.submission && (a.submission.status === 'submitted' || a.submission.status === 'graded');
+      let isPastDeadline = a.due_date && new Date(a.due_date).getTime() < now;
+      if (hasSubmission && isPastDeadline) {
+        scheduleAutoDelete(a.id);
+        return false;
+      }
+      return true;
+    });
+    
+    if (!activeAssignments.length) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fas fa-folder-open"></i></div><div class="empty-title">No active assignments</div><div class="empty-sub">Completed assignments auto-delete after deadline</div></div>';
+      return;
+    }
+    
+    container.innerHTML = activeAssignments.map(a => {
+      let statusClass = '', statusText = '';
+      if (!a.submission) { statusClass = 'status-pending'; statusText = 'Not Started'; }
+      else if (a.submission.status === 'submitted') { statusClass = 'status-submitted'; statusText = 'Submitted'; }
+      else if (a.submission.status === 'graded') { statusClass = 'status-graded'; statusText = `Graded: ${a.submission.score}/${a.points}`; }
+      
+      let timerHtml = '';
+      if (a.due_date && !a.submission) {
+        let dueTime = new Date(a.due_date).getTime();
+        let remaining = dueTime - now;
+        if (remaining > 0) {
+          let hours = Math.floor(remaining / 3600000);
+          let mins = Math.floor((remaining % 3600000) / 60000);
+          timerHtml = `<div class="delete-timer-badge ${remaining < 3600000 ? 'warning' : ''}" data-id="${a.id}" data-due="${dueTime}"><i class="fas fa-hourglass-half"></i> ${hours}h ${mins}m</div>`;
+        }
+      }
+      
+      return `
+        <div class="assignment-card" onclick="openAssignment(${a.id})">
+          <div class="assignment-title">${escapeHtml(a.title)}</div>
+          <div class="assignment-meta">
+            <span><i class="fas fa-user"></i> ${escapeHtml(a.tutor_name)}</span>
+            <span><i class="fas fa-question-circle"></i> ${a.questions_count} questions</span>
+            <span><i class="fas fa-star"></i> ${a.points} pts</span>
+            ${a.due_date ? `<span><i class="fas fa-calendar"></i> Due: ${new Date(a.due_date).toLocaleDateString()}</span>` : ''}
+          </div>
+          <div class="assignment-status ${statusClass}">${statusText}</div>
+          ${timerHtml}
+        </div>`;
+    }).join('');
+    
+    startTimerUpdates();
+  }
+  
+  function startTimerUpdates() {
+    Object.values(STATE.deleteTimers).forEach(timer => clearInterval(timer));
+    document.querySelectorAll('.delete-timer-badge[data-due]').forEach(el => {
+      let due = parseInt(el.dataset.due);
+      let id = el.dataset.id;
+      if (STATE.deleteTimers[id]) clearInterval(STATE.deleteTimers[id]);
+      STATE.deleteTimers[id] = setInterval(() => {
+        let remaining = due - Date.now();
+        if (remaining <= 0) {
+          clearInterval(STATE.deleteTimers[id]);
+          delete STATE.deleteTimers[id];
+          loadAssignments();
+        } else if (el) {
+          let hours = Math.floor(remaining / 3600000);
+          let mins = Math.floor((remaining % 3600000) / 60000);
+          el.innerHTML = `<i class="fas fa-hourglass-half"></i> ${hours}h ${mins}m`;
+          if (remaining < 3600000) el.classList.add('warning');
+        }
+      }, 1000);
+    });
+  }
+  
+  async function scheduleAutoDelete(assignmentId) {
+    if (STATE.deleteTimers[`del_${assignmentId}`]) return;
+    STATE.deleteTimers[`del_${assignmentId}`] = setTimeout(async () => {
+      let r = await POST('/api/student/assignments/delete/', { id: assignmentId });
+      if (!r.error) {
+        toast(`Assignment auto-deleted`, 'var(--red)');
+        loadAssignments();
+      }
+      delete STATE.deleteTimers[`del_${assignmentId}`];
+    }, 3000);
+  }
+
+  function renderGrades() {
+    let container = document.getElementById('gradesList');
+    let graded = STATE.assignments.filter(a => a.submission && a.submission.status === 'graded');
+    if (!graded.length) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fas fa-chart-line"></i></div><div class="empty-title">No grades yet</div><div class="empty-sub">Complete assignments to see your grades here</div></div>';
+      return;
+    }
+    container.innerHTML = graded.map(a => `
+      <div class="grade-card" onclick="openAssignment(${a.id})">
+        <div class="grade-score">${Math.round(a.submission.score / a.points * 100)}%</div>
+        <div class="assignment-title" style="font-size:16px">${escapeHtml(a.title)}</div>
+        <div class="assignment-meta">
+          <span><i class="fas fa-user"></i> ${escapeHtml(a.tutor_name)}</span>
+          <span><i class="fas fa-star"></i> ${a.submission.score}/${a.points}</span>
+        </div>
+        ${a.submission.feedback ? `<div class="grade-feedback"><i class="fas fa-comment"></i> ${escapeHtml(a.submission.feedback)}</div>` : ''}
+      </div>`).join('');
+  }
+
+  window.openAssignment = async function(assignmentId) {
+    let r = await GET(`/api/student/assignments/${assignmentId}/`);
+    if (r.error) { toast(r.error, 'var(--red)'); return; }
+    let existing = r.submission;
+    let isSubmitted = existing && existing.status !== 'pending';
+    document.getElementById('assignmentModalTitle').textContent = r.title;
+    document.getElementById('assignmentModalBody').innerHTML = `
+      <div style="margin-bottom:16px;color:var(--ink2);line-height:1.6">${escapeHtml(r.description || 'No description')}</div>
+      <div style="margin-bottom:20px;font-size:13px;color:var(--ink3);display:flex;gap:20px;flex-wrap:wrap;padding:12px;background:var(--sky);border-radius:var(--r)">
+        <span><i class="fas fa-user"></i> ${escapeHtml(r.tutor_name)}</span>
+        <span><i class="fas fa-star"></i> ${r.points} points</span>
+        ${r.due_date ? `<span><i class="fas fa-calendar"></i> Due: ${new Date(r.due_date).toLocaleString()}</span>` : ''}
+      </div>
+      ${r.questions.map((q, i) => `
+        <div class="question-block">
+          <div class="question-text">${i+1}. ${escapeHtml(q.text)}</div>
+          ${!isSubmitted ? `<input class="answer-input" id="answer_${i}" placeholder="Type your answer here..." value="${existing?.answers[i]?.user_answer || ''}">` : `
+            <div style="margin-top:10px;padding:12px;background:var(--sky2);border-radius:var(--r)">
+              <strong><i class="fas fa-reply"></i> Your answer:</strong><br>${escapeHtml(existing?.answers[i]?.user_answer || 'Not answered')}
+              ${existing?.answers[i]?.is_correct !== undefined ? `<br><strong><i class="fas fa-check-circle"></i> Result:</strong> ${existing.answers[i].is_correct ? 'Correct' : `Incorrect (Correct: ${existing.answers[i].correct_answer})`}` : ''}
+              <br><strong><i class="fas fa-star"></i> Points:</strong> ${existing?.answers[i]?.points_earned || 0}/${existing?.answers[i]?.max_points || 0}
+            </div>
+          `}
+        </div>`).join('')}
+      ${existing?.feedback ? `<div class="grade-feedback" style="margin-top:20px"><i class="fas fa-comment-dots"></i> <strong>Tutor Feedback:</strong><br>${escapeHtml(existing.feedback)}</div>` : ''}
+    `;
+    let btn = document.getElementById('submitAssignmentBtn');
+    btn.style.display = isSubmitted ? 'none' : 'block';
+    btn.onclick = () => submitAssignment(assignmentId, r.questions.length);
+    document.getElementById('assignmentModal').classList.add('on');
+  };
+
+  async function submitAssignment(assignmentId, questionCount) {
+    let answers = [];
+    for (let i = 0; i < questionCount; i++) {
+      let input = document.getElementById(`answer_${i}`);
+      if (input) answers.push(input.value.trim());
+    }
+    let r = await POST(`/api/student/assignments/${assignmentId}/submit/`, { answers: answers });
+    if (r.error) { toast(r.error, 'var(--red)'); return; }
+    toast(`Submitted! Score: ${r.score}/${r.total_points}`, r.score >= r.total_points/2 ? 'var(--green)' : 'var(--amber)');
+    closeModal('assignmentModal');
+    loadAssignments();
+  }
+
+  // ========== MY TUTORS ==========
+  async function loadMyTutors() {
+    let r = await GET('/api/student/tutors/');
+    if (!r.error) {
+      STATE.tutors = r.tutors || [];
+      document.getElementById('statsTutors').textContent = STATE.tutors.length;
+      renderMyTutors();
+    }
+  }
+
+  function renderMyTutors() {
+    let container = document.getElementById('tutorsList');
+    if (!STATE.tutors.length) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fas fa-chalkboard-user"></i></div><div class="empty-title">No tutors yet</div><div class="empty-sub">Use the "Find Tutors" tab to search and request tutors</div></div>';
+      return;
+    }
+    container.innerHTML = STATE.tutors.map(t => `
+      <div class="tutor-card">
+        <div class="tutor-header">
+          <div class="tutor-avatar">${(t.name || 'T')[0]}</div>
+          <div>
+            <div class="tutor-name">${escapeHtml(t.name)}</div>
+            <div class="tutor-details">
+              <span><i class="fas fa-star" style="color:var(--gold)"></i> ${t.rating}</span>
+            </div>
+          </div>
+        </div>
+        <div class="tutor-details">
+          <span><i class="fas fa-graduation-cap"></i> ${escapeHtml(t.spec)}</span>
+          <span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(t.county)}</span>
+        </div>
+        <div class="tutor-actions">
+          <button class="btn btn-navy btn-sm" onclick="openChatModal(${t.id}, '${escapeHtml(t.name)}')"><i class="fas fa-comment"></i> Message</button>
+          <button class="btn btn-purple btn-sm" onclick="requestVideoCall(${t.id}, '${escapeHtml(t.name)}')"><i class="fas fa-video"></i> Video Call</button>
+        </div>
+      </div>`).join('');
+  }
+
+  // ========== FIND TUTORS - WORKING SEARCH ==========
+  async function searchAvailableTutors() {
+    let name = document.getElementById('searchTutorName').value.trim();
+    let county = document.getElementById('searchTutorCounty').value;
+    let spec = document.getElementById('searchTutorSpec').value;
+    let container = document.getElementById('availableTutorsList');
+    
+    container.innerHTML = '<div class="empty-state"><div class="spinner" style="width:30px;height:30px;border:3px solid var(--sky2);border-top-color:var(--purple);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 16px auto"></div><div class="empty-title">Searching...</div></div>';
+    
+    let params = new URLSearchParams();
+    if (name) params.set('name', name);
+    if (county) params.set('county', county);
+    if (spec) params.set('spec', spec);
+    
+    let r = await GET('/api/student/tutors/?' + params.toString());
+    
+    if (r.error || !r.tutors || r.tutors.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fas fa-chalkboard-user"></i></div><div class="empty-title">No tutors found</div><div class="empty-sub">Try different search criteria</div></div>';
+      return;
+    }
+    
+    let reqR = await GET('/api/student/my-requests/');
+    let requestedIds = (!reqR.error && reqR.requests) ? reqR.requests.map(x => x.tutor_id) : [];
+    
+    container.innerHTML = r.tutors.map(t => `
+      <div class="tutor-card">
+        <div class="tutor-header">
+          <div class="tutor-avatar">${(t.name || 'T')[0].toUpperCase()}</div>
+          <div>
+            <div class="tutor-name">${escapeHtml(t.name)}</div>
+            <div class="tutor-details">
+              <span><i class="fas fa-star" style="color:var(--gold)"></i> ${t.rating || '4.5'}</span>
+            </div>
+          </div>
+        </div>
+        <div class="tutor-details">
+          <span><i class="fas fa-graduation-cap"></i> ${escapeHtml(t.spec || 'General')}</span>
+          <span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(t.county || 'Unknown')}</span>
+        </div>
+        <div class="tutor-actions">
+          <button class="req-btn ${requestedIds.includes(t.id) ? 'requested' : ''}" data-id="${t.id}" data-name="${escapeHtml(t.name)}">
+            ${requestedIds.includes(t.id) ? '<i class="fas fa-check"></i> Requested' : '<i class="fas fa-user-plus"></i> Request Tutor'}
+          </button>
+          <button class="btn btn-navy btn-sm" onclick="openChatModal(${t.id}, '${escapeHtml(t.name)}')"><i class="fas fa-comment"></i> Message</button>
+        </div>
+      </div>`).join('');
+    
+    document.querySelectorAll('.req-btn').forEach(btn => {
+      btn.addEventListener('click', async function(e) {
+        e.stopPropagation();
+        if (this.classList.contains('requested')) {
+          toast('Request already sent', 'var(--amber)');
+          return;
+        }
+        let tutorId = this.dataset.id;
+        let tutorName = this.dataset.name;
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        let res = await POST('/api/student/request-tutor/', { tutor_id: tutorId });
+        if (res.error) {
+          toast(res.error, 'var(--red)');
+          this.innerHTML = '<i class="fas fa-user-plus"></i> Request Tutor';
+          this.disabled = false;
+          return;
+        }
+        this.classList.add('requested');
+        this.innerHTML = '<i class="fas fa-check"></i> Requested';
+        toast(`Request sent to ${tutorName}!`, 'var(--green)');
+        this.disabled = false;
+        loadMyTutors();
+      });
+    });
+  }
+
+  // ========== CHAT FUNCTIONALITY ==========
+  async function loadChatTutors() {
+    try {
+      let r = await GET('/api/student/chat/tutors/');
+      if (!r.error) {
+        let tutors = r.tutors || [];
+        let container = document.getElementById('chatTutorsList');
+        if (!tutors.length) {
+          container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fas fa-comments"></i></div><div class="empty-title">No conversations yet</div><div class="empty-sub">Message your tutors to start chatting</div></div>';
+          return;
+        }
+        container.innerHTML = tutors.map(t => {
+          let lastMsg = t.last_message || 'No messages yet';
+          let unreadBadge = t.unread_count > 0 ? `<span class="message-badge">${t.unread_count}</span>` : '';
+          return `
+            <div class="message-card" onclick="openChatModal(${t.id}, '${escapeHtml(t.name)}')">
+              <div class="message-avatar">${(t.name || 'T')[0]}</div>
+              <div class="message-info">
+                <div class="message-name">${escapeHtml(t.name)}</div>
+                <div class="message-preview">${escapeHtml(lastMsg)}</div>
+                ${t.last_message_time ? `<div class="message-time">${new Date(t.last_message_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>` : ''}
+              </div>
+              ${unreadBadge}
+              <i class="fas fa-chevron-right" style="color:var(--ink3);font-size:14px"></i>
+            </div>`;
+        }).join('');
+      }
+    } catch(e) {
+      console.error('Error loading chat tutors:', e);
+      document.getElementById('chatTutorsList').innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fas fa-comments"></i></div><div class="empty-title">Error loading conversations</div><div class="empty-sub">Please refresh the page</div></div>';
+    }
+  }
+
+  let currentChatTutorId = null;
+  let currentChatTutorName = null;
+  let chatPollInterval = null;
+
+  window.openChatModal = async function(tutorId, tutorName) {
+    if (chatPollInterval) clearInterval(chatPollInterval);
+    currentChatTutorId = tutorId;
+    currentChatTutorName = tutorName;
+    const modal = document.getElementById('chatModal');
+    const avatarEl = document.getElementById('chatModalAvatar');
+    const nameEl = document.getElementById('chatModalTutorName');
+    if (avatarEl) avatarEl.textContent = (tutorName || 'T')[0];
+    if (nameEl) nameEl.textContent = tutorName;
+    const inputEl = document.getElementById('chatModalInput');
+    if (inputEl) inputEl.value = '';
+    await loadChatMessagesModal(tutorId);
+    chatPollInterval = setInterval(() => loadChatMessagesModal(tutorId), 3000);
+    if (modal) modal.classList.add('on');
+  };
+
+  window.closeChatModal = function() {
+    if (chatPollInterval) clearInterval(chatPollInterval);
+    const modal = document.getElementById('chatModal');
+    if (modal) modal.classList.remove('on');
+    currentChatTutorId = null;
+    chatPollInterval = null;
+  };
+
+  async function loadChatMessagesModal(tutorId) {
+    try {
+      let r = await GET(`/api/student/chat/${tutorId}/`);
+      if (!r.error) {
+        let messages = r.messages || [];
+        let container = document.getElementById('chatModalMessages');
+        if (!container) return;
+        if (messages.length === 0) {
+          container.innerHTML = '<div class="empty-chat-modal"><i class="fas fa-comment-dots"></i><br>No messages yet. Send a message to start the conversation!</div>';
+          return;
+        }
+        let wasAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 50;
+        container.innerHTML = messages.map(m => {
+          let isOwn = m.sender_id == STATE.user?.id;
+          let attachmentHtml = '';
+          if (m.attachment) {
+            if (m.attachment.type === 'image') {
+              attachmentHtml = `<div class="attachment-preview"><img src="${m.attachment.url}" alt="attachment" style="max-width:150px;border-radius:8px"><a href="${m.attachment.url}" download class="attachment-link">Download</a></div>`;
+            } else {
+              attachmentHtml = `<div class="attachment-preview"><i class="fas fa-file"></i> <a href="${m.attachment.url}" download class="attachment-link">${m.attachment.name || 'Download file'}</a></div>`;
+            }
+          }
+          return `
+            <div class="message-item ${isOwn ? 'sent' : 'received'}">
+              <div class="message-bubble">
+                ${!isOwn ? `<div class="message-sender">${escapeHtml(m.sender_name)}</div>` : ''}
+                ${escapeHtml(m.message)}
+                ${attachmentHtml}
+                <div><span class="message-time">${new Date(m.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span></div>
+              </div>
+            </div>`;
+        }).join('');
+        if (wasAtBottom) container.scrollTop = container.scrollHeight;
+      }
+    } catch(e) {
+      console.error('Error loading messages:', e);
+    }
+  }
+
+  window.sendChatModalMessage = async function() {
+    let input = document.getElementById('chatModalInput');
+    let msg = input?.value.trim();
+    if (!msg && !pendingFile) {
+      toast('Please enter a message', 'var(--red)');
+      return;
+    }
+    input.disabled = true;
+    try {
+      if (msg) {
+        let r = await POST('/api/chat/send/', { recipient_id: currentChatTutorId, message: msg });
+        if (r.error) { toast(r.error, 'var(--red)'); input.disabled = false; return; }
+      }
+      if (pendingFile) {
+        let formData = new FormData();
+        formData.append('file', pendingFile);
+        formData.append('recipient_id', currentChatTutorId);
+        let r = await POST_FILE('/api/chat/upload/', formData);
+        if (r.error) toast('File upload failed: ' + r.error, 'var(--red)');
+        else toast('File sent!', 'var(--green)');
+        pendingFile = null;
+        const fileInfo = document.getElementById('fileSelectedInfo');
+        if (fileInfo) fileInfo.remove();
+      }
+      input.value = '';
+      input.disabled = false;
+      await loadChatMessagesModal(currentChatTutorId);
+      await loadChatTutors();
+    } catch(e) {
+      toast('Failed to send message', 'var(--red)');
+      input.disabled = false;
+    }
+  };
+
+  document.getElementById('attachFileBtn')?.addEventListener('click', () => {
+    document.getElementById('chatFileInput').click();
+  });
+  
+  document.getElementById('chatFileInput')?.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const maxSize = 10 * 1024 * 1024;
+      if (file.size > maxSize) {
+        toast('File too large. Max 10MB', 'var(--red)');
+        return;
+      }
+      pendingFile = file;
+      const inputArea = document.getElementById('chatModalInput');
+      const existing = document.getElementById('fileSelectedInfo');
+      if (existing) existing.remove();
+      const info = document.createElement('div');
+      info.id = 'fileSelectedInfo';
+      info.style.cssText = 'font-size:11px;color:var(--green);margin-top:4px';
+      info.innerHTML = `<i class="fas fa-paperclip"></i> ${file.name.substring(0, 30)}${file.name.length > 30 ? '...' : ''} (${(file.size/1024).toFixed(1)}KB) ready`;
+      inputArea.parentNode.insertBefore(info, inputArea.nextSibling);
+      toast('File ready! Click send to attach', 'var(--green)');
+    }
+  });
+
+  function showPermissionModal(onGranted, onDenied) {
+    onGranted({ success: true, hasCamera: true, hasMic: true });
+  }
+
+  async function requestMediaPermissions() {
+    return { success: true, hasCamera: true, hasMic: true };
+  }
+
+  window.requestVideoCall = function(tutorId, tutorName) {
+    toast('Creating Google Meet room...', 'var(--gold)');
+    (async () => {
+      try {
+        let response;
+        if (STATE.user.role === 'student') {
+          response = await POST('/api/chat/start-call/', { tutor_id: tutorId });
+        } else {
+          response = await POST('/api/chat/start-call/', { student_id: tutorId });
+        }
+        if (response.error) {
+          toast('Failed to start call: ' + response.error, 'var(--red)');
+          return;
+        }
+        window.open(response.room_url, '_blank');
+        toast('Google Meet opened in new tab. Share the link with your tutor!', 'var(--green)');
+      } catch (err) {
+        console.error('Error starting call:', err);
+        toast('Failed to start call. Please try again.', 'var(--red)');
+      }
+    })();
+  };
+
+  function escapeHtml(str) { 
+    if (!str) return ''; 
+    return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); 
+  }
+  
+  function closeModal(id) { 
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.remove('on'); 
+  }
+
+  document.getElementById('backToGameBtn')?.addEventListener('click', () => { window.location.href = '/game/'; });
+  document.getElementById('logoutBtn')?.addEventListener('click', async () => { await POST('/api/logout/', {}); window.location.href = '/'; });
+  document.getElementById('profileBtn')?.addEventListener('click', () => { window.location.href = '/game/'; });
+  document.getElementById('closeChatModalBtn')?.addEventListener('click', closeChatModal);
+  document.getElementById('closeAssignmentModalBtn')?.addEventListener('click', () => closeModal('assignmentModal'));
+  document.getElementById('sendChatModalBtn')?.addEventListener('click', sendChatModalMessage);
+  document.getElementById('startVideoCallBtn')?.addEventListener('click', () => {
+    if (currentChatTutorId) requestVideoCall(currentChatTutorId, currentChatTutorName);
+  });
+  document.getElementById('searchTutorsBtn')?.addEventListener('click', searchAvailableTutors);
+  document.getElementById('chatModal')?.addEventListener('click', (e) => { if (e.target === document.getElementById('chatModal')) closeChatModal(); });
+  document.getElementById('assignmentModal')?.addEventListener('click', (e) => { if (e.target === document.getElementById('assignmentModal')) closeModal('assignmentModal'); });
+
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', async () => {
+      let tabName = tab.dataset.tab;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(`${tabName}-tab`).classList.add('active');
+      if (tabName === 'tutors') await loadMyTutors();
+      else if (tabName === 'find-tutors') { /* just show the search UI */ }
+      else if (tabName === 'chat') await loadChatTutors();
+      else if (tabName === 'grades') await loadAssignments();
+      if (tabName !== 'chat' && chatPollInterval) { clearInterval(chatPollInterval); chatPollInterval = null; }
+    });
+  });
+
+  (async function init() {
+    let r = await GET('/api/me/');
+    if (r.error || r.user?.role !== 'student') { window.location.href = '/'; return; }
+    await loadProfile();
+    await loadAssignments();
+    await loadMyTutors();
+    await loadChatTutors();
+  })();
+})();
+</script>
+</body>
+</html>

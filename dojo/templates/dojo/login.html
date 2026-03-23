@@ -1,0 +1,262 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sign In — TimesTable Dojo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+:root{
+  --sky:#eef6ff;--sky2:#d0e8fa;--ink:#1a2638;--ink2:#3b4d63;--ink3:#7088a0;
+  --gold:#ffc107;--gold-dk:#e6a800;--navy:#1a3a6b;--blue:#1976d2;
+  --red:#e53935;--green:#00b248;--purple:#7b1fa2;
+  --r:10px;--r2:16px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(155deg,var(--navy) 0%,#1565c0 55%,#0288d1 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.auth-box{background:#fff;border-radius:22px;padding:28px 24px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+.auth-logo{font-family:'Fredoka One',cursive;font-size:26px;color:var(--navy);text-align:center;margin-bottom:4px}
+.auth-logo span{color:var(--gold)}
+.auth-tagline{font-size:12px;font-weight:700;color:var(--ink3);text-align:center;margin-bottom:22px}
+.auth-tabs{display:flex;border-radius:var(--r);overflow:hidden;border:2px solid var(--sky2);margin-bottom:20px}
+.auth-tab{flex:1;padding:10px;font-family:'Fredoka One',cursive;font-size:15px;background:transparent;border:none;cursor:pointer;color:var(--ink2);transition:all .15s}
+.auth-tab.on{background:var(--navy);color:#fff}
+.field-wrap{margin-bottom:16px}
+.field-lbl{font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;display:block}
+.field-inp{width:100%;background:var(--sky);border:2.5px solid var(--sky2);border-radius:var(--r2);padding:12px 15px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--navy);outline:none}
+.field-inp:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(25,118,210,.12)}
+.btn{font-family:'Fredoka One',cursive;font-size:17px;border:none;cursor:pointer;padding:12px 26px;border-radius:var(--r2);display:inline-flex;align-items:center;justify-content:center;gap:7px;width:100%;text-decoration:none}
+.btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 4px 0 var(--gold-dk)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--gold-dk)}
+.auth-switch{text-align:center;margin-top:14px;font-size:13px;font-weight:600;color:var(--ink2)}
+.auth-switch a{color:var(--blue);cursor:pointer;font-weight:800;text-decoration:underline}
+.auth-err{background:rgba(229,57,53,.08);border:1.5px solid rgba(229,57,53,.25);border-radius:var(--r);padding:9px 13px;font-size:12px;font-weight:800;color:var(--red);margin-bottom:12px;display:none}
+.auth-err.on{display:block}
+.spinner{width:20px;height:20px;border:3px solid rgba(26,58,107,.2);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* Modal Styles */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;visibility:hidden;transition:all .3s ease}
+.modal-overlay.active{opacity:1;visibility:visible}
+.coming-soon-modal{background:#fff;border-radius:28px;max-width:420px;width:90%;padding:32px;text-align:center;box-shadow:0 25px 50px rgba(0,0,0,.3);transform:scale(.9);transition:transform .3s ease}
+.modal-overlay.active .coming-soon-modal{transform:scale(1)}
+.modal-icon{width:70px;height:70px;background:linear-gradient(135deg,var(--purple),#9c27b0);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.modal-icon i{font-size:32px;color:#fff}
+.modal-title{font-family:'Fredoka One',cursive;font-size:24px;color:var(--navy);margin-bottom:12px}
+.modal-sub{font-size:13px;color:var(--ink2);margin-bottom:24px;line-height:1.5}
+.email-input{width:100%;padding:12px 16px;border:2px solid var(--sky2);border-radius:var(--r2);font-size:14px;margin-bottom:16px;outline:none}
+.email-input:focus{border-color:var(--purple)}
+.modal-btn{width:100%;background:var(--purple);color:#fff;border:none;border-radius:var(--r2);padding:12px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer}
+.modal-btn:hover{background:#6a1b9a}
+.modal-close{background:none;border:none;color:var(--ink3);font-size:12px;margin-top:16px;cursor:pointer}
+.modal-close:hover{color:var(--red)}
+.success-message{background:rgba(0,178,72,.1);border-radius:var(--r2);padding:12px;margin-top:16px;color:var(--green);font-weight:600}
+</style>
+</head>
+<body>
+<div class="auth-box">
+  <div class="auth-logo">Times<span>Dojo</span></div>
+  <div class="auth-tagline">Welcome back</div>
+  
+  <div class="auth-err" id="loginErr"></div>
+  <div class="auth-tabs">
+    <button class="auth-tab on" id="loginTabStudent">Student</button>
+    <button class="auth-tab" id="loginTabTutor">Tutor</button>
+  </div>
+  <div class="field-wrap"><label class="field-lbl">Email</label><input class="field-inp" id="loginEmail" type="email" placeholder="your@email.com"></div>
+  <div class="field-wrap"><label class="field-lbl">Password</label><input class="field-inp" id="loginPass" type="password" placeholder="••••••••"></div>
+  <button class="btn btn-gold" id="btnLoginSubmit">Sign In</button>
+  <div class="auth-switch">No account? <a href="{% url 'dojo:register' %}">Create one free</a></div>
+  <div class="auth-switch" style="margin-top:6px"><a href="{% url 'dojo:home' %}">← Back to Home</a></div>
+</div>
+
+<!-- Coming Soon Modal -->
+<div class="modal-overlay" id="tutorComingSoonModal">
+  <div class="coming-soon-modal">
+    <div class="modal-icon">
+      <i class="fas fa-chalkboard-user"></i>
+    </div>
+    <div class="modal-title">Tutor Portal Coming Soon!</div>
+    <div class="modal-sub">We're building the best tutor experience. Leave your email and we'll notify you when it's ready.</div>
+    <input type="email" id="tutorInterestEmail" class="email-input" placeholder="Enter your email address">
+    <button class="modal-btn" id="submitTutorInterestBtn">Notify Me When Ready</button>
+    <div id="modalSuccessMsg" style="display:none" class="success-message">
+      <i class="fas fa-check-circle"></i> Thanks! We'll notify you when tutor features launch.
+    </div>
+    <button class="modal-close" id="closeTutorModalBtn">Continue as Student</button>
+  </div>
+</div>
+
+<script src="{% static 'dojo/js/csrf.js' %}"></script>
+<script>
+let loginRole = 'student';
+let tutorModalOpen = false;
+
+const tutorModal = document.getElementById('tutorComingSoonModal');
+const tutorInterestEmail = document.getElementById('tutorInterestEmail');
+const submitTutorBtn = document.getElementById('submitTutorInterestBtn');
+const closeTutorModalBtn = document.getElementById('closeTutorModalBtn');
+const modalSuccessMsg = document.getElementById('modalSuccessMsg');
+
+document.getElementById('loginTabStudent').addEventListener('click', () => {
+  loginRole = 'student';
+  document.getElementById('loginTabStudent').classList.add('on');
+  document.getElementById('loginTabTutor').classList.remove('on');
+});
+
+document.getElementById('loginTabTutor').addEventListener('click', () => {
+  // Show coming soon modal instead of switching to tutor login
+  openTutorModal();
+});
+
+function openTutorModal() {
+  tutorModal.classList.add('active');
+  tutorInterestEmail.value = '';
+  modalSuccessMsg.style.display = 'none';
+  submitTutorBtn.style.display = 'block';
+  tutorInterestEmail.style.display = 'block';
+  submitTutorBtn.disabled = false;
+  submitTutorBtn.innerHTML = 'Notify Me When Ready';
+  tutorModalOpen = true;
+}
+
+function closeTutorModal() {
+  tutorModal.classList.remove('active');
+  tutorModalOpen = false;
+}
+
+async function submitTutorInterest() {
+  const email = tutorInterestEmail.value.trim();
+  if (!email) {
+    showToast('Please enter your email address', 'var(--red)');
+    return;
+  }
+  
+  if (!email.includes('@') || !email.includes('.')) {
+    showToast('Please enter a valid email address', 'var(--red)');
+    return;
+  }
+  
+  submitTutorBtn.disabled = true;
+  submitTutorBtn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px;margin-right:8px"></div> Submitting...';
+  
+  try {
+    const response = await fetch('/api/tutor-interest/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ email: email })
+    });
+    const data = await response.json();
+    
+    if (data.error) {
+      showToast(data.error, 'var(--red)');
+      submitTutorBtn.disabled = false;
+      submitTutorBtn.innerHTML = 'Notify Me When Ready';
+      return;
+    }
+    
+    modalSuccessMsg.style.display = 'block';
+    submitTutorBtn.style.display = 'none';
+    tutorInterestEmail.style.display = 'none';
+    
+    setTimeout(() => {
+      closeTutorModal();
+      submitTutorBtn.style.display = 'block';
+      tutorInterestEmail.style.display = 'block';
+      submitTutorBtn.disabled = false;
+      submitTutorBtn.innerHTML = 'Notify Me When Ready';
+    }, 2000);
+    
+  } catch(e) {
+    showToast('Network error. Please try again.', 'var(--red)');
+    submitTutorBtn.disabled = false;
+    submitTutorBtn.innerHTML = 'Notify Me When Ready';
+  }
+}
+
+function showToast(msg, bg) {
+  const toastDiv = document.createElement('div');
+  toastDiv.textContent = msg;
+  toastDiv.style.position = 'fixed';
+  toastDiv.style.bottom = '20px';
+  toastDiv.style.left = '50%';
+  toastDiv.style.transform = 'translateX(-50%)';
+  toastDiv.style.background = bg || 'var(--navy)';
+  toastDiv.style.color = '#fff';
+  toastDiv.style.padding = '12px 24px';
+  toastDiv.style.borderRadius = '99px';
+  toastDiv.style.fontFamily = 'Fredoka One, cursive';
+  toastDiv.style.fontSize = '14px';
+  toastDiv.style.zIndex = '2000';
+  toastDiv.style.boxShadow = '0 4px 20px rgba(0,0,0,.2)';
+  document.body.appendChild(toastDiv);
+  setTimeout(() => toastDiv.remove(), 3000);
+}
+
+submitTutorBtn.addEventListener('click', submitTutorInterest);
+closeTutorModalBtn.addEventListener('click', closeTutorModal);
+tutorModal.addEventListener('click', (e) => { if (e.target === tutorModal) closeTutorModal(); });
+
+document.getElementById('btnLoginSubmit').addEventListener('click', async () => {
+  // If trying to login as tutor, show modal instead
+  if (loginRole === 'tutor') {
+    openTutorModal();
+    return;
+  }
+  
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPass').value;
+  const errDiv = document.getElementById('loginErr');
+  errDiv.classList.remove('on');
+  
+  if (!email || !password) {
+    errDiv.textContent = 'Please enter both email and password';
+    errDiv.classList.add('on');
+    return;
+  }
+  
+  const btn = document.getElementById('btnLoginSubmit');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Signing In...';
+  
+  try {
+    const r = await fetch('/api/login/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ email, password, role: 'student' })
+    });
+    const data = await r.json();
+    
+    if (data.error) {
+      errDiv.textContent = data.error;
+      errDiv.classList.add('on');
+      btn.disabled = false;
+      btn.innerHTML = 'Sign In';
+      return;
+    }
+    
+    // Redirect based on role
+    if (data.user.role === 'student') {
+      window.location.href = '/game/';
+    } else if (data.user.role === 'tutor') {
+      openTutorModal();
+    } else if (data.user.role === 'admin') {
+      window.location.href = '/admin/dashboard/';
+    }
+  } catch(e) {
+    errDiv.textContent = 'Network error. Please try again.';
+    errDiv.classList.add('on');
+    btn.disabled = false;
+    btn.innerHTML = 'Sign In';
+  }
+});
+
+document.getElementById('loginPass').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') document.getElementById('btnLoginSubmit').click();
+});
+</script>
+</body>
+</html>

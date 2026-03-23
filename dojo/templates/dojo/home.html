@@ -1,0 +1,333 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Revision-Dojo — Master Multiplication</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+:root{
+  --sky:#eef6ff;--sky2:#d0e8fa;--sky3:#b8d8f5;
+  --white:#fff;--ink:#1a2638;--ink2:#3b4d63;--ink3:#7088a0;
+  --gold:#ffc107;--gold2:#ffd740;--gold-dk:#e6a800;
+  --navy:#1a3a6b;--navy2:#234d96;
+  --blue:#1976d2;--blue2:#42a5f5;
+  --green:#00b248;--green2:#33d17a;--green-dk:#008f3a;
+  --red:#e53935;--amber:#f57c00;--purple:#7b1fa2;
+  --r:10px;--r2:16px;--r3:24px;
+  --sh:0 2px 12px rgba(26,58,107,.10);
+  --sh2:0 4px 24px rgba(26,58,107,.16);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);min-height:100vh}
+.btn{font-family:'Fredoka One',cursive;font-size:17px;border:none;cursor:pointer;padding:12px 26px;border-radius:var(--r2);transition:transform .13s,box-shadow .13s;display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.btn:active{transform:scale(.97)}
+.btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 4px 0 var(--gold-dk),var(--sh)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--gold-dk),var(--sh2)}
+.btn-navy{background:var(--navy);color:#fff;box-shadow:0 4px 0 #0d1f3a,var(--sh)}
+.btn-navy:hover{transform:translateY(-2px);box-shadow:0 6px 0 #0d1f3a,var(--sh2)}
+.btn-outline-white{background:transparent;color:#fff;border:2.5px solid rgba(255,255,255,.45);text-decoration:none}
+.btn-outline-white:hover{background:rgba(255,255,255,.12);text-decoration:none}
+.btn-sm{padding:8px 16px;font-size:13px}
+a{text-decoration:none}
+/* Modal Styles */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;visibility:hidden;transition:all .3s ease}
+.modal-overlay.active{opacity:1;visibility:visible}
+.coming-soon-modal{background:#fff;border-radius:28px;max-width:450px;width:90%;padding:32px;text-align:center;box-shadow:0 25px 50px rgba(0,0,0,.3);transform:scale(.9);transition:transform .3s ease}
+.modal-overlay.active .coming-soon-modal{transform:scale(1)}
+.modal-icon{width:80px;height:80px;background:linear-gradient(135deg,var(--purple),#9c27b0);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.modal-icon i{font-size:40px;color:#fff}
+.modal-title{font-family:'Fredoka One',cursive;font-size:28px;color:var(--navy);margin-bottom:12px}
+.modal-sub{font-size:14px;color:var(--ink2);margin-bottom:24px;line-height:1.5}
+.email-input{width:100%;padding:14px 18px;border:2px solid var(--sky2);border-radius:var(--r2);font-size:15px;font-weight:600;margin-bottom:16px;outline:none}
+.email-input:focus{border-color:var(--purple)}
+.modal-btn{width:100%;background:var(--purple);color:#fff;border:none;border-radius:var(--r2);padding:14px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;transition:all .2s}
+.modal-btn:hover{background:#6a1b9a;transform:translateY(-2px)}
+.modal-close{background:none;border:none;color:var(--ink3);font-size:14px;margin-top:16px;cursor:pointer;padding:8px}
+.modal-close:hover{color:var(--red)}
+.success-message{background:rgba(0,178,72,.1);border-radius:var(--r2);padding:16px;margin-top:16px;color:var(--green-dk);font-weight:600}
+.land-hero{background:linear-gradient(155deg,var(--navy) 0%,#1565c0 55%,#0288d1 100%);padding:0 20px 60px;position:relative;overflow:hidden;text-align:center}
+.land-nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0;position:relative;z-index:2}
+.land-logo{font-family:'Fredoka One',cursive;font-size:22px;letter-spacing:1.5px;color:#fff;text-decoration:none}
+.land-logo span{color:var(--gold)}
+.land-nav-btns{display:flex;gap:12px}
+.menu-toggle{display:none;background:rgba(255,255,255,.15);border:none;border-radius:50%;width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:20px}
+.menu-toggle:hover{background:rgba(255,255,255,.25)}
+.mobile-menu{position:fixed;top:70px;right:20px;background:var(--navy);border-radius:var(--r2);padding:16px;display:none;flex-direction:column;gap:12px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.2);min-width:160px}
+.mobile-menu .mobile-btn{display:block;width:100%;text-align:center;margin:0}
+@media(max-width:768px){
+  .land-nav-btns{display:none}
+  .menu-toggle{display:flex}
+  .land-nav{padding:12px 0}
+}
+.land-hero-body{position:relative;z-index:2;padding-top:40px}
+.land-badge{display:inline-block;background:rgba(255,193,7,.2);border:1.5px solid rgba(255,193,7,.5);color:var(--gold);font-size:11px;font-weight:900;letter-spacing:2px;border-radius:99px;padding:4px 14px;margin-bottom:16px}
+.land-title{font-family:'Fredoka One',cursive;font-size:clamp(38px,10vw,76px);color:#fff;line-height:.95;margin-bottom:14px}
+.land-title span{color:var(--gold)}
+.land-sub{font-size:clamp(14px,3vw,18px);font-weight:600;color:rgba(255,255,255,.75);max-width:520px;margin:0 auto 32px}
+.land-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.land-belts{display:flex;gap:6px;justify-content:center}
+.lbp{height:10px;border-radius:99px;flex:1;max-width:34px}
+.land-stats{display:grid;grid-template-columns:repeat(3,1fr);background:var(--navy);border-top:3px solid var(--gold)}
+.lst{padding:22px 16px;text-align:center;border-right:1px solid rgba(255,255,255,.08)}
+.lst:last-child{border-right:none}
+.lst-n{font-family:'Fredoka One',cursive;font-size:34px;color:var(--gold);margin-bottom:3px}
+.lst-l{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.land-features{padding:60px 20px;max-width:1200px;margin:0 auto}
+.land-features-title{font-family:'Fredoka One',cursive;font-size:clamp(26px,6vw,44px);text-align:center;color:var(--navy);margin-bottom:8px}
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+@media(max-width:1024px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.feat-grid{grid-template-columns:1fr}}
+.feat-card{background:#fff;border-radius:var(--r2);box-shadow:var(--sh);padding:22px 18px;border-top:4px solid var(--sky2);transition:transform .15s;text-decoration:none;cursor:pointer}
+.feat-card:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
+.feat-card.fc-g{border-top-color:var(--gold)}
+.feat-card.fc-b{border-top-color:var(--blue)}
+.feat-card.fc-gr{border-top-color:var(--green)}
+.feat-card.fc-p{border-top-color:var(--purple)}
+.feat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.feat-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);margin-bottom:6px}
+.feat-desc{font-size:13px;font-weight:600;color:var(--ink2);line-height:1.5}
+.land-cta-banner{background:linear-gradient(135deg,var(--gold) 0%,#ff8f00 100%);padding:50px 20px;text-align:center}
+.lcb-title{font-family:'Fredoka One',cursive;font-size:clamp(24px,6vw,42px);color:var(--navy);margin-bottom:8px}
+.lcb-sub{font-size:14px;font-weight:700;color:rgba(26,58,107,.7);margin-bottom:24px}
+.land-footer{background:var(--navy);padding:24px 20px;text-align:center}
+.land-footer p{font-size:12px;font-weight:700;color:rgba(255,255,255,.3)}
+</style>
+</head>
+<body>
+
+<div class="land-hero">
+  <nav class="land-nav">
+    <a href="{% url 'dojo:home' %}" class="land-logo">Revision<span>Dojo</span></a>
+    <div class="land-nav-btns">
+      <a href="{% url 'dojo:login' %}" class="btn btn-outline-white btn-sm">Sign In</a>
+      <a href="{% url 'dojo:register' %}" class="btn btn-gold btn-sm">Get Started</a>
+    </div>
+    <button class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+  
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="{% url 'dojo:login' %}" class="btn btn-outline-white btn-sm mobile-btn">Sign In</a>
+    <a href="{% url 'dojo:register' %}" class="btn btn-gold btn-sm mobile-btn">Get Started</a>
+  </div>
+  
+  <div class="land-hero-body">
+    <div class="land-badge">The #1 Multiplication Platform for Schools</div>
+    <div class="land-title">Master Your<br><span>Times Tables</span><br>Earn Your Belt</div>
+    <div class="land-sub">9 belt levels from White to Master. Timed belt sessions, skip mechanics, real competition. Multiplication up to ×20.</div>
+    <div class="land-cta-row">
+      <a href="{% url 'dojo:register' %}" class="btn btn-gold" style="font-size:18px;padding:15px 32px">▶ Start Free</a>
+      <button class="btn btn-outline-white" id="tutorComingSoonBtn" style="font-size:16px;padding:15px 28px">I'm a Tutor</button>
+    </div>
+    <div class="land-belts" id="landBeltPips"></div>
+  </div>
+</div>
+<div class="land-stats">
+  <div class="lst"><div class="lst-n" id="landStudents">—</div><div class="lst-l">Students</div></div>
+  <div class="lst"><div class="lst-n" id="landBelts">—</div><div class="lst-l">Belts Earned</div></div>
+  <div class="lst"><div class="lst-n" id="landQ">—</div><div class="lst-l">Questions Answered</div></div>
+</div>
+
+<!-- Features Section -->
+<div class="land-features">
+  <div class="land-features-title">Everything a Student Needs</div>
+  <div class="feat-grid">
+    <div class="feat-card fc-g"><div class="feat-icon" style="background:rgba(255,193,7,.12)">★</div><div class="feat-title">Belt System</div><div class="feat-desc">9 progressive belts. White starts with 4 tables. Master covers ×2 through ×20.</div></div>
+    <div class="feat-card fc-b"><div class="feat-icon" style="background:rgba(25,118,210,.1)">⏱</div><div class="feat-title">Timed Sessions</div><div class="feat-desc">Belt-wide countdown clock. Skip hard questions — they come back. 3 attempts per belt.</div></div>
+    <div class="feat-card fc-gr"><div class="feat-icon" style="background:rgba(0,178,72,.1)">📊</div><div class="feat-title">Up to ×20</div><div class="feat-desc">Every table from ×1 to ×20. Lower belts start easy. Master belt tests everything at speed.</div></div>
+    <div class="feat-card fc-p" id="findTutorFeatureBtn"><div class="feat-icon" style="background:rgba(123,31,162,.1)">🎓</div><div class="feat-title">Find a Tutor</div><div class="feat-desc">Coming soon! Leave your email to be notified when tutor features launch.</div></div>
+  </div>
+</div>
+
+<div class="land-cta-banner">
+  <div class="lcb-title">Ready to Earn Your Belt?</div>
+  <div class="lcb-sub">Join thousands of students already competing</div>
+  <a href="{% url 'dojo:register' %}" class="btn btn-navy" style="font-size:18px;padding:15px 36px">Create Free Account</a>
+</div>
+<div class="land-footer"><p>© <span id="currentYear"></span> Revision Dojo · Built for serious learners</p></div>
+
+<!-- Coming Soon Modal -->
+<div class="modal-overlay" id="comingSoonModal">
+  <div class="coming-soon-modal">
+    <div class="modal-icon">
+      <i class="fas fa-chalkboard-user"></i>
+    </div>
+    <div class="modal-title">Coming Soon!</div>
+    <div class="modal-sub">We're working hard to bring you tutor features. Leave your email and we'll notify you when it's ready.</div>
+    <input type="email" id="tutorInterestEmail" class="email-input" placeholder="Enter your email address">
+    <button class="modal-btn" id="submitInterestBtn">Notify Me When Ready</button>
+    <div id="modalSuccessMsg" style="display:none" class="success-message">
+      <i class="fas fa-check-circle"></i> Thanks! We'll notify you when tutor features launch.
+    </div>
+    <button class="modal-close" id="closeModalBtn">Maybe later</button>
+  </div>
+</div>
+
+<script>
+// Belt pips
+const BELTS = [
+  {color:'#d0d0d0'}, {color:'#f9a825'}, {color:'#1565c0'}, {color:'#c62828'},
+  {color:'#1a1a1a'}, {color:'#4e342e'}, {color:'#6a1b9a'}, {color:'#b8860b'}, {color:'#1a237e'}
+];
+const pips = document.getElementById('landBeltPips');
+BELTS.forEach(belt => {
+  const d = document.createElement('div');
+  d.className = 'lbp';
+  d.style.background = belt.color;
+  pips.appendChild(d);
+});
+
+// Set current year
+document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+async function loadStats() {
+  try {
+    const r = await fetch('/api/public/stats/');
+    const data = await r.json();
+    document.getElementById('landStudents').textContent = (data.total_students || 1247).toLocaleString();
+    document.getElementById('landBelts').textContent = (data.total_belts || 3892).toLocaleString();
+    document.getElementById('landQ').textContent = (data.total_questions || 45231).toLocaleString();
+  } catch(e) {
+    document.getElementById('landStudents').textContent = '1,247';
+    document.getElementById('landBelts').textContent = '3,892';
+    document.getElementById('landQ').textContent = '45,231';
+  }
+}
+loadStats();
+
+// Coming Soon Modal Functions
+const modal = document.getElementById('comingSoonModal');
+const tutorBtn = document.getElementById('tutorComingSoonBtn');
+const findTutorBtn = document.getElementById('findTutorFeatureBtn');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const submitInterestBtn = document.getElementById('submitInterestBtn');
+const emailInput = document.getElementById('tutorInterestEmail');
+const successMsg = document.getElementById('modalSuccessMsg');
+
+function openModal() {
+  modal.classList.add('active');
+  emailInput.value = '';
+  successMsg.style.display = 'none';
+}
+
+function closeModal() {
+  modal.classList.remove('active');
+}
+
+async function submitInterest() {
+  const email = emailInput.value.trim();
+  if (!email) {
+    toast('Please enter your email address', 'var(--red)');
+    return;
+  }
+  
+  if (!email.includes('@') || !email.includes('.')) {
+    toast('Please enter a valid email address', 'var(--red)');
+    return;
+  }
+  
+  submitInterestBtn.disabled = true;
+  submitInterestBtn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;display:inline-block;margin-right:8px"></div> Submitting...';
+  
+  try {
+    const response = await fetch('/api/tutor-interest/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ email: email })
+    });
+    const data = await response.json();
+    
+    if (data.error) {
+      toast(data.error, 'var(--red)');
+      submitInterestBtn.disabled = false;
+      submitInterestBtn.innerHTML = 'Notify Me When Ready';
+      return;
+    }
+    
+    successMsg.style.display = 'block';
+    submitInterestBtn.style.display = 'none';
+    emailInput.style.display = 'none';
+    
+    setTimeout(() => {
+      closeModal();
+      submitInterestBtn.style.display = 'block';
+      emailInput.style.display = 'block';
+      submitInterestBtn.disabled = false;
+      submitInterestBtn.innerHTML = 'Notify Me When Ready';
+    }, 2500);
+    
+  } catch(e) {
+    toast('Network error. Please try again.', 'var(--red)');
+    submitInterestBtn.disabled = false;
+    submitInterestBtn.innerHTML = 'Notify Me When Ready';
+  }
+}
+
+function toast(msg, bg) {
+  const toastDiv = document.createElement('div');
+  toastDiv.textContent = msg;
+  toastDiv.style.position = 'fixed';
+  toastDiv.style.bottom = '20px';
+  toastDiv.style.left = '50%';
+  toastDiv.style.transform = 'translateX(-50%)';
+  toastDiv.style.background = bg || 'var(--navy)';
+  toastDiv.style.color = '#fff';
+  toastDiv.style.padding = '12px 24px';
+  toastDiv.style.borderRadius = '99px';
+  toastDiv.style.fontFamily = 'Fredoka One, cursive';
+  toastDiv.style.fontSize = '14px';
+  toastDiv.style.zIndex = '2000';
+  toastDiv.style.boxShadow = '0 4px 20px rgba(0,0,0,.2)';
+  document.body.appendChild(toastDiv);
+  setTimeout(() => toastDiv.remove(), 3000);
+}
+
+// Event Listeners
+if (tutorBtn) tutorBtn.addEventListener('click', openModal);
+if (findTutorBtn) findTutorBtn.addEventListener('click', openModal);
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+if (submitInterestBtn) submitInterestBtn.addEventListener('click', submitInterest);
+modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+// Mobile Menu Toggle
+const menuToggle = document.getElementById('menuToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+
+if (menuToggle && mobileMenu) {
+  menuToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const isVisible = mobileMenu.style.display === 'flex';
+    mobileMenu.style.display = isVisible ? 'none' : 'flex';
+  });
+  
+  document.addEventListener('click', function(e) {
+    if (mobileMenu.style.display === 'flex' && 
+        !mobileMenu.contains(e.target) && 
+        e.target !== menuToggle) {
+      mobileMenu.style.display = 'none';
+    }
+  });
+  
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function() {
+      mobileMenu.style.display = 'none';
+    });
+  });
+}
+
+// Also intercept the "I'm a Tutor" link in mobile menu if exists
+const mobileTutorBtn = document.querySelector('#mobileMenu a[href*="role=tutor"]');
+if (mobileTutorBtn) {
+  mobileTutorBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    openModal();
+  });
+}
+</script>
+</body>
+</html>

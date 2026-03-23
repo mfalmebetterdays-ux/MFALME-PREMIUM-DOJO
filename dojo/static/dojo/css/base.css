@@ -1,0 +1,50 @@
+/*
+ * dojo/static/dojo/css/base.css
+ * Global CSS variables and resets shared across the app.
+ * The templates inline most of their CSS for SPA performance,
+ * but shared tokens live here for easy theming.
+ */
+
+:root {
+    --sky:     #eef6ff;
+    --sky2:    #d0e8fa;
+    --sky3:    #b8d8f5;
+    --white:   #fff;
+    --ink:     #1a2638;
+    --ink2:    #3b4d63;
+    --ink3:    #7088a0;
+    --gold:    #ffc107;
+    --gold2:   #ffd740;
+    --gold-dk: #e6a800;
+    --navy:    #1a3a6b;
+    --navy2:   #234d96;
+    --blue:    #1976d2;
+    --blue2:   #42a5f5;
+    --green:   #00b248;
+    --green2:  #33d17a;
+    --green-dk:#008f3a;
+    --red:     #e53935;
+    --amber:   #f57c00;
+    --purple:  #7b1fa2;
+    --r:       10px;
+    --r2:      16px;
+    --r3:      24px;
+    --sh:      0 2px 12px rgba(26,58,107,.10);
+    --sh2:     0 4px 24px rgba(26,58,107,.16);
+    --sh3:     0 8px 40px rgba(26,58,107,.20);
+}
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html { height: 100%; }
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--sky);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+}
