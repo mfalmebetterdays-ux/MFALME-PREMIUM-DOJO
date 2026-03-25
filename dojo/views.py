@@ -26,6 +26,8 @@ from django.utils import timezone
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
+from django.db.models import Avg, Count, Sum, Q, F, Value, Case, When, IntegerField
+from django.db.models.functions import Cast
 
 from .models import (
     BELT_ORDER,
@@ -1749,7 +1751,7 @@ def api_admin_belts(request):
     result = []
     for belt_id in BELT_ORDER:
         agg = TrainingSession.objects.filter(belt_id=belt_id).aggregate(
-            pass_rate=Avg("passed"),
+            pass_rate=Avg(Cast("passed", output_field=IntegerField())),
             avg_acc=Avg("accuracy"),
             avg_time=Avg("time_used"),
         )
@@ -1762,7 +1764,6 @@ def api_admin_belts(request):
             "avg_time_secs": round(agg["avg_time"] or 0, 1),
         })
     return ok(belt_analytics=result)
-
 
 @require_GET
 @admin_only
@@ -1818,7 +1819,10 @@ def api_admin_county(request):
         .filter(role="student", is_active=True)
         .exclude(county="")
         .values("county")
-        .annotate(students=Count("id"), paid_count=Sum("is_paid"))
+        .annotate(
+            students=Count("id"), 
+            paid_count=Sum(Cast("is_paid", output_field=IntegerField()))
+        )
         .order_by("-students")
     )
     data = [
