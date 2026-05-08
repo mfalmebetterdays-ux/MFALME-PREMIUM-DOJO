@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Setup Your Profile — Revision Dojo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+:root{
+  --sky:#eef6ff;--sky2:#d0e8fa;--ink:#1a2638;--ink2:#3b4d63;--ink3:#7088a0;
+  --gold:#ffc107;--gold-dk:#e6a800;--navy:#1a3a6b;--blue:#1976d2;
+  --red:#e53935;--green:#00b248;
+  --r:10px;--r2:16px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(155deg,var(--navy) 0%,#1565c0 55%,#0288d1 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.auth-box{background:#fff;border-radius:22px;padding:28px 24px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+.auth-logo{font-family:'Fredoka One',cursive;font-size:26px;color:var(--navy);text-align:center;margin-bottom:4px}
+.auth-logo span{color:var(--gold)}
+.auth-tagline{font-size:12px;font-weight:700;color:var(--ink3);text-align:center;margin-bottom:22px}
+.field-wrap{margin-bottom:16px}
+.field-lbl{font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;display:block}
+.field-inp{width:100%;background:var(--sky);border:2.5px solid var(--sky2);border-radius:var(--r2);padding:12px 15px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--navy);outline:none}
+.field-inp:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(25,118,210,.12)}
+select.field-inp{cursor:pointer}
+.btn{font-family:'Fredoka One',cursive;font-size:17px;border:none;cursor:pointer;padding:12px 26px;border-radius:var(--r2);display:inline-flex;align-items:center;justify-content:center;gap:7px;width:100%;transition:transform .13s,box-shadow .13s}
+.btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 4px 0 var(--gold-dk)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--gold-dk)}
+.auth-switch{text-align:center;margin-top:14px;font-size:13px;font-weight:600;color:var(--ink2)}
+.auth-switch a{color:var(--blue);cursor:pointer;font-weight:800;text-decoration:none}
+.auth-switch a:hover{text-decoration:underline}
+.auth-err{background:rgba(229,57,53,.08);border:1.5px solid rgba(229,57,53,.25);border-radius:var(--r);padding:9px 13px;font-size:12px;font-weight:800;color:var(--red);margin-bottom:12px;display:none}
+.auth-err.on{display:block}
+.spinner{width:20px;height:20px;border:3px solid rgba(26,58,107,.2);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="auth-box">
+  <div class="auth-logo">Revision<span>Dojo</span></div>
+  <div class="auth-tagline">Complete Your Profile</div>
+  
+  <div class="auth-err" id="setupErr"></div>
+  
+  <div class="field-wrap">
+    <label class="field-lbl">Select Your Curriculum</label>
+    <select class="field-inp" id="setupCurriculum">
+      <option value="">Choose curriculum</option>
+      <option value="cbc">Kenya CBC (Competency Based Curriculum)</option>
+      <option value="844">Kenya 8-4-4 Curriculum</option>
+      <option value="igcse">IGCSE / Cambridge International</option>
+    </select>
+  </div>
+  
+  <div class="field-wrap" id="gradeField">
+    <label class="field-lbl">Select Your Grade/Level</label>
+    <select class="field-inp" id="setupGrade">
+      <option value="">Choose your grade</option>
+    </select>
+  </div>
+  
+  <button class="btn btn-gold" id="btnSetupSubmit">Continue to Dashboard</button>
+  <div class="auth-switch" style="margin-top:6px"><a href="{% url 'dojo:home' %}">← Back to Home</a></div>
+</div>
+
+<script src="{% static 'dojo/js/csrf.js' %}"></script>
+<script>
+// Grade options by curriculum
+const gradeOptions = {
+  cbc: [
+    'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 
+    'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'
+  ],
+  '844': [
+    'Standard 1', 'Standard 2', 'Standard 3', 'Standard 4', 'Standard 5', 'Standard 6', 'Standard 7', 'Standard 8',
+    'Form 1', 'Form 2', 'Form 3', 'Form 4'
+  ],
+  igcse: [
+    'Year 7', 'Year 8', 'Year 9', 'Year 10 (IGCSE)', 'Year 11 (IGCSE)',
+    'Year 12 (AS Level)', 'Year 13 (A Level)'
+  ]
+};
+
+function updateGradeOptions() {
+  const curriculum = document.getElementById('setupCurriculum').value;
+  const gradeSelect = document.getElementById('setupGrade');
+  
+  if (!curriculum || !gradeOptions[curriculum]) {
+    gradeSelect.innerHTML = '<option value="">Select your grade</option>';
+    return;
+  }
+  
+  const options = gradeOptions[curriculum];
+  gradeSelect.innerHTML = '<option value="">Select your grade</option>';
+  options.forEach(grade => {
+    const option = document.createElement('option');
+    option.value = grade.toLowerCase().replace(/\s/g, '_');
+    option.textContent = grade;
+    gradeSelect.appendChild(option);
+  });
+}
+
+document.getElementById('setupCurriculum').addEventListener('change', updateGradeOptions);
+
+document.getElementById('btnSetupSubmit').addEventListener('click', async () => {
+  const errDiv = document.getElementById('setupErr');
+  errDiv.classList.remove('on');
+  
+  const curriculum = document.getElementById('setupCurriculum').value;
+  const grade = document.getElementById('setupGrade').value;
+  
+  if (!curriculum) {
+    errDiv.textContent = 'Please select your curriculum';
+    errDiv.classList.add('on');
+    return;
+  }
+  
+  if (!grade) {
+    errDiv.textContent = 'Please select your grade/level';
+    errDiv.classList.add('on');
+    return;
+  }
+  
+  const btn = document.getElementById('btnSetupSubmit');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Saving...';
+  
+  try {
+    const r = await fetch('/api/setup-profile/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ curriculum, grade })
+    });
+    const data = await r.json();
+    
+    if (data.error) {
+      errDiv.textContent = data.error;
+      errDiv.classList.add('on');
+      btn.disabled = false;
+      btn.innerHTML = 'Continue to Dashboard';
+      return;
+    }
+    
+    // Redirect based on curriculum
+    if (curriculum === 'cbc') {
+      window.location.href = '/cbc-dashboard/';
+    } else if (curriculum === '844') {
+      window.location.href = '/844-dashboard/';
+    } else if (curriculum === 'igcse') {
+      window.location.href = '/igcse-dashboard/';
+    }
+  } catch(e) {
+    errDiv.textContent = 'Network error. Please try again.';
+    errDiv.classList.add('on');
+    btn.disabled = false;
+    btn.innerHTML = 'Continue to Dashboard';
+  }
+});
+</script>
+</body>
+</html>

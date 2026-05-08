@@ -1,0 +1,841 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,viewport-fit=cover">
+<title>Parent Dashboard — Revision Dojo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+:root{
+  --sky:#eef6ff;--sky2:#d0e8fa;--sky3:#b8d8f5;
+  --white:#fff;--ink:#1a2638;--ink2:#3b4d63;--ink3:#7088a0;
+  --gold:#ffc107;--gold2:#ffd740;--gold-dk:#e6a800;
+  --navy:#1a3a6b;--navy2:#234d96;
+  --blue:#1976d2;--blue2:#42a5f5;
+  --green:#00b248;--green2:#33d17a;--green-dk:#008f3a;
+  --red:#e53935;--amber:#f57c00;--purple:#7b1fa2;
+  --r:10px;--r2:16px;--r3:24px;
+  --sh:0 2px 12px rgba(26,58,107,.10);
+  --sh2:0 4px 24px rgba(26,58,107,.16);
+  --sh3:0 8px 40px rgba(26,58,107,.20);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);min-height:100%}
+.top-nav{background:var(--navy);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:80;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+.tn-logo{font-family:'Fredoka One',cursive;font-size:22px;letter-spacing:1px;color:#fff}
+.tn-logo span{color:var(--gold)}
+.tn-pill{background:rgba(255,255,255,.1);border-radius:99px;padding:6px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .2s}
+.tn-pill:hover{background:rgba(255,255,255,.2)}
+.tn-avatar{width:30px;height:30px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:14px;color:var(--navy);font-weight:bold}
+.tn-name{font-size:13px;font-weight:700;color:#fff}
+.tn-logout{font-size:13px;font-weight:700;color:rgba(255,255,255,0.75);cursor:pointer;padding:6px 12px;border-radius:var(--r);display:flex;align-items:center;gap:6px}
+.tn-logout:hover{color:#fff;background:rgba(255,255,255,.1)}
+.tn-right{display:flex;align-items:center;gap:12px}
+.dashboard{padding:24px;max-width:1400px;margin:0 auto}
+.hero-banner{background:linear-gradient(135deg,var(--navy) 0%,#1565c0 100%);border-radius:var(--r3);padding:24px 32px;margin-bottom:24px;color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.hero-banner h1{font-family:'Fredoka One',cursive;font-size:28px;margin-bottom:6px}
+.hero-banner h1 span{color:var(--gold)}
+.hero-banner p{font-size:13px;opacity:.85}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-box{background:#fff;border-radius:var(--r2);padding:14px;box-shadow:var(--sh);border-top:3px solid var(--gold);text-align:center}
+.stat-number{font-family:'Fredoka One',cursive;font-size:28px;color:var(--navy)}
+.stat-label{font-size:10px;font-weight:800;text-transform:uppercase;color:var(--ink3);margin-top:3px;letter-spacing:1px}
+.tabs{display:flex;gap:6px;margin-bottom:20px;border-bottom:2px solid var(--sky2);padding-bottom:10px;flex-wrap:wrap}
+.tab{background:none;border:none;padding:8px 18px;font-family:'Fredoka One',cursive;font-size:13px;cursor:pointer;color:var(--ink3);transition:all .2s;border-radius:var(--r);display:flex;align-items:center;gap:8px}
+.tab:hover{color:var(--navy);background:var(--sky2)}
+.tab.active{color:var(--navy);background:var(--sky2)}
+.tab-content{display:none;animation:fadeIn .25s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.child-card{background:#fff;border-radius:var(--r2);box-shadow:var(--sh);padding:18px;border-left:4px solid var(--gold);transition:all .2s}
+.child-card:hover{transform:translateY(-3px);box-shadow:var(--sh3)}
+.child-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.child-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#ff8f00);display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy)}
+.child-name{font-family:'Fredoka One',cursive;font-size:17px;color:var(--navy)}
+.child-belt-progress{font-size:11px;color:var(--ink2);margin-top:4px}
+.belt-indicator{display:flex;gap:3px;margin-top:6px;flex-wrap:wrap}
+.belt-dot{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--sky2)}
+.belt-dot.passed{background:var(--green);border-color:var(--green-dk)}
+.belt-dot.active{background:var(--gold);border-color:var(--gold-dk);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.child-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.child-actions .btn{flex:1;justify-content:center}
+.card{background:#fff;border-radius:var(--r2);box-shadow:var(--sh);padding:20px;max-width:500px;margin:0 auto}
+.card-header{margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--sky2)}
+.card-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);display:flex;align-items:center;gap:8px}
+.profile-field{margin-bottom:14px}
+.profile-label{font-size:10px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:4px;display:block}
+.profile-value{width:100%;background:var(--sky);border:2px solid var(--sky2);border-radius:var(--r);padding:10px 12px;font-size:13px;font-weight:700;color:var(--navy);outline:none}
+.profile-value:focus{border-color:var(--blue)}
+.btn{font-family:'Fredoka One',cursive;font-size:13px;border:none;cursor:pointer;padding:8px 16px;border-radius:var(--r2);transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 2px 0 var(--gold-dk)}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 3px 0 var(--gold-dk)}
+.btn-navy{background:var(--navy);color:#fff;box-shadow:0 2px 0 #0d1f3a}
+.btn-navy:hover{transform:translateY(-1px);box-shadow:0 3px 0 #0d1f3a}
+.btn-ghost{background:transparent;color:var(--ink2);border:2px solid var(--sky2)}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+.btn-sm{padding:5px 12px;font-size:11px}
+.btn-w{width:100%;justify-content:center}
+.empty-state{text-align:center;padding:40px 20px;background:#fff;border-radius:var(--r2);color:var(--ink3)}
+.empty-icon{font-size:48px;margin-bottom:10px;opacity:.4}
+.empty-title{font-family:'Fredoka One',cursive;font-size:15px;color:var(--navy);margin-bottom:4px}
+.empty-sub{font-size:12px}
+.modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(4px)}
+.modal.on{opacity:1;pointer-events:all}
+.modal-content{background:#fff;border-radius:var(--r3);width:90%;max-width:900px;max-height:85vh;overflow-y:auto;padding:24px;animation:modalSlideIn .3s ease}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--sky2)}
+.modal-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy)}
+.modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--ink3);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:var(--sky2);color:var(--navy)}
+.calendar-container{background:#fff;border-radius:var(--r2);padding:16px;box-shadow:var(--sh);margin-bottom:20px}
+.calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.calendar-nav{display:flex;gap:8px}
+.calendar-nav button{background:var(--sky);border:none;padding:5px 10px;border-radius:var(--r);cursor:pointer;font-size:12px}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.calendar-weekday{text-align:center;font-weight:800;font-size:10px;color:var(--ink3);padding:6px;text-transform:uppercase}
+.calendar-day{aspect-ratio:1;border-radius:var(--r);background:var(--sky);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;position:relative}
+.calendar-day:hover{transform:scale(1.05);background:var(--gold2)}
+.calendar-day.has-activity{background:rgba(0,178,72,.12);border:1.5px solid var(--green)}
+.calendar-day.today{border:2px solid var(--gold);background:rgba(255,193,7,.1)}
+.calendar-day-number{font-weight:800;font-size:12px;color:var(--navy)}
+.calendar-day-duration{font-size:8px;color:var(--ink3);margin-top:2px}
+.session-list{max-height:250px;overflow-y:auto}
+.session-item{background:var(--sky);border-radius:var(--r);padding:10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.session-date{font-weight:700;font-size:11px}
+.session-accuracy{color:var(--green-dk);font-weight:800;font-size:11px}
+.weakness-card{background:rgba(229,57,53,.08);border-left:3px solid var(--red);padding:10px;margin-bottom:8px;border-radius:var(--r)}
+.weakness-fact{font-weight:700;font-size:13px;color:var(--navy)}
+.weakness-stats{font-size:10px;color:var(--ink3);margin-top:4px}
+.leaderboard-rank{background:linear-gradient(135deg,var(--gold),#ff8f00);border-radius:var(--r2);padding:12px;text-align:center;margin-bottom:16px}
+.rank-number{font-family:'Fredoka One',cursive;font-size:32px;color:var(--navy)}
+.rank-label{font-size:10px;font-weight:800;color:rgba(26,58,107,.7)}
+.rank-score{font-size:12px;margin-top:5px;color:var(--navy)}
+.student-sub-tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid var(--sky2);padding-bottom:8px}
+.student-sub-tab{background:none;border:none;padding:6px 14px;font-family:'Fredoka One',cursive;font-size:12px;cursor:pointer;color:var(--ink3);border-radius:var(--r);transition:all .2s}
+.student-sub-tab.active{background:var(--navy);color:#fff}
+.student-sub-tab:hover:not(.active){background:var(--sky2);color:var(--navy)}
+.student-sub-content{display:none}
+.student-sub-content.active{display:block}
+.billing-container{background:#fff;border-radius:var(--r3);box-shadow:var(--sh2);overflow:hidden}
+.billing-header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:20px 24px;color:#fff}
+.billing-header h3{font-family:'Fredoka One',cursive;font-size:20px;margin-bottom:4px}
+.billing-header p{font-size:12px;opacity:.8}
+.billing-student-selector{display:flex;gap:8px;padding:16px 24px;background:var(--sky);border-bottom:1px solid var(--sky2);flex-wrap:wrap}
+.billing-student-btn{background:#fff;border:2px solid var(--sky2);border-radius:99px;padding:8px 20px;cursor:pointer;transition:all .2s;font-weight:700;font-size:13px}
+.billing-student-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.billing-student-btn:hover:not(.active){background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.billing-body{padding:24px}
+.billing-card{background:var(--sky);border-radius:var(--r2);padding:20px;margin-bottom:20px;border-left:4px solid var(--gold)}
+.billing-card h4{font-family:'Fredoka One',cursive;font-size:16px;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:20px}
+.plan-card{background:#fff;border-radius:var(--r2);padding:18px;border:2px solid var(--sky2);cursor:pointer;transition:all .2s;position:relative}
+.plan-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--sh2)}
+.plan-card.selected{border-color:var(--gold);background:rgba(255,193,7,.05)}
+.plan-name{font-family:'Fredoka One',cursive;font-size:16px;color:var(--navy);margin-bottom:4px}
+.plan-price{font-size:22px;font-weight:800;color:var(--navy);margin:8px 0}
+.plan-price small{font-size:11px;font-weight:400;color:var(--ink3)}
+.plan-duration{font-size:11px;color:var(--ink3);margin-top:4px}
+.receipts-list{background:var(--sky);border-radius:var(--r2);padding:8px;max-height:300px;overflow-y:auto}
+.receipt-item{background:#fff;border-radius:var(--r);padding:12px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.receipt-date{font-size:11px;color:var(--ink3)}
+.receipt-amount{font-weight:800;color:var(--green-dk);font-size:13px}
+.receipt-plan{font-size:11px;background:var(--sky2);padding:2px 8px;border-radius:99px}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:2000;background:var(--navy);color:#fff;padding:8px 20px;border-radius:99px;font-family:'Fredoka One',cursive;font-size:12px;opacity:0;transition:opacity .25s;box-shadow:var(--sh2);white-space:nowrap}
+#toast.show{opacity:1}
+@media(max-width:768px){
+  .dashboard{padding:16px}
+  .hero-banner{padding:16px;flex-direction:column;text-align:center;gap:10px}
+  .hero-banner h1{font-size:22px}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:12px}
+  .tab{padding:5px 12px;font-size:11px}
+  .calendar-grid{gap:3px}
+  .calendar-day-number{font-size:9px}
+  .modal-content{width:95%}
+  .child-actions{flex-direction:column}
+  .plans-grid{grid-template-columns:1fr}
+  .billing-student-selector{gap:6px}
+  .billing-student-btn{padding:6px 14px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <div class="tn-logo">Revision<span>Dojo</span></div>
+  <div class="tn-right">
+    <div class="tn-pill" id="profileBtn">
+      <div class="tn-avatar" id="tnAvatar">P</div>
+      <span class="tn-name" id="tnName">Parent</span>
+    </div>
+    <div class="tn-logout" id="logoutBtn">
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Logout</span>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard">
+  <div class="hero-banner">
+    <div>
+      <h1>Parent Dashboard, <span id="heroName">Parent</span>!</h1>
+      <p><i class="fas fa-heart"></i> Track your children's progress and support their learning journey</p>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-number" id="statChildren">0</div><div class="stat-label">Children</div></div>
+    <div class="stat-box"><div class="stat-number" id="statTotalBelts">0</div><div class="stat-label">Total Belts</div></div>
+    <div class="stat-box"><div class="stat-number" id="statActiveKids">0</div><div class="stat-label">Active This Week</div></div>
+    <div class="stat-box"><div class="stat-number" id="statTotalTime">0</div><div class="stat-label">Hours Practiced</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="children"><i class="fas fa-users"></i> My Children</button>
+    <button class="tab" data-tab="link"><i class="fas fa-link"></i> Link Student</button>
+    <button class="tab" data-tab="create"><i class="fas fa-user-plus"></i> Create Account</button>
+    <button class="tab" data-tab="billing"><i class="fas fa-credit-card"></i> Billing</button>
+    <button class="tab" data-tab="profile"><i class="fas fa-user-circle"></i> Profile</button>
+  </div>
+
+  <!-- My Children Tab -->
+  <div id="children-tab" class="tab-content active">
+    <div class="card-grid" id="childrenList"></div>
+  </div>
+
+  <!-- Link Student Tab -->
+  <div id="link-tab" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i class="fas fa-link"></i> Link Existing Student</div>
+      </div>
+      <div class="card-body">
+        <div class="profile-field">
+          <label class="profile-label">Student Email</label>
+          <input class="profile-value" id="linkStudentEmail" placeholder="student@email.com">
+        </div>
+        <div class="profile-field">
+          <label class="profile-label">Relationship</label>
+          <select class="profile-value" id="linkRelationship">
+            <option value="father">Father</option>
+            <option value="mother">Mother</option>
+            <option value="guardian">Guardian</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <button class="btn btn-gold btn-w" id="linkStudentBtn"><i class="fas fa-link"></i> Link Student</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Student Tab -->
+  <div id="create-tab" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i class="fas fa-user-plus"></i> Create New Student</div>
+      </div>
+      <div class="card-body">
+        <div class="profile-field">
+          <label class="profile-label">First Name</label>
+          <input class="profile-value" id="createFirstName">
+        </div>
+        <div class="profile-field">
+          <label class="profile-label">Last Name</label>
+          <input class="profile-value" id="createLastName">
+        </div>
+        <div class="profile-field">
+          <label class="profile-label">Email</label>
+          <input class="profile-value" id="createEmail" type="email">
+        </div>
+        <div class="profile-field">
+          <label class="profile-label">Password</label>
+          <input class="profile-value" id="createPassword" type="password">
+        </div>
+        <div class="profile-field">
+          <label class="profile-label">Relationship</label>
+          <select class="profile-value" id="createRelationship">
+            <option value="father">Father</option>
+            <option value="mother">Mother</option>
+            <option value="guardian">Guardian</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <button class="btn btn-gold btn-w" id="createStudentBtn"><i class="fas fa-check"></i> Create Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Billing Tab - Redesigned -->
+  <div id="billing-tab" class="tab-content">
+    <div id="billingContent">
+      <div class="empty-state">
+        <i class="fas fa-credit-card empty-icon"></i>
+        <div class="empty-title">Select a Child First</div>
+        <div class="empty-sub">Click the "Billing" button on any child card to view their subscription details</div>
+        <button class="btn btn-gold" style="margin-top:16px" onclick="document.querySelector('.tab[data-tab=\'children\']').click()">
+          <i class="fas fa-users"></i> Go to My Children
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Tab -->
+  <div id="profile-tab" class="tab-content">
+    <div class="card">
+      <div class="card-header"><div class="card-title"><i class="fas fa-user-circle"></i> Profile Settings</div></div>
+      <div class="card-body">
+        <div class="profile-field"><label class="profile-label">First Name</label><input class="profile-value" id="profileFirstName"></div>
+        <div class="profile-field"><label class="profile-label">Last Name</label><input class="profile-value" id="profileLastName"></div>
+        <div class="profile-field"><label class="profile-label">Email</label><input class="profile-value" id="profileEmail"></div>
+        <div class="profile-field"><label class="profile-label">County</label><input class="profile-value" id="profileCounty"></div>
+        <div class="profile-edit"><button class="btn btn-gold" id="saveProfileBtn"><i class="fas fa-save"></i> Save</button><button class="btn btn-ghost" id="togglePasswordBtn"><i class="fas fa-key"></i> Change Password</button></div>
+        <div class="profile-password" id="passwordChangeSection" style="display:none;margin-top:12px"><div class="profile-field"><label class="profile-label">New Password (min 6)</label><input class="profile-value" type="password" id="newPassword"></div><div class="profile-field"><label class="profile-label">Confirm</label><input class="profile-value" type="password" id="confirmPassword"></div><button class="btn btn-gold btn-w" id="updatePasswordBtn">Update</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Child Progress Modal -->
+<div class="modal" id="childProgressModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title" id="progressModalTitle">Child Progress</div>
+      <button class="modal-close" id="closeProgressModal">&times;</button>
+    </div>
+    <div id="progressModalBody"></div>
+  </div>
+</div>
+
+<!-- Billing Modal -->
+<div class="modal" id="billingModal">
+  <div class="modal-content" style="max-width:800px">
+    <div class="modal-header">
+      <div class="modal-title" id="billingModalTitle">Billing Details</div>
+      <button class="modal-close" id="closeBillingModal">&times;</button>
+    </div>
+    <div id="billingModalBody"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="{% static 'dojo/js/csrf.js' %}"></script>
+<script>
+(function() {
+  'use strict';
+  
+  let STATE = { user: null, children: [], currentChild: null, currentYear: new Date().getFullYear(), currentMonth: new Date().getMonth() + 1, selectedBillingChild: null };
+  
+  async function api(method, path, body) {
+    let opts = { method, headers: { 'Content-Type': 'application/json' }, credentials: 'include' };
+    if (body) opts.body = JSON.stringify(body);
+    try { let r = await fetch(path, opts); return await r.json(); } catch(e) { return { error: 'Network error' }; }
+  }
+  let GET = (p) => api('GET', p);
+  let POST = (p, b) => api('POST', p, b);
+  
+  function toast(msg, bg = 'var(--navy)', col = '#fff') {
+    let t = document.getElementById('toast');
+    t.textContent = msg; t.style.background = bg; t.style.color = col;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+  
+  async function loadProfile() {
+    let r = await GET('/api/me/');
+    if (r.error || r.user?.role !== 'parent') { window.location.href = '/register/?role=parent'; return false; }
+    STATE.user = r.user;
+    document.getElementById('tnAvatar').textContent = (STATE.user.first_name || 'P')[0].toUpperCase();
+    document.getElementById('tnName').textContent = STATE.user.first_name || 'Parent';
+    document.getElementById('heroName').textContent = STATE.user.first_name || 'Parent';
+    document.getElementById('profileFirstName').value = STATE.user.first_name || '';
+    document.getElementById('profileLastName').value = STATE.user.last_name || '';
+    document.getElementById('profileEmail').value = STATE.user.email || '';
+    document.getElementById('profileCounty').value = STATE.user.county || '';
+    return true;
+  }
+  
+  async function loadChildren() {
+    let r = await GET('/api/parent/children/');
+    if (!r.error) {
+      STATE.children = r.children || [];
+      document.getElementById('statChildren').textContent = STATE.children.length;
+      document.getElementById('statTotalBelts').textContent = STATE.children.reduce((sum, c) => sum + (c.belt_progress || 0), 0);
+      let activeCount = STATE.children.filter(c => c.last_active && new Date(c.last_active) > new Date(Date.now() - 7*24*60*60*1000)).length;
+      document.getElementById('statActiveKids').textContent = activeCount;
+      let totalMinutes = STATE.children.reduce((sum, c) => sum + (c.total_minutes || 0), 0);
+      document.getElementById('statTotalTime').textContent = Math.round(totalMinutes / 60);
+      renderChildren();
+    }
+  }
+  
+  function renderChildren() {
+    let container = document.getElementById('childrenList');
+    if (!STATE.children.length) {
+      container.innerHTML = '<div class="empty-state"><i class="fas fa-child empty-icon"></i><div class="empty-title">No children linked yet</div><div class="empty-sub">Link an existing student account or create a new one</div></div>';
+      return;
+    }
+    container.innerHTML = STATE.children.map(c => `
+      <div class="child-card">
+        <div class="child-header">
+          <div class="child-avatar">${c.avatar}</div>
+          <div>
+            <div class="child-name">${escapeHtml(c.name)}</div>
+            <div class="child-belt-progress">${c.belt_progress || 0} / ${c.total_belts || 9} belts earned</div>
+            <div class="belt-indicator" id="beltIndicators_${c.id}"></div>
+          </div>
+        </div>
+        <div class="child-actions">
+          <button class="btn btn-navy btn-sm" onclick="viewChildProgress(${c.id})"><i class="fas fa-chart-line"></i> Progress</button>
+          <button class="btn btn-ghost btn-sm" onclick="viewChildWeakness(${c.id})"><i class="fas fa-exclamation-triangle"></i> Weakness</button>
+          <button class="btn btn-gold btn-sm" onclick="showBillingModal(${c.id})"><i class="fas fa-credit-card"></i> Billing</button>
+        </div>
+      </div>
+    `).join('');
+    
+    STATE.children.forEach(c => {
+      let container = document.getElementById(`beltIndicators_${c.id}`);
+      if (container) {
+        let belts = ['white','yellow','blue','red','black','brown','purple','gold','master'];
+        container.innerHTML = belts.map((b, i) => `<div class="belt-dot ${i < (c.belt_progress || 0) ? 'passed' : i === (c.belt_progress || 0) ? 'active' : ''}" title="${b} belt"></div>`).join('');
+      }
+    });
+  }
+  
+  window.showBillingModal = async function(childId) {
+    let child = STATE.children.find(c => c.id == childId);
+    if (!child) return;
+    
+    let r = await GET(`/api/parent/student/billing/${childId}/`);
+    if (r.error) { toast(r.error, 'var(--red)'); return; }
+    
+    let modal = document.getElementById('billingModal');
+    document.getElementById('billingModalTitle').textContent = `${escapeHtml(child.name)} - Billing`;
+    
+    let subscriptionHtml = r.subscription && r.subscription.has_active ? `
+      <div class="billing-card">
+        <h4><i class="fas fa-check-circle" style="color:var(--green)"></i> Active Subscription</h4>
+        <p><strong>Plan:</strong> ${r.subscription.plan}<br>
+        <strong>Status:</strong> Active<br>
+        <strong>Days remaining:</strong> ${r.subscription.days_remaining}</p>
+      </div>
+    ` : `
+      <div class="billing-card">
+        <h4><i class="fas fa-exclamation-triangle" style="color:var(--amber)"></i> No Active Subscription</h4>
+        <p>${escapeHtml(child.name)} doesn't have an active subscription. Premium belts (Blue+) are locked.</p>
+      </div>
+    `;
+    
+    let plansHtml = `
+      <div class="billing-card">
+        <h4><i class="fas fa-arrow-up"></i> Upgrade Account</h4>
+        <div class="plans-grid" id="plansGrid"></div>
+        <button class="btn btn-gold btn-w" id="payForChildBtn" style="margin-top:16px"><i class="fas fa-credit-card"></i> Pay Now</button>
+      </div>
+    `;
+    
+    let receiptsHtml = `
+      <div class="billing-card">
+        <h4><i class="fas fa-receipt"></i> Payment History</h4>
+        <div class="receipts-list" id="receiptsList"></div>
+      </div>
+    `;
+    
+    document.getElementById('billingModalBody').innerHTML = subscriptionHtml + plansHtml + receiptsHtml;
+    
+    let plansGrid = document.getElementById('plansGrid');
+    let selectedPlan = null;
+    plansGrid.innerHTML = (r.plans || []).map(p => `
+      <div class="plan-card" data-plan="${p.id}">
+        <div class="plan-name">${p.name}</div>
+        <div class="plan-price">$${p.price}<small>/${p.id === 'monthly' ? 'month' : p.id === 'half_yearly' ? '6 months' : 'year'}</small></div>
+        <div class="plan-duration"><i class="fas fa-calendar-alt"></i> ${p.duration} days access</div>
+      </div>
+    `).join('');
+    
+    document.querySelectorAll('.plan-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        selectedPlan = card.dataset.plan;
+      });
+    });
+    
+    let receiptsList = document.getElementById('receiptsList');
+    if (!r.transactions || r.transactions.length === 0) {
+      receiptsList.innerHTML = '<div style="text-align:center;padding:20px;color:var(--ink3)"><i class="fas fa-receipt"></i> No payment history</div>';
+    } else {
+      receiptsList.innerHTML = r.transactions.map(t => `
+        <div class="receipt-item">
+          <div><span class="receipt-date">${new Date(t.date).toLocaleDateString()}</span><span class="receipt-plan" style="margin-left:10px">${t.plan}</span></div>
+          <div><span class="receipt-amount">$${t.amount}</span> <i class="fas fa-check-circle" style="color:var(--green)"></i></div>
+        </div>
+      `).join('');
+    }
+    
+    document.getElementById('payForChildBtn').onclick = async () => {
+      if (!selectedPlan) { toast('Select a plan first', 'var(--red)'); return; }
+      let payR = await POST(`/api/parent/pay-for-student/${childId}/`, { plan: selectedPlan });
+      if (payR.error) { toast(payR.error, 'var(--red)'); return; }
+      window.location.href = payR.authorization_url;
+    };
+    
+    modal.classList.add('on');
+  };
+  
+  document.getElementById('closeBillingModal')?.addEventListener('click', () => document.getElementById('billingModal').classList.remove('on'));
+  document.getElementById('billingModal')?.addEventListener('click', (e) => { if (e.target === document.getElementById('billingModal')) document.getElementById('billingModal').classList.remove('on'); });
+  
+  window.viewChildProgress = async function(childId) {
+    let child = STATE.children.find(c => c.id == childId);
+    if (!child) return;
+    STATE.currentChild = childId;
+    
+    let r = await GET(`/api/parent/student/progress/${childId}/`);
+    if (r.error) { toast(r.error, 'var(--red)'); return; }
+    
+    let modal = document.getElementById('childProgressModal');
+    document.getElementById('progressModalTitle').textContent = `${escapeHtml(r.student.name)}'s Progress`;
+    
+    let leaderboard = await GET(`/api/student/leaderboard/?scope=national`);
+    let studentRank = -1;
+    let studentScore = 0;
+    if (leaderboard.entries) {
+      let found = leaderboard.entries.find(e => e.id == childId);
+      if (found) {
+        studentRank = leaderboard.entries.findIndex(e => e.id == childId) + 1;
+        studentScore = found.score || 0;
+      }
+    }
+    
+    let rankHtml = studentRank > 0 ? `
+      <div class="leaderboard-rank">
+        <div class="rank-label"><i class="fas fa-trophy"></i> NATIONAL RANK</div>
+        <div class="rank-number">#${studentRank}</div>
+        <div class="rank-score"><i class="fas fa-star"></i> ${studentScore} points</div>
+      </div>
+    ` : '<div class="leaderboard-rank"><div class="rank-label"><i class="fas fa-chart-line"></i> Complete more sessions to get ranked!</div></div>';
+    
+    let beltsHtml = `
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:20px">
+        ${(r.belt_progress || []).map(b => `
+          <div style="display:flex;align-items:center;gap:8px;padding:6px;background:var(--sky);border-radius:var(--r)">
+            <div style="width:28px;height:28px;border-radius:8px;background:${b.color};display:flex;align-items:center;justify-content:center;font-size:16px">${b.emoji}</div>
+            <div style="flex:1"><strong style="font-size:12px">${b.name}</strong><div style="font-size:8px;color:var(--ink3)">${Math.round(b.progress)}%</div></div>
+            <div style="font-size:11px">${b.passed ? '<i class="fas fa-check-circle" style="color:var(--green)"></i>' : '<i class="fas fa-lock" style="color:var(--ink3)"></i>'}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    
+    let calendarHtml = `
+      <div class="calendar-container">
+        <div class="calendar-header">
+          <h4><i class="fas fa-calendar-alt"></i> Activity Calendar <span style="font-size:10px;color:var(--ink3)">(click day for details)</span></h4>
+          <div class="calendar-nav">
+            <button onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+            <span id="calendarMonthYear" style="font-weight:700">${getMonthName(STATE.currentMonth)} ${STATE.currentYear}</span>
+            <button onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
+          </div>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+    `;
+    
+    let sessionsHtml = `<div style="margin-top:16px"><h4><i class="fas fa-history"></i> Recent Training Sessions</h4><div class="session-list">${(r.recent_sessions || []).map(s => `
+      <div class="session-item">
+        <div><div class="session-date">${s.date}</div><div style="font-size:10px">${s.belt} belt</div></div>
+        <div><div class="session-accuracy">${s.accuracy}%</div><div style="font-size:9px">${Math.floor(s.time_used/60)}:${(s.time_used%60).toString().padStart(2,'0')}</div></div>
+      </div>
+    `).join('')}</div></div>`;
+    
+    let loginHistoryHtml = `<div style="margin-top:16px"><h4><i class="fas fa-clock"></i> Recent Login Activity</h4><div class="session-list" id="loginHistoryList">Loading...</div></div>`;
+    
+    document.getElementById('progressModalBody').innerHTML = `
+      <div class="stats-row" style="margin-bottom:16px;grid-template-columns:repeat(3,1fr)">
+        <div class="stat-box"><div class="stat-number">${r.stats.total_sessions || 0}</div><div class="stat-label">Sessions</div></div>
+        <div class="stat-box"><div class="stat-number">${r.stats.avg_accuracy || 0}%</div><div class="stat-label">Avg Accuracy</div></div>
+        <div class="stat-box"><div class="stat-number">${r.stats.total_questions || 0}</div><div class="stat-label">Questions</div></div>
+      </div>
+      ${rankHtml}
+      <div class="student-sub-tabs">
+        <button class="student-sub-tab active" data-subtab="belts"><i class="fas fa-trophy"></i> Belts</button>
+        <button class="student-sub-tab" data-subtab="calendar"><i class="fas fa-calendar-alt"></i> Calendar</button>
+        <button class="student-sub-tab" data-subtab="sessions"><i class="fas fa-history"></i> Sessions</button>
+        <button class="student-sub-tab" data-subtab="login"><i class="fas fa-clock"></i> Login History</button>
+      </div>
+      <div id="subtab-belts" class="student-sub-content active">${beltsHtml}</div>
+      <div id="subtab-calendar" class="student-sub-content">${calendarHtml}</div>
+      <div id="subtab-sessions" class="student-sub-content">${sessionsHtml}</div>
+      <div id="subtab-login" class="student-sub-content">${loginHistoryHtml}</div>
+    `;
+    
+    document.querySelectorAll('.student-sub-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        let subtab = tab.dataset.subtab;
+        document.querySelectorAll('.student-sub-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.student-sub-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(`subtab-${subtab}`).classList.add('active');
+      });
+    });
+    
+    modal.classList.add('on');
+    await loadCalendar(childId, STATE.currentYear, STATE.currentMonth);
+    await loadLoginHistory(childId);
+  };
+  
+  async function loadLoginHistory(studentId) {
+    try {
+      let r = await GET(`/api/parent/student/activity/${studentId}/${STATE.currentYear}/${STATE.currentMonth}/`);
+      if (!r.error && r.days) {
+        let loginDays = r.days.filter(d => d.has_activity);
+        let historyHtml = loginDays.length > 0 ? loginDays.map(d => `
+          <div class="session-item">
+            <div><div class="session-date">${d.day} ${getMonthName(STATE.currentMonth)} ${STATE.currentYear}</div><div style="font-size:10px">${d.sessions} session(s)</div></div>
+            <div><div class="session-accuracy">${d.duration_minutes} min</div><div style="font-size:9px">${d.questions} questions</div></div>
+          </div>
+        `).join('') : '<div class="empty-state" style="padding:20px"><i class="fas fa-calendar-times empty-icon"></i><div class="empty-title">No login activity this month</div></div>';
+        document.getElementById('loginHistoryList').innerHTML = historyHtml;
+      }
+    } catch(e) {
+      document.getElementById('loginHistoryList').innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle empty-icon"></i><div class="empty-title">Could not load login history</div></div>';
+    }
+  }
+  
+  window.viewChildWeakness = async function(childId) {
+    let child = STATE.children.find(c => c.id == childId);
+    if (!child) return;
+    
+    let r = await GET(`/api/parent/student/progress/${childId}/`);
+    if (r.error) { toast(r.error, 'var(--red)'); return; }
+    
+    let modal = document.getElementById('childProgressModal');
+    document.getElementById('progressModalTitle').textContent = `${escapeHtml(r.student.name)} - Areas Needing Improvement`;
+    
+    let weakPointsHtml = '<div style="margin-bottom:16px">';
+    if (r.weak_points && r.weak_points.length > 0) {
+      weakPointsHtml += r.weak_points.map(w => `
+        <div class="weakness-card">
+          <div class="weakness-fact"><i class="fas fa-chart-line" style="color:var(--red)"></i> ${w.fact || w.belt || 'Practice Area'}</div>
+          <div class="weakness-stats">${w.message || `Accuracy: ${w.accuracy || 'Low'}% - Needs practice`}</div>
+        </div>
+      `).join('');
+    } else {
+      weakPointsHtml += '<div class="empty-state" style="padding:20px"><i class="fas fa-smile-wink empty-icon"></i><div class="empty-title">Great job!</div><div class="empty-sub">No major weak spots detected. Keep up the good work!</div></div>';
+    }
+    weakPointsHtml += '</div>';
+    
+    let tipsHtml = `
+      <div style="background:var(--sky);border-radius:var(--r2);padding:16px;margin-top:16px">
+        <h4><i class="fas fa-lightbulb"></i> Improvement Tips</h4>
+        <ul style="margin-top:8px;margin-left:20px;font-size:12px;color:var(--ink2)">
+          <li><i class="fas fa-check-circle" style="color:var(--green);font-size:10px"></i> Practice weak multiplication facts daily (5-10 minutes)</li>
+          <li><i class="fas fa-check-circle" style="color:var(--green);font-size:10px"></i> Focus on one belt level at a time</li>
+          <li><i class="fas fa-check-circle" style="color:var(--green);font-size:10px"></i> Use the Knowledge Map to identify specific weak spots</li>
+          <li><i class="fas fa-check-circle" style="color:var(--green);font-size:10px"></i> Encourage regular short practice sessions over long ones</li>
+        </ul>
+      </div>
+    `;
+    
+    document.getElementById('progressModalBody').innerHTML = `
+      <div style="margin-bottom:16px">
+        <div class="stat-box" style="margin-bottom:16px"><div class="stat-number">${r.stats.avg_accuracy || 0}%</div><div class="stat-label">Overall Accuracy</div></div>
+        ${weakPointsHtml}
+        ${tipsHtml}
+      </div>
+    `;
+    
+    modal.classList.add('on');
+  };
+  
+  async function loadCalendar(studentId, year, month) {
+    let r = await GET(`/api/parent/student/activity/${studentId}/${year}/${month}/`);
+    if (r.error) return;
+    
+    let today = new Date();
+    let firstDayOfMonth = new Date(year, month - 1, 1).getDay();
+    let daysInMonth = new Date(year, month, 0).getDate();
+    let calendarHtml = '';
+    
+    ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].forEach(day => {
+      calendarHtml += `<div class="calendar-weekday">${day}</div>`;
+    });
+    
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      calendarHtml += `<div class="calendar-day" style="background:transparent"></div>`;
+    }
+    
+    for (let day = 1; day <= daysInMonth; day++) {
+      let dayData = (r.days || []).find(d => d.day === day);
+      let hasActivity = dayData && dayData.has_activity;
+      let durationMins = dayData ? dayData.duration_minutes : 0;
+      let isToday = (year === today.getFullYear() && month === today.getMonth()+1 && day === today.getDate());
+      
+      calendarHtml += `
+        <div class="calendar-day ${hasActivity ? 'has-activity' : ''} ${isToday ? 'today' : ''}" onclick="showDayDetail(${studentId}, ${year}, ${month}, ${day})">
+          <div class="calendar-day-number">${day}</div>
+          ${durationMins > 0 ? `<div class="calendar-day-duration">${durationMins}m</div>` : ''}
+          ${hasActivity ? `<div style="position:absolute;bottom:2px;right:2px;font-size:6px;color:var(--green)">●</div>` : ''}
+        </div>
+      `;
+    }
+    
+    document.getElementById('calendarGrid').innerHTML = calendarHtml;
+    document.getElementById('calendarMonthYear').textContent = `${getMonthName(month)} ${year}`;
+  }
+  
+  window.changeMonth = async function(delta) {
+    STATE.currentMonth += delta;
+    if (STATE.currentMonth < 1) { STATE.currentMonth = 12; STATE.currentYear--; }
+    if (STATE.currentMonth > 12) { STATE.currentMonth = 1; STATE.currentYear++; }
+    await loadCalendar(STATE.currentChild, STATE.currentYear, STATE.currentMonth);
+    await loadLoginHistory(STATE.currentChild);
+  };
+  
+  window.showDayDetail = async function(studentId, year, month, day) {
+    let r = await GET(`/api/parent/student/activity/${studentId}/${year}/${month}/`);
+    if (r.error) return;
+    let dayData = (r.days || []).find(d => d.day === day);
+    if (!dayData || !dayData.has_activity) { toast('No activity on this day', 'var(--amber)'); return; }
+    
+    let modalHtml = `
+      <div class="day-detail-content" style="background:#fff;border-radius:var(--r3);padding:20px;max-width:380px;width:90%;margin:auto;box-shadow:0 20px 40px rgba(0,0,0,.3)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <h3 style="font-family:Fredoka One,cursive"><i class="fas fa-calendar-day"></i> ${day} ${getMonthName(month)} ${year}</h3>
+          <button onclick="closeDayDetailModal()" style="background:none;border:none;font-size:24px;cursor:pointer">&times;</button>
+        </div>
+        <div class="stats-detail" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px">
+          <div class="stat-detail-item" style="background:var(--sky);border-radius:var(--r);padding:12px;text-align:center">
+            <div class="stat-detail-value" style="font-family:Fredoka One,cursive;font-size:22px;color:var(--navy)">${dayData.duration_minutes || 0}</div>
+            <div class="stat-detail-label" style="font-size:9px">Minutes Active</div>
+          </div>
+          <div class="stat-detail-item" style="background:var(--sky);border-radius:var(--r);padding:12px;text-align:center">
+            <div class="stat-detail-value" style="font-family:Fredoka One,cursive;font-size:22px;color:var(--navy)">${dayData.questions || 0}</div>
+            <div class="stat-detail-label" style="font-size:9px">Questions</div>
+          </div>
+          <div class="stat-detail-item" style="background:var(--sky);border-radius:var(--r);padding:12px;text-align:center">
+            <div class="stat-detail-value" style="font-family:Fredoka One,cursive;font-size:22px;color:var(--navy)">${dayData.sessions || 0}</div>
+            <div class="stat-detail-label" style="font-size:9px">Sessions</div>
+          </div>
+          <div class="stat-detail-item" style="background:var(--sky);border-radius:var(--r);padding:12px;text-align:center">
+            <div class="stat-detail-value" style="font-family:Fredoka One,cursive;font-size:22px;color:var(--navy)">${dayData.belts || 0}</div>
+            <div class="stat-detail-label" style="font-size:9px">Belts Earned</div>
+          </div>
+        </div>
+        ${dayData.session_details && dayData.session_details.length > 0 ? `
+          <div style="margin-top:12px">
+            <h4 style="font-size:12px;margin-bottom:8px"><i class="fas fa-list"></i> Training Sessions:</h4>
+            ${dayData.session_details.map(s => `
+              <div style="font-size:11px;padding:4px 0;border-bottom:1px solid var(--sky2)">
+                <i class="fas fa-clock"></i> ${s.time} - ${s.belt} belt (${s.accuracy}% ${s.passed ? '<i class="fas fa-check-circle" style="color:var(--green)"></i>' : '<i class="fas fa-times-circle" style="color:var(--red)"></i>'})
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+      </div>
+    `;
+    
+    let tempDiv = document.createElement('div');
+    tempDiv.innerHTML = modalHtml;
+    document.body.appendChild(tempDiv.firstChild);
+    let modal = document.querySelector('.day-detail-content:last-child');
+    modal.style.position = 'fixed';
+    modal.style.top = '50%';
+    modal.style.left = '50%';
+    modal.style.transform = 'translate(-50%, -50%)';
+    modal.style.zIndex = '1001';
+    let closeBtn = modal.querySelector('button');
+    closeBtn.onclick = () => modal.remove();
+    modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+  };
+  
+  window.closeDayDetailModal = function() {
+    let modal = document.querySelector('.day-detail-content');
+    if (modal) modal.remove();
+  };
+  
+  document.getElementById('linkStudentBtn')?.addEventListener('click', async () => {
+    let email = document.getElementById('linkStudentEmail').value.trim();
+    let relationship = document.getElementById('linkRelationship').value;
+    if (!email) { toast('Enter student email', 'var(--red)'); return; }
+    let r = await POST('/api/parent/link-student/', { student_email: email, relationship });
+    if (r.error) { toast(r.error, 'var(--red)'); return; }
+    toast(r.message, 'var(--green)');
+    document.getElementById('linkStudentEmail').value = '';
+    await loadChildren();
+  });
+  
+  document.getElementById('createStudentBtn')?.addEventListener('click', async () => {
+    let first = document.getElementById('createFirstName').value.trim();
+    let last = document.getElementById('createLastName').value.trim();
+    let email = document.getElementById('createEmail').value.trim();
+    let password = document.getElementById('createPassword').value;
+    let relationship = document.getElementById('createRelationship').value;
+    
+    if (!first || !email || !password) { toast('Fill all required fields', 'var(--red)'); return; }
+    if (password.length < 6) { toast('Password must be 6+ chars', 'var(--red)'); return; }
+    
+    let r = await POST('/api/parent/create-student/', { first_name: first, last_name: last, email, password, relationship });
+    if (r.error) { toast(r.error, 'var(--red)'); return; }
+    toast(r.message, 'var(--green)');
+    document.getElementById('createFirstName').value = '';
+    document.getElementById('createLastName').value = '';
+    document.getElementById('createEmail').value = '';
+    document.getElementById('createPassword').value = '';
+    await loadChildren();
+  });
+  
+  async function updateProfile() {
+    let data = { first_name: document.getElementById('profileFirstName').value, last_name: document.getElementById('profileLastName').value, email: document.getElementById('profileEmail').value, county: document.getElementById('profileCounty').value };
+    let r = await POST('/api/student/profile/update/', data);
+    if (r.error) { toast(r.error, 'var(--red)'); return; }
+    STATE.user = r.user;
+    toast('Profile updated!', 'var(--green)');
+  }
+  
+  async function changePassword() {
+    let newPass = document.getElementById('newPassword').value;
+    let confirm = document.getElementById('confirmPassword').value;
+    if (newPass.length < 6) { toast('Password must be 6+ chars', 'var(--red)'); return; }
+    if (newPass !== confirm) { toast('Passwords do not match', 'var(--red)'); return; }
+    let r = await POST('/api/student/password/change/', { password: newPass });
+    if (r.error) { toast(r.error, 'var(--red)'); return; }
+    toast('Password changed!', 'var(--green)');
+    document.getElementById('passwordChangeSection').style.display = 'none';
+  }
+  
+  document.getElementById('saveProfileBtn')?.addEventListener('click', updateProfile);
+  document.getElementById('togglePasswordBtn')?.addEventListener('click', () => {
+    let section = document.getElementById('passwordChangeSection');
+    section.style.display = section.style.display === 'none' ? 'block' : 'none';
+  });
+  document.getElementById('updatePasswordBtn')?.addEventListener('click', changePassword);
+  document.getElementById('logoutBtn')?.addEventListener('click', async () => { await POST('/api/logout/', {}); window.location.href = '/'; });
+  document.getElementById('closeProgressModal')?.addEventListener('click', () => document.getElementById('childProgressModal').classList.remove('on'));
+  document.getElementById('childProgressModal')?.addEventListener('click', (e) => { if (e.target === document.getElementById('childProgressModal')) document.getElementById('childProgressModal').classList.remove('on'); });
+  
+  function getMonthName(month) { return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][month-1]; }
+  function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+  
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', async () => {
+      let tabName = tab.dataset.tab;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(`${tabName}-tab`).classList.add('active');
+      if (tabName === 'children') await loadChildren();
+    });
+  });
+  
+  (async function init() {
+    await loadProfile();
+    await loadChildren();
+  })();
+})();
+</script>
+</body>
+</html>

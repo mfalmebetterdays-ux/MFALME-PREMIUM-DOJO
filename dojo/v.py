@@ -2669,7 +2669,6 @@ def api_list_questions(request):
 def api_student_quizzes(request):
     user = request.user
     
-    # Check access (subscription or trial)
     has_curriculum_access = False
     try:
         trial = UserTrial.objects.get(user=user, trial_type='curriculum')
@@ -2689,18 +2688,54 @@ def api_student_quizzes(request):
     if not has_curriculum_access:
         return JsonResponse({'quizzes': [], 'requires_subscription': True})
     
-    # Get published content
     content = ContentItem.objects.filter(status='published')
     
-    # SIMPLIFIED: Filter by student's curriculum (case-insensitive exact match)
     if user.curriculum:
-        content = content.filter(curriculum__name__iexact=user.curriculum)
+        content = content.filter(
+            Q(curriculum__code__iexact=user.curriculum) |
+            Q(curriculum__code__iexact=user.curriculum.upper()) |
+            Q(curriculum__code__iexact=user.curriculum.lower()) |
+            Q(curriculum__name__iexact=user.curriculum) |
+            Q(curriculum__name__icontains=user.curriculum)
+        )
     
-    # SIMPLIFIED: Filter by student's grade (case-insensitive exact match)
     if user.grade:
-        content = content.filter(grade__name__iexact=user.grade)
+        student_grade_raw = user.grade
+        student_grade_variations = []
+        student_grade_variations.append(student_grade_raw)
+        student_grade_variations.append(student_grade_raw.lower())
+        student_grade_variations.append(student_grade_raw.replace('_', ' '))
+        student_grade_variations.append(student_grade_raw.replace('_', ''))
+        student_grade_variations.append(student_grade_raw.replace('_', ' ').title())
+        
+        numbers = re.findall(r'\d+', student_grade_raw)
+        if numbers:
+            student_grade_variations.append(numbers[0])
+        
+        student_grade_variations.append(student_grade_raw.replace('(igcse)', '').replace('_', ' ').strip())
+        student_grade_variations.append(student_grade_raw.replace('_', ' ').replace('(igcse)', '').strip().title())
+        
+        if 'grade' in student_grade_raw.lower():
+            grade_num = re.findall(r'\d+', student_grade_raw)
+            if grade_num:
+                student_grade_variations.append(f"Grade {grade_num[0]}")
+                student_grade_variations.append(f"grade_{grade_num[0]}")
+        
+        if 'form' in student_grade_raw.lower():
+            form_num = re.findall(r'\d+', student_grade_raw)
+            if form_num:
+                student_grade_variations.append(f"Form {form_num[0]}")
+                student_grade_variations.append(f"form_{form_num[0]}")
+        
+        student_grade_variations = list(set([v for v in student_grade_variations if v]))
+        
+        grade_filter = Q(grade__isnull=True)
+        for variation in student_grade_variations:
+            grade_filter |= Q(grade__name__iexact=variation)
+            grade_filter |= Q(grade__name__icontains=variation)
+        
+        content = content.filter(grade_filter)
     
-    # Annotate with question count
     content = content.select_related('curriculum', 'grade', 'subject', 'topic')
     content = content.annotate(question_count=Count('questions'))
     
@@ -2832,7 +2867,6 @@ def api_student_submit_quiz(request, content_id):
     questions = list(content.questions.all())
     questions_dict = {q.id: q for q in questions}
     
-    # Check for required file uploads
     for q in questions:
         if q.requires_upload:
             file_key = f'file_q_{q.id}'
@@ -2886,48 +2920,19 @@ def api_student_submit_quiz(request, content_id):
                 time_taken_ms=time_ms
             )
             
-            # ============================================================
-            # FIXED: Handle file uploads correctly
-            # ============================================================
             file_key = f'file_q_{question.id}'
             if file_key in request.FILES:
                 uploaded_file = request.FILES[file_key]
+                ext = os.path.splitext(uploaded_file.name)[1]
+                unique_filename = f"user_{user.id}_quiz_{content.id}_q_{question.id}_{timezone.now().timestamp()}{ext}"
+                file_path = default_storage.save(f'quiz_attachments/{unique_filename}', uploaded_file)
                 
-                # Validate file size
-                if uploaded_file.size == 0:
-                    logger.error(f"Empty file uploaded for user {user.id}, question {question.id}")
-                    continue
-                
-                # Get file extension
-                ext = os.path.splitext(uploaded_file.name)[1].lower()
-                if not ext:
-                    ext = '.pdf'
-                
-                # Generate unique filename
-                unique_filename = f"user_{user.id}_quiz_{content.id}_q_{question.id}_{int(timezone.now().timestamp())}{ext}"
-                
-                # READ THE FILE CONTENT FIRST (this is the key fix!)
-                file_content = uploaded_file.read()
-                
-                if len(file_content) == 0:
-                    logger.error(f"File content empty for user {user.id}, question {question.id}")
-                    continue
-                
-                # Save using ContentFile
-                content_file = ContentFile(file_content)
-                file_path = default_storage.save(f'quiz_attachments/{unique_filename}', content_file)
-                
-                # Verify file was saved correctly
-                saved_size = default_storage.size(file_path) if default_storage.exists(file_path) else 0
-                logger.info(f"File saved: {file_path}, expected: {len(file_content)}, actual: {saved_size}")
-                
-                # Create attachment record
                 StudentAnswerAttachment.objects.create(
                     answer_detail=answer_detail,
                     file=file_path,
                     original_filename=uploaded_file.name,
-                    file_size=len(file_content),  # Use actual content length
-                    file_type=uploaded_file.content_type or 'application/octet-stream'
+                    file_size=uploaded_file.size,
+                    file_type=uploaded_file.content_type
                 )
         
         attempt.score = total_score
@@ -4493,20 +4498,7 @@ def api_serve_attachment(request, attachment_id):
         if not file_path or not default_storage.exists(file_path):
             return err("File not found", 404)
         
-        # Check file size
-        file_size = default_storage.size(file_path)
-        if file_size == 0:
-            return err("File is empty/corrupted", 500)
-        
-        # Open file and read content to verify
         file_handle = default_storage.open(file_path, 'rb')
-        content = file_handle.read(1024)  # Read first 1KB to verify
-        file_handle.seek(0)  # Reset to beginning
-        
-        if len(content) == 0:
-            file_handle.close()
-            return err("File content is empty", 500)
-        
         content_type = attachment.file_type or mimetypes.guess_type(attachment.original_filename)[0] or 'application/octet-stream'
         
         response = FileResponse(file_handle, content_type=content_type)
@@ -4515,8 +4507,6 @@ def api_serve_attachment(request, attachment_id):
             response['Content-Disposition'] = f'inline; filename="{attachment.original_filename}"'
         else:
             response['Content-Disposition'] = f'attachment; filename="{attachment.original_filename}"'
-        
-        response['Content-Length'] = file_size
         
         return response
         
@@ -4689,35 +4679,8 @@ def payment_verify_view(request):
 @require_GET
 @require_role("student")
 def api_subscription_status(request):
-    """Get current subscription status for the user - Auto-creates plans for IGCSE, CBC, 844"""
-    import logging
-    from decimal import Decimal
-    logger = logging.getLogger("dojo")
-    
+    """Get current subscription status for the user"""
     user = request.user
-    
-    # ============================================================
-    # PERMANENT FIX: Auto-create subscription plans if missing
-    # This runs EVERY TIME to ensure plans exist for all curricula
-    # ============================================================
-    default_plans = [
-        {'name': 'monthly', 'display_name': 'Monthly', 'price_usd': Decimal('5.00'), 'price_kes': Decimal('650.00'), 'duration_days': 30},
-        {'name': 'half_yearly', 'display_name': '6 Months', 'price_usd': Decimal('25.00'), 'price_kes': Decimal('3250.00'), 'duration_days': 180},
-        {'name': 'yearly', 'display_name': 'Yearly', 'price_usd': Decimal('50.00'), 'price_kes': Decimal('6500.00'), 'duration_days': 365},
-    ]
-    
-    for plan_data in default_plans:
-        plan, created = SubscriptionPlan.objects.get_or_create(
-            name=plan_data['name'],
-            defaults={
-                'price_usd': plan_data['price_usd'],
-                'price_kes': plan_data['price_kes'],
-                'duration_days': plan_data['duration_days'],
-                'is_active': True
-            }
-        )
-        if created:
-            logger.info(f"Auto-created subscription plan: {plan_data['display_name']} (ID: {plan.id})")
     
     # Get or create subscription
     subscription, created = UserSubscription.objects.get_or_create(
@@ -4732,12 +4695,11 @@ def api_subscription_status(request):
             subscription.save()
             user.is_paid = False
             user.save(update_fields=['is_paid'])
-            logger.info(f"Subscription expired for user: {user.email}")
     
     # Get all available plans
     plans = SubscriptionPlan.objects.filter(is_active=True)
     
-    # Check trial status for curriculum content (works for IGCSE, CBC, 844)
+    # Check trial status for curriculum content
     curriculum_trial = None
     try:
         trial = UserTrial.objects.get(user=user, trial_type='curriculum')
@@ -4763,27 +4725,10 @@ def api_subscription_status(request):
     except UserTrial.DoesNotExist:
         pass
     
-    # Calculate savings for each plan using Decimal
-    monthly_plan = SubscriptionPlan.objects.filter(name='monthly', is_active=True).first()
-    for plan in plans:
-        if plan.name != 'monthly' and monthly_plan:
-            if plan.name == 'half_yearly':
-                plan.savings_kes = (Decimal(str(monthly_plan.price_kes)) * Decimal('6')) - Decimal(str(plan.price_kes))
-                plan.savings_usd = (Decimal(str(monthly_plan.price_usd)) * Decimal('6')) - Decimal(str(plan.price_usd))
-            elif plan.name == 'yearly':
-                plan.savings_kes = (Decimal(str(monthly_plan.price_kes)) * Decimal('12')) - Decimal(str(plan.price_kes))
-                plan.savings_usd = (Decimal(str(monthly_plan.price_usd)) * Decimal('12')) - Decimal(str(plan.price_usd))
-            plan.save(update_fields=['savings_kes', 'savings_usd'])
-    
-    # Clear cache to ensure fresh data (but don't cache in debug mode)
     cache_key = f'subscription_status_{user.id}'
-    
-    # In debug mode, don't use cache for testing
-    if settings.DEBUG:
-        try:
-            cache.delete(cache_key)
-        except:
-            pass
+    cached_data = cache.get(cache_key)
+    if cached_data:
+        return JsonResponse(cached_data)
     
     response_data = {
         'has_active_subscription': subscription.is_active() if hasattr(subscription, 'is_active') else False,
@@ -4802,8 +4747,6 @@ def api_subscription_status(request):
         'cancel_at_period_end': getattr(subscription, 'cancel_at_period_end', False),
         'curriculum_trial': curriculum_trial,
         'multiplication_trial': multiplication_trial,
-        'user_curriculum': user.curriculum or 'Not set',
-        'user_grade': user.grade or 'Not set',
         'available_plans': [
             {
                 'id': plan.id,
@@ -4811,265 +4754,110 @@ def api_subscription_status(request):
                 'price_usd': float(plan.price_usd),
                 'price_kes': float(plan.price_kes),
                 'duration_days': plan.duration_days,
-                'savings_usd': float(plan.savings_usd) if plan.savings_usd else 0,
-                'savings_kes': float(plan.savings_kes) if plan.savings_kes else 0,
+                'savings_usd': float(plan.savings_usd),
+                'savings_kes': float(plan.savings_kes),
             }
             for plan in plans
         ]
     }
     
-    # Only cache if not in debug mode
-    if not settings.DEBUG:
-        try:
-            cache.set(cache_key, response_data, 300)
-        except:
-            pass
-    
+    cache.set(cache_key, response_data, 300)
     return JsonResponse(response_data)
+
 
 @csrf_exempt
 @require_POST
 @require_role("student")
 def api_initiate_subscription(request):
-    """Initialize a new subscription payment - WORKS FOR ALL CURRICULA (IGCSE, CBC, 844)"""
-    import logging
-    from decimal import Decimal
-    logger = logging.getLogger("dojo")
+    """Initialize a new subscription payment"""
+    data = json_body(request)
+    plan_id = data.get('plan_id')
+    
+    if not plan_id:
+        return err("Plan ID required", 400)
     
     try:
-        data = json_body(request)
-        logger.info(f"Initiate subscription request data: {data}")
-        
-        plan_id = data.get('plan_id')
-        
-        if not plan_id:
-            logger.error("Plan ID missing in request")
-            return err("Plan ID required", 400)
-        
-        # ============================================================
-        # PERMANENT FIX: Auto-create subscription plans if missing
-        # This runs EVERY TIME to ensure plans exist
-        # ============================================================
-        default_plans = [
-            {'name': 'monthly', 'display_name': 'Monthly', 'price_usd': Decimal('5.00'), 'price_kes': Decimal('650.00'), 'duration_days': 30},
-            {'name': 'half_yearly', 'display_name': '6 Months', 'price_usd': Decimal('25.00'), 'price_kes': Decimal('3250.00'), 'duration_days': 180},
-            {'name': 'yearly', 'display_name': 'Yearly', 'price_usd': Decimal('50.00'), 'price_kes': Decimal('6500.00'), 'duration_days': 365},
-        ]
-        
-        for plan_data in default_plans:
-            plan_obj, created = SubscriptionPlan.objects.get_or_create(
-                name=plan_data['name'],
-                defaults={
-                    'price_usd': plan_data['price_usd'],
-                    'price_kes': plan_data['price_kes'],
-                    'duration_days': plan_data['duration_days'],
-                    'is_active': True
-                }
-            )
-            if created:
-                logger.info(f"Auto-created subscription plan: {plan_data['display_name']} (ID: {plan_obj.id})")
-        
-        # Try to get the plan by ID first
-        try:
-            plan = SubscriptionPlan.objects.get(id=plan_id, is_active=True)
-            logger.info(f"Found plan by ID: {plan.name}, price: {plan.price_kes}")
-        except SubscriptionPlan.DoesNotExist:
-            # If ID not found, try to map common IDs to plan names
-            plan_id_mapping = {
-                1: 'monthly',
-                2: 'half_yearly', 
-                3: 'yearly',
-                4: 'monthly',
-                5: 'half_yearly',
-                6: 'yearly',
-            }
-            plan_name = plan_id_mapping.get(plan_id, 'monthly')
-            plan = SubscriptionPlan.objects.filter(name=plan_name, is_active=True).first()
-            
-            if not plan:
-                # Last resort: get any active plan
-                plan = SubscriptionPlan.objects.filter(is_active=True).first()
-                
-            if not plan:
-                logger.error(f"No subscription plans available. Requested ID: {plan_id}")
-                return err("No subscription plans available. Please contact support.", 400)
-            
-            logger.info(f"Found plan by fallback: {plan.name} (ID: {plan.id})")
-        
-        user = request.user
-        logger.info(f"User: {user.email}, ID: {user.id}, Curriculum: {user.curriculum}, Grade: {user.grade}")
-        
-        # Get or create subscription
-        subscription, created = UserSubscription.objects.get_or_create(
-            user=user,
-            defaults={'status': 'inactive'}
-        )
-        logger.info(f"Subscription: {'created' if created else 'existing'}, status: {subscription.status}")
-        
-        # Generate unique reference with curriculum prefix for tracking
-        curriculum_prefix = (user.curriculum or 'general').upper()[:3]
-        reference = f"SUB-{curriculum_prefix}-{user.id}-{uuid.uuid4().hex[:12].upper()}"
-        amount_kes = float(plan.price_kes)
-        amount_in_smallest_unit = int(amount_kes * 100)
-        logger.info(f"Reference: {reference}, Amount: {amount_kes} KES")
-        
-        # Determine transaction type
-        transaction_type = 'initial'
-        if subscription.status == 'active' and subscription.end_date and subscription.end_date > timezone.now():
-            transaction_type = 'renewal'
-        
-        callback_url = request.build_absolute_uri('/payment/subscription/verify/')
-        
-        payload = {
-            'email': user.email,
-            'amount': amount_in_smallest_unit,
-            'currency': 'KES',
-            'reference': reference,
-            'callback_url': callback_url,
-            'metadata': {
-                'user_id': user.id,
-                'subscription_id': subscription.id,
-                'plan_id': plan.id,
-                'plan_name': plan.get_name_display(),
-                'duration_days': plan.duration_days,
-                'transaction_type': transaction_type,
-                'curriculum': user.curriculum or 'none',
-                'grade': user.grade or 'none',
-                'custom_fields': [
-                    {'display_name': 'Plan', 'variable_name': 'plan', 'value': plan.get_name_display()},
-                    {'display_name': 'User', 'variable_name': 'user', 'value': user.email},
-                    {'display_name': 'Curriculum', 'variable_name': 'curriculum', 'value': user.curriculum or 'Not set'},
-                    {'display_name': 'Duration', 'variable_name': 'duration', 'value': f'{plan.duration_days} days'},
-                ]
-            }
+        plan = SubscriptionPlan.objects.get(id=plan_id, is_active=True)
+    except SubscriptionPlan.DoesNotExist:
+        return err("Invalid plan selected", 400)
+    
+    user = request.user
+    
+    # Get or create subscription
+    subscription, _ = UserSubscription.objects.get_or_create(
+        user=user,
+        defaults={'status': 'inactive'}
+    )
+    
+    # Generate unique reference
+    reference = f"SUB-{user.id}-{uuid.uuid4().hex[:12].upper()}"
+    amount_kes = plan.price_kes
+    amount_in_smallest_unit = int(amount_kes * 100)
+    
+    # Determine transaction type
+    transaction_type = 'initial'
+    if subscription.status == 'active' and subscription.end_date and subscription.end_date > timezone.now():
+        transaction_type = 'renewal'
+    
+    callback_url = request.build_absolute_uri('/payment/subscription/verify/')
+    
+    payload = {
+        'email': user.email,
+        'amount': amount_in_smallest_unit,
+        'currency': 'KES',
+        'reference': reference,
+        'callback_url': callback_url,
+        'metadata': {
+            'user_id': user.id,
+            'subscription_id': subscription.id,
+            'plan_id': plan.id,
+            'plan_name': plan.get_name_display(),
+            'duration_days': plan.duration_days,
+            'transaction_type': transaction_type,
+            'custom_fields': [
+                {'display_name': 'Plan', 'variable_name': 'plan', 'value': plan.get_name_display()},
+                {'display_name': 'User', 'variable_name': 'user', 'value': user.email},
+                {'display_name': 'Duration', 'variable_name': 'duration', 'value': f'{plan.duration_days} days'},
+            ]
         }
-        
-        # Check if Paystack is configured (has real keys)
-        paystack_configured = (
-            hasattr(settings, 'PAYSTACK_SECRET_KEY') and 
-            settings.PAYSTACK_SECRET_KEY and 
-            settings.PAYSTACK_SECRET_KEY not in ['', 'your_paystack_secret_key_here', 'sk_test_', 'sk_live_']
+    }
+    
+    try:
+        response = requests.post(
+            'https://api.paystack.co/transaction/initialize',
+            headers=get_paystack_headers(),
+            json=payload,
+            timeout=30
         )
         
-        # FIXED: Removed "or settings.DEBUG" - now only uses test mode if NO Paystack keys configured
-        # Previously: use_test_mode = not paystack_configured or settings.DEBUG
-        # Now: use_test_mode = not paystack_configured
-        use_test_mode = not paystack_configured
-        
-        if use_test_mode:
-            # ============================================================
-            # TEST MODE: Activate subscription directly (no real payment)
-            # ============================================================
-            logger.info(f"TEST MODE: Activating subscription for {user.email} with {plan.get_name_display()} plan")
-            
-            subscription.plan = plan
-            subscription.status = 'active'
-            subscription.start_date = timezone.now()
-            subscription.end_date = timezone.now() + timedelta(days=plan.duration_days)
-            subscription.last_payment_date = timezone.now()
-            subscription.next_payment_date = subscription.end_date
-            subscription.save()
-            
-            # Create mock transaction record
-            PaymentTransaction.objects.create(
-                user=user,
-                subscription=subscription,
-                transaction_type=transaction_type,
-                reference=reference,
-                amount_usd=plan.price_usd,
-                amount_kes=plan.price_kes,
-                plan=plan,
-                duration_days=plan.duration_days,
-                status='success',
-                completed_at=timezone.now(),
-                paystack_response={'mode': 'test', 'message': 'Test mode activation'}
-            )
-            
-            user.is_paid = True
-            user.save()
-            
-            # Mark trials as used
-            UserTrial.objects.filter(user=user, used=False).update(used=True)
-            
-            # Clear cache
-            from django.core.cache import cache
-            cache.delete(f'subscription_status_{user.id}')
-            
-            logger.info(f"TEST MODE: Subscription activated successfully for {user.email}")
-            
-            # Return success with redirect to dashboard
-            return JsonResponse({
-                'success': True,
-                'test_mode': True,
-                'message': f'✓ Subscription activated for {plan.get_name_display()} plan! (Test Mode)',
-                'authorization_url': request.build_absolute_uri('/igcse-dashboard/')
-            })
-        
-        else:
-            # ============================================================
-            # PRODUCTION MODE: Use real Paystack payment
-            # ============================================================
-            logger.info(f"PRODUCTION MODE: Initiating Paystack payment for {user.email}")
-            
-            try:
-                response = requests.post(
-                    'https://api.paystack.co/transaction/initialize',
-                    headers=get_paystack_headers(),
-                    json=payload,
-                    timeout=30
+        if response.status_code == 200:
+            resp_data = response.json()
+            if resp_data.get('status'):
+                PaymentTransaction.objects.create(
+                    user=user,
+                    subscription=subscription,
+                    transaction_type=transaction_type,
+                    reference=reference,
+                    access_code=resp_data['data']['access_code'],
+                    amount_usd=plan.price_usd,
+                    amount_kes=plan.price_kes,
+                    plan=plan,
+                    duration_days=plan.duration_days,
+                    status='pending',
+                    paystack_response=resp_data
                 )
                 
-                logger.info(f"Paystack response status: {response.status_code}")
-                
-                if response.status_code == 200:
-                    resp_data = response.json()
-                    
-                    if resp_data.get('status'):
-                        # Create pending transaction record
-                        PaymentTransaction.objects.create(
-                            user=user,
-                            subscription=subscription,
-                            transaction_type=transaction_type,
-                            reference=reference,
-                            access_code=resp_data['data']['access_code'],
-                            amount_usd=plan.price_usd,
-                            amount_kes=plan.price_kes,
-                            plan=plan,
-                            duration_days=plan.duration_days,
-                            status='pending',
-                            paystack_response=resp_data
-                        )
-                        
-                        logger.info(f"Transaction created, redirecting to: {resp_data['data']['authorization_url']}")
-                        
-                        return JsonResponse({
-                            'authorization_url': resp_data['data']['authorization_url'],
-                            'reference': reference,
-                            'access_code': resp_data['data']['access_code']
-                        })
-                    else:
-                        error_msg = resp_data.get('message', 'Unknown error from Paystack')
-                        logger.error(f"Paystack returned error: {error_msg}")
-                        return err(f"Payment initialization failed: {error_msg}", 500)
-                else:
-                    logger.error(f"Paystack HTTP error: {response.status_code} - {response.text}")
-                    return err(f"Payment service returned status {response.status_code}", 500)
-                    
-            except requests.exceptions.Timeout:
-                logger.error("Paystack request timed out")
-                return err("Payment service timeout. Please try again.", 500)
-            except requests.exceptions.ConnectionError:
-                logger.error("Paystack connection error")
-                return err("Cannot connect to payment service. Please check your internet connection.", 500)
-            except Exception as e:
-                logger.error(f"Paystack request error: {str(e)}")
-                return err(f"Payment service error: {str(e)}", 500)
+                return JsonResponse({
+                    'authorization_url': resp_data['data']['authorization_url'],
+                    'reference': reference,
+                    'access_code': resp_data['data']['access_code']
+                })
+        
+        return err("Payment initialization failed", 500)
         
     except Exception as e:
-        logger.error(f"Unexpected error in initiate_subscription: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        return err(f"Server error: {str(e)}", 500)
+        logger.error(f"Subscription payment error: {e}")
+        return err("Payment service unavailable", 500)
 
 
 @csrf_exempt

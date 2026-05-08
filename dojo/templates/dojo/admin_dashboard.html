@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
+/* ========== YOUR EXISTING STYLES - PRESERVED ========== */
 :root{
   --sky:#eef6ff;--sky2:#d0e8fa;--sky3:#b8d8f5;
   --ink:#1a2638;--ink2:#3b4d63;--ink3:#7088a0;
@@ -18,6 +19,7 @@
   --red:#e53935;--red-lt:rgba(229,57,53,.1);
   --amber:#f57c00;--amber-lt:rgba(245,124,0,.1);
   --purple:#7b1fa2;--purple-lt:rgba(123,31,162,.1);
+  --teal:#009688;--teal-lt:rgba(0,150,136,.1);
   --r:10px;--r2:16px;
   --sh:0 2px 12px rgba(26,58,107,.10);
   --sh2:0 4px 24px rgba(26,58,107,.16);
@@ -29,9 +31,7 @@ body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);over
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-thumb{background:var(--sky3);border-radius:99px}
 #app{display:flex;height:100vh;overflow:hidden}
-
-/* SIDEBAR */
-.sidebar{width:230px;flex-shrink:0;background:var(--side-bg);display:flex;flex-direction:column;height:100vh;box-shadow:4px 0 24px rgba(0,0,0,.25);z-index:10}
+.sidebar{width:260px;flex-shrink:0;background:var(--side-bg);display:flex;flex-direction:column;height:100vh;box-shadow:4px 0 24px rgba(0,0,0,.25);z-index:10;overflow-y:auto}
 .sb-logo{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.07)}
 .sb-logo-text{font-family:'Fredoka One',cursive;font-size:22px;letter-spacing:1.5px;color:#fff}
 .sb-logo-text span{color:var(--gold)}
@@ -52,8 +52,6 @@ body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);over
 .sb-urole{font-size:10px;font-weight:700;color:rgba(255,255,255,.4)}
 .sb-out{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.35);transition:color .15s;padding:4px;font-size:16px}
 .sb-out:hover{color:var(--red)}
-
-/* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .topbar{background:#fff;border-bottom:2px solid var(--sky2);padding:14px 28px;display:flex;align-items:center;gap:14px;flex-shrink:0;box-shadow:0 2px 12px rgba(26,58,107,.06)}
 .tb-title{font-family:'Fredoka One',cursive;font-size:21px;color:var(--navy);flex:1}
@@ -65,50 +63,40 @@ body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);over
 .tb-time{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--ink3);background:var(--sky);border-radius:var(--r);padding:6px 12px;border:2px solid var(--sky2)}
 .tb-btn{background:var(--navy);color:#fff;border:none;border-radius:var(--r);padding:8px 16px;font-family:'Fredoka One',cursive;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .tb-btn:hover{background:var(--navy2);transform:translateY(-1px)}
-
-/* CONTENT */
 .content{flex:1;overflow-y:auto;padding:24px 28px}
 .page{display:none;animation:pgIn .22s ease}
 .page.on{display:block}
 @keyframes pgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* GRIDS */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:18px}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}
 .g23{display:grid;grid-template-columns:2fr 3fr;gap:16px;margin-bottom:18px}
 @media(max-width:1200px){.g4{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.g2,.g23{grid-template-columns:1fr}}
-
-/* KPI */
 .kpi{background:#fff;border-radius:var(--r2);box-shadow:var(--sh);padding:18px;border-top:4px solid var(--sky2);transition:transform .14s}
 .kpi:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
-.kpi.kg{border-top-color:var(--gold)}.kpi.kb{border-top-color:var(--blue)}.kpi.kgr{border-top-color:var(--green)}.kpi.kr{border-top-color:var(--red)}.kpi.kp{border-top-color:var(--purple)}.kpi.ka{border-top-color:var(--amber)}
+.kpi.kg{border-top-color:var(--gold)}.kpi.kb{border-top-color:var(--blue)}.kpi.kgr{border-top-color:var(--green)}.kpi.kr{border-top-color:var(--red)}.kpi.kp{border-top-color:var(--purple)}.kpi.ka{border-top-color:var(--amber)}.kpi.kt{border-top-color:var(--teal)}
 .kpi-icon{font-size:22px;margin-bottom:10px}
 .kpi-val{font-family:'Fredoka One',cursive;font-size:32px;color:var(--navy);line-height:1;margin-bottom:3px}
 .kpi-lbl{font-size:10px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
-
-/* CARD */
 .card{background:#fff;border-radius:var(--r2);box-shadow:var(--sh);overflow:hidden;margin-bottom:16px}
 .card-h{padding:16px 18px 0;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .card-t{font-family:'Fredoka One',cursive;font-size:15px;color:var(--navy);display:flex;align-items:center;gap:8px}
 .card-a{font-size:11px;font-weight:800;color:var(--blue);cursor:pointer;text-transform:uppercase}
 .card-b{padding:0 18px 18px}
-
-/* TABLE */
 .tbl{width:100%;border-collapse:collapse}
-.tbl th{font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);padding:9px 12px;text-align:left;border-bottom:2px solid var(--sky2);background:var(--sky)}
-.tbl td{padding:10px 12px;font-size:12px;font-weight:700;color:var(--ink2);border-bottom:1.5px solid var(--sky)}
+.tbl th{font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);padding:12px 10px;text-align:left;border-bottom:2px solid var(--sky2);background:var(--sky)}
+.tbl td{padding:10px;font-size:12px;font-weight:700;color:var(--ink2);border-bottom:1.5px solid var(--sky);vertical-align:middle}
 .tbl tr:hover td{background:rgba(25,118,210,.03);cursor:pointer}
-.tbl-wrap{overflow-x:auto;max-height:420px;overflow-y:auto}
-
-/* MISC */
-.status-pill{display:inline-block;border-radius:99px;padding:2px 9px;font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}
+.tbl-wrap{overflow-x:auto;max-height:500px;overflow-y:auto}
+.status-pill{display:inline-block;border-radius:99px;padding:3px 10px;font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}
 .sp-ok{background:var(--green-lt);color:var(--green-dk)}
 .sp-paid{background:rgba(255,193,7,.15);color:var(--gold-dk)}
 .sp-free{background:var(--sky2);color:var(--ink3)}
 .sp-pending{background:var(--amber-lt);color:var(--amber)}
 .sp-new{background:rgba(123,31,162,.12);color:var(--purple)}
+.sp-draft{background:rgba(245,124,0,.12);color:var(--amber)}
+.sp-published{background:rgba(0,178,72,.12);color:var(--green-dk)}
 .prog{height:6px;background:var(--sky2);border-radius:99px;overflow:hidden;min-width:60px}
 .prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--blue2))}
 .prog-fill.pg{background:linear-gradient(90deg,var(--green),var(--green2))}
@@ -126,11 +114,27 @@ body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);over
 .feed-time{font-size:10px;font-weight:700;color:var(--ink3);margin-top:2px}
 .hm-cell{width:24px;height:24px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;margin:1px}
 .hm-cell:hover{transform:scale(1.4);z-index:5;position:relative}
-
-/* MODAL */
+.upload-zone{border:2px dashed var(--sky2);border-radius:var(--r2);padding:30px;text-align:center;background:var(--sky);transition:all .2s;cursor:pointer}
+.upload-zone:hover{border-color:var(--blue);background:var(--blue-lt)}
+.upload-zone.drag-over{border-color:var(--green);background:var(--green-lt)}
+.file-preview{background:var(--sky);border-radius:var(--r);padding:12px;margin-top:12px;display:flex;align-items:center;gap:12px}
+.filter-group{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.filter-select{padding:8px 12px;border:2px solid var(--sky2);border-radius:var(--r);font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;background:#fff;color:var(--navy);outline:none}
+.filter-select:focus{border-color:var(--blue)}
+.question-preview-card{background:var(--sky);border-radius:var(--r);padding:12px;margin-bottom:8px}
+.question-text{font-weight:800;margin-bottom:6px}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.option-item{padding:6px 10px;background:#fff;border-radius:6px;font-size:12px}
+.correct-badge{background:var(--green-lt);color:var(--green-dk);padding:2px 8px;border-radius:99px;font-size:10px;font-weight:800}
+.tag-badge{background:var(--blue-lt);color:var(--blue);padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;display:inline-flex;align-items:center;gap:4px}
+.extracted-preview{background:var(--sky);border-radius:var(--r);padding:15px;max-height:300px;overflow-y:auto;font-family:monospace;font-size:12px;white-space:pre-wrap}
+.progress-steps{display:flex;margin-bottom:20px;gap:8px}
+.step{flex:1;text-align:center;padding:10px;background:var(--sky);border-radius:var(--r);font-weight:800;font-size:12px;color:var(--ink3)}
+.step.active{background:var(--blue);color:#fff}
+.step.completed{background:var(--green);color:#fff}
 .modal-ov{position:fixed;inset:0;z-index:900;background:rgba(13,31,58,.65);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(6px)}
 .modal-ov.on{opacity:1;pointer-events:all}
-.modal-box{background:#fff;border-radius:22px;width:100%;max-width:680px;max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.3)}
+.modal-box{background:#fff;border-radius:22px;width:100%;max-width:800px;max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.3)}
 .mh{background:var(--navy);padding:20px 24px;display:flex;align-items:center;gap:14px;position:sticky;top:0}
 .mh-av{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:20px;color:#fff}
 .mh-name{font-family:'Fredoka One',cursive;font-size:20px;color:#fff}
@@ -148,11 +152,36 @@ body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);over
 .tab.on{background:#fff;color:var(--navy);box-shadow:var(--sh)}
 .qa-btn{display:flex;align-items:center;gap:8px;width:100%;background:var(--sky);border:2px solid var(--sky2);border-radius:var(--r2);padding:11px 14px;font-family:'Fredoka One',cursive;font-size:13px;color:var(--navy);cursor:pointer;margin-bottom:7px}
 .qa-btn:hover{border-color:var(--blue);background:var(--blue-lt);color:var(--blue)}
+.btn-sm{padding:6px 12px;font-size:11px;width:auto;display:inline-flex}
 #toast{position:fixed;top:80px;right:24px;z-index:9999;font-family:'Fredoka One',cursive;font-size:15px;padding:10px 20px;border-radius:99px;pointer-events:none;opacity:0;box-shadow:var(--sh2);transform:translateX(20px);transition:all .3s}
 #toast.show{opacity:1;transform:translateX(0)}
 .spinner{width:18px;height:18px;border:3px solid rgba(26,58,107,.15);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty{text-align:center;padding:40px;color:var(--ink3);font-size:13px;font-weight:700}
+.student-status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:9px;font-weight:900}
+.student-view-btn{background:var(--blue-lt);border:none;color:var(--blue);font-size:10px;padding:4px 10px;border-radius:99px;cursor:pointer}
+.student-view-btn:hover{background:var(--blue);color:#fff}
+
+/* NEW STYLES FOR FILE ATTACHMENTS IN ADMIN */
+.file-attachment-item{background:var(--sky);border-radius:var(--r);padding:10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.file-preview-icon{width:40px;height:40px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.file-info{flex:1;margin-left:12px}
+.file-name{font-weight:800;font-size:12px}
+.file-meta{font-size:10px;color:var(--ink3)}
+.file-actions{display:flex;gap:8px}
+.file-view-btn,.file-download-btn{background:var(--blue);color:#fff;border:none;padding:5px 10px;border-radius:var(--r);font-size:10px;cursor:pointer}
+.file-view-btn:hover,.file-download-btn:hover{background:var(--navy2)}
+.submission-card{background:#fff;border-radius:var(--r2);margin-bottom:16px;border:1px solid var(--sky2);overflow:hidden}
+.submission-header{background:var(--navy);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.submission-student{font-weight:800}
+.submission-date{font-size:11px;opacity:0.8}
+.submission-body{padding:16px}
+.submission-question{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--sky2)}
+.submission-question-text{font-weight:800;margin-bottom:8px}
+.submission-answer{background:var(--sky);padding:8px 12px;border-radius:var(--r);margin-bottom:8px}
+.submission-files{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.attachment-badge{background:var(--blue-lt);border-radius:20px;padding:4px 12px;display:inline-flex;align-items:center;gap:6px;font-size:11px}
+.requires-upload-badge{background:var(--amber-lt);color:var(--amber);padding:2px 8px;border-radius:99px;font-size:10px;font-weight:800;margin-left:8px}
 </style>
 </head>
 <body>
@@ -166,14 +195,24 @@ body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);over
       <div class="sb-sec">Overview</div>
       <div class="sb-item active" data-page="overview"><i class="fas fa-chalkboard-user"></i> Dashboard</div>
       <div class="sb-item" data-page="activity"><i class="fas fa-fire"></i> Live Activity <span class="sb-badge" id="liveCount">—</span></div>
+      
+      <div class="sb-sec">Content Studio</div>
+      <div class="sb-item" data-page="create"><i class="fas fa-magic"></i> Create Assessment</div>
+      <div class="sb-item" data-page="library"><i class="fas fa-book-open"></i> Content Library <span class="sb-badge" id="contentCount">0</span></div>
+      <div class="sb-item" data-page="bank"><i class="fas fa-database"></i> Question Bank</div>
+      <div class="sb-item" data-page="submissions"><i class="fas fa-file-upload"></i> Student Submissions <span class="sb-badge" id="submissionsBadge">0</span></div>
+      <div class="sb-item" data-page="curriculum"><i class="fas fa-graduation-cap"></i> Curriculum Manager</div>
+      
       <div class="sb-sec">People</div>
       <div class="sb-item" data-page="students"><i class="fas fa-user-graduate"></i> Students</div>
       <div class="sb-item" data-page="tutors"><i class="fas fa-chalkboard"></i> Tutors</div>
+      
       <div class="sb-sec">Analytics</div>
       <div class="sb-item" data-page="belts"><i class="fas fa-award"></i> Belt Analytics</div>
       <div class="sb-item" data-page="knowledge"><i class="fas fa-map"></i> Knowledge Map</div>
       <div class="sb-item" data-page="requests"><i class="fas fa-comment-dots"></i> Tutor Requests</div>
       <div class="sb-item" data-page="interests"><i class="fas fa-envelope"></i> Tutor Interests <span class="sb-badge" id="interestBadge">0</span></div>
+      
       <div class="sb-sec">System</div>
       <div class="sb-item" data-page="settings"><i class="fas fa-sliders-h"></i> Settings</div>
     </div>
@@ -195,6 +234,7 @@ body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);over
     </div>
 
     <div class="content">
+      <!-- OVERVIEW PAGE (existing - preserved) -->
       <div class="page on" id="page-overview">
         <div class="g4" id="kpiRow"></div>
         <div class="g23">
@@ -202,66 +242,241 @@ body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);over
           <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-bolt"></i> Live Activity</div><div style="display:flex;align-items:center;gap:5px;font-size:10px;font-weight:900;color:var(--green-dk)"><div style="width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite"></div>LIVE</div></div><div class="card-b"><div class="feed" id="actFeed"></div></div></div>
         </div>
         <div class="g2">
-          <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-trophy"></i> Top Students</div><div class="card-a" id="viewAllStudents">All →</div></div><div class="card-b"><table class="tbl"><thead> <tr><th>#</th><th>Student</th><th>Belt</th><th>Accuracy</th><th>Sessions</th></tr> </thead><tbody id="topStudents"></tbody> </table></div></div>
+          <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-trophy"></i> Top Students</div><div class="card-a" id="viewAllStudents">All →</div></div><div class="card-b"><table class="tbl"><thead><tr><th>#</th><th>Student</th><th>Belt</th><th>Accuracy</th><th>Sessions</th></thead><tbody id="topStudents"></tbody></table></div></div>
           <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-map-marker-alt"></i> Students by County</div></div><div class="card-b"><div id="countyChart"></div></div></div>
         </div>
       </div>
 
+      <!-- ACTIVITY PAGE (existing - preserved) -->
       <div class="page" id="page-activity">
         <div class="g4"><div class="kpi kb"><div class="kpi-icon"><i class="fas fa-user-friends"></i></div><div class="kpi-val" id="actStudents">—</div><div class="kpi-lbl">Total Students</div></div><div class="kpi kgr"><div class="kpi-icon"><i class="fas fa-star"></i></div><div class="kpi-val" id="actBelts">—</div><div class="kpi-lbl">Belts Awarded</div></div><div class="kpi kg"><div class="kpi-icon"><i class="fas fa-dollar-sign"></i></div><div class="kpi-val" id="actRev">$—</div><div class="kpi-lbl">Est. Revenue</div></div><div class="kpi kp"><div class="kpi-icon"><i class="fas fa-check-circle"></i></div><div class="kpi-val" id="actQ">—</div><div class="kpi-lbl">Questions Answered</div></div></div>
-        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-history"></i> Recent Training Sessions</div><div style="font-size:10px;font-weight:700;color:var(--ink3)" id="actCount"></div></div><div class="card-b"><div class="tbl-wrap"><table class="tbl"><thead> <tr><th>Time</th><th>Student</th><th>County</th><th>School</th><th>Belt</th><th>Passed</th><th>Accuracy</th><th>Time Used</th><th>Questions</th></tr> </thead><tbody id="actTable"></tbody> </table></div></div></div>
+        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-history"></i> Recent Training Sessions</div><div style="font-size:10px;font-weight:700;color:var(--ink3)" id="actCount"></div></div><div class="card-b"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Time</th><th>Student</th><th>County</th><th>School</th><th>Belt</th><th>Passed</th><th>Accuracy</th><th>Time Used</th><th>Questions</th></thead><tbody id="actTable"></tbody></table></div></div></div>
       </div>
 
+      <!-- CREATE ASSESSMENT PAGE (UPDATED with "Requires Upload" checkbox) -->
+      <div class="page" id="page-create">
+        <div class="progress-steps">
+          <div class="step active" id="step1">1. Upload PDF</div>
+          <div class="step" id="step2">2. Review & Extract</div>
+          <div class="step" id="step3">3. Set Answers</div>
+          <div class="step" id="step4">4. Publish</div>
+        </div>
+        
+        <div id="step1Content">
+          <div class="g2">
+            <div class="card">
+              <div class="card-h"><div class="card-t"><i class="fas fa-file-pdf"></i> Upload Assessment PDF</div></div>
+              <div class="card-b">
+                <div id="dropZone" class="upload-zone" onclick="document.getElementById('pdfFileInput').click()">
+                  <i class="fas fa-file-pdf" style="font-size:48px;color:var(--red);margin-bottom:12px;display:block"></i>
+                  <p style="font-weight:800">Drag & drop PDF here or click to browse</p>
+                  <p style="font-size:11px;color:var(--ink3);margin-top:6px">System will automatically detect questions</p>
+                  <input type="file" id="pdfFileInput" accept=".pdf" style="display:none">
+                </div>
+                <div id="selectedFileInfo" style="display:none;margin-top:12px"></div>
+                <button id="extractBtn" class="qa-btn" style="background:var(--blue);color:#fff;border:none;margin-top:12px;display:none"><i class="fas fa-magic"></i> Extract Questions</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-h"><div class="card-t"><i class="fas fa-tags"></i> Assessment Details</div></div>
+              <div class="card-b">
+                <div style="display:grid;gap:12px">
+                  <div><label style="font-weight:800;font-size:12px">Title *</label><input type="text" id="contentTitle" class="filter-select" style="width:100%;margin-top:4px" placeholder="e.g., IGCSE Mathematics 2023 Paper 1"></div>
+                  <div><label style="font-weight:800;font-size:12px">Type</label>
+                    <select id="contentType" class="filter-select" style="width:100%;margin-top:4px">
+                      <option value="past_paper">Past Paper</option>
+                      <option value="quiz">Quiz</option>
+                      <option value="assignment">Assignment</option>
+                      <option value="exam">Exam</option>
+                    </select>
+                  </div>
+                  <div class="filter-group" style="margin-bottom:0">
+                    <select id="curriculumSelect" class="filter-select" style="flex:1"><option value="">Select Curriculum</option></select>
+                    <select id="gradeSelect" class="filter-select" style="flex:1"><option value="">Select Grade</option></select>
+                  </div>
+                  <div class="filter-group" style="margin-bottom:0">
+                    <select id="subjectSelect" class="filter-select" style="flex:1"><option value="">Select Subject</option></select>
+                    <select id="topicSelect" class="filter-select" style="flex:1"><option value="">Select Topic</option></select>
+                  </div>
+                  <div><label style="font-weight:800;font-size:12px">Difficulty</label>
+                    <select id="difficultySelect" class="filter-select" style="width:100%;margin-top:4px">
+                      <option value="1">Easy</option><option value="2">Medium</option><option value="3">Hard</option><option value="4">Expert</option>
+                    </select>
+                  </div>
+                  <div><label style="font-weight:800;font-size:12px">Time Limit (minutes)</label><input type="number" id="timeLimit" class="filter-select" style="width:100%;margin-top:4px" value="60"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div id="step2Content" style="display:none">
+          <div class="card">
+            <div class="card-h"><div class="card-t"><i class="fas fa-file-alt"></i> Extracted Text</div></div>
+            <div class="card-b">
+              <div id="extractedTextPreview" class="extracted-preview">No text extracted yet.</div>
+              <div style="margin-top:12px;display:flex;gap:12px">
+                <button id="detectQuestionsBtn" class="qa-btn" style="background:var(--green);color:#fff;border:none;flex:1"><i class="fas fa-search"></i> Detect Questions</button>
+                <button id="manualAddBtn" class="qa-btn" style="background:var(--blue);color:#fff;border:none;flex:1"><i class="fas fa-plus"></i> Add Manually</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div id="step3Content" style="display:none">
+          <div class="card">
+            <div class="card-h"><div class="card-t"><i class="fas fa-list-ol"></i> Questions</div><button class="card-a" id="addQuestionBtn"><i class="fas fa-plus"></i> Add Question</button></div>
+            <div class="card-b">
+              <div id="questionsList"></div>
+              <div style="margin-top:16px;display:flex;gap:12px;justify-content:flex-end">
+                <button id="saveAsDraftBtn" class="qa-btn btn-sm" style="background:var(--amber);color:#fff;border:none;width:auto"><i class="fas fa-save"></i> Save Draft</button>
+                <button id="publishBtn" class="qa-btn btn-sm" style="background:var(--green);color:#fff;border:none;width:auto"><i class="fas fa-globe"></i> Publish</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENT LIBRARY PAGE (UPDATED with Submissions tab for each content) -->
+      <div class="page" id="page-library">
+        <div class="filter-group">
+          <select id="filterCurriculum" class="filter-select"><option value="">All Curriculums</option></select>
+          <select id="filterGrade" class="filter-select"><option value="">All Grades</option></select>
+          <select id="filterSubject" class="filter-select"><option value="">All Subjects</option></select>
+          <select id="filterContentType" class="filter-select"><option value="">All Types</option><option value="past_paper">Past Papers</option><option value="quiz">Quizzes</option><option value="assignment">Assignments</option><option value="exam">Exams</option></select>
+          <select id="filterStatus" class="filter-select"><option value="">All Status</option><option value="draft">Draft</option><option value="published">Published</option></select>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Title</th><th>Type</th><th>Curriculum</th><th>Grade</th><th>Subject</th><th>Questions</th><th>Attempts</th><th>Status</th><th>Created</th><th>Actions</th></thead><tbody id="contentLibraryTbl"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- NEW: STUDENT SUBMISSIONS PAGE -->
+      <div class="page" id="page-submissions">
+        <div class="filter-group">
+          <select id="submissionContentFilter" class="filter-select"><option value="">All Content</option></select>
+          <select id="submissionStudentFilter" class="filter-select"><option value="">All Students</option></select>
+          <input type="text" id="submissionSearch" class="filter-select" placeholder="Search by student name..." style="flex:2">
+        </div>
+        <div class="card">
+          <div class="card-h"><div class="card-t"><i class="fas fa-file-upload"></i> Student Quiz Submissions with File Attachments</div></div>
+          <div class="card-b">
+            <div id="submissionsList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUESTION BANK PAGE (existing) -->
+      <div class="page" id="page-bank">
+        <div class="filter-group">
+          <input type="text" id="searchQuestion" class="filter-select" placeholder="Search questions..." style="flex:2">
+          <select id="qFilterSubject" class="filter-select"><option value="">All Subjects</option></select>
+          <select id="qFilterDifficulty" class="filter-select"><option value="">All Difficulties</option><option value="1">Easy</option><option value="2">Medium</option><option value="3">Hard</option><option value="4">Expert</option></select>
+        </div>
+        <div class="card">
+          <div class="card-h"><div class="card-t"><i class="fas fa-database"></i> Question Bank</div></div>
+          <div class="card-b"><div id="questionBankList"></div></div>
+        </div>
+      </div>
+
+      <!-- CURRICULUM MANAGER PAGE (existing) -->
+      <div class="page" id="page-curriculum">
+        <div class="g2">
+          <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-school"></i> Curriculums</div><button class="card-a" id="addCurriculumBtn">+ Add</button></div><div class="card-b"><div id="curriculumList"></div></div></div>
+          <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-layer-group"></i> Grades</div><button class="card-a" id="addGradeBtn">+ Add</button></div><div class="card-b"><div id="gradeList"></div></div></div>
+        </div>
+        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-book"></i> Subjects</div><button class="card-a" id="addSubjectBtn">+ Add</button></div><div class="card-b"><div id="subjectMatrix"></div></div></div>
+      </div>
+
+      <!-- STUDENTS PAGE (existing) -->
       <div class="page" id="page-students">
-        <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap"><div class="tabs" style="margin-bottom:0"><button class="tab on" data-filter="all">All</button><button class="tab" data-filter="paid">Paid</button><button class="tab" data-filter="free">Free</button></div><select id="countyFilter"><option value="">All Counties</option><option>Nairobi</option><option>Mombasa</option><option>Kisumu</option><option>Nakuru</option><option>Kiambu</option><option>Thika</option><option>Eldoret</option><option>Machakos</option><option>Meru</option></select><div style="flex:1"></div><div style="font-size:12px;font-weight:800;color:var(--ink3)" id="studentCount"></div></div>
-        <div class="card"><div class="tbl-wrap"><table class="tbl"><thead> <tr><th>Student</th><th>County</th><th>School</th><th>Belt</th><th>Accuracy</th><th>Sessions</th><th>Streak</th><th>Status</th><th>Joined</th><th>Actions</th></tr> </thead><tbody id="studentsTbl"></tbody> </table></div></div>
+        <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
+          <div class="tabs" style="margin-bottom:0">
+            <button class="tab on" data-filter="all">All</button>
+            <button class="tab" data-filter="paid">Paid</button>
+            <button class="tab" data-filter="free">Free</button>
+          </div>
+          <select id="countyFilter" class="filter-select" style="width:auto">
+            <option value="">All Counties</option>
+            <option>Nairobi</option><option>Mombasa</option><option>Kisumu</option>
+            <option>Nakuru</option><option>Kiambu</option><option>Thika</option>
+            <option>Eldoret</option><option>Machakos</option><option>Meru</option>
+          </select>
+          <div style="flex:1"></div>
+          <div style="font-size:12px;font-weight:800;color:var(--ink3)" id="studentCount"></div>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead>
+                <tr><th>Student</th><th>County</th><th>School</th><th>Belt</th><th>Accuracy</th><th>Sessions</th><th>Streak</th><th>Status</th><th>Joined</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="studentsTbl"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
+      <!-- TUTORS PAGE (existing) -->
       <div class="page" id="page-tutors">
         <div class="g3"><div class="kpi ka"><div class="kpi-icon"><i class="fas fa-chalkboard-teacher"></i></div><div class="kpi-val" id="tutorCount">—</div><div class="kpi-lbl">Total Tutors</div></div><div class="kpi kgr"><div class="kpi-icon"><i class="fas fa-check-circle"></i></div><div class="kpi-val" id="tutorVerified">—</div><div class="kpi-lbl">Verified</div></div><div class="kpi kp"><div class="kpi-icon"><i class="fas fa-hourglass-half"></i></div><div class="kpi-val" id="tutorPending">—</div><div class="kpi-lbl">Pending Review</div></div></div>
-        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-users"></i> All Tutors</div></div><div class="card-b"><div class="tbl-wrap"><table class="tbl"><thead> <tr><th>Tutor</th><th>Spec</th><th>County</th><th>Sessions</th><th>Students</th><th>Status</th><th>Actions</th></tr> </thead><tbody id="tutorsTbl"></tbody> </table></div></div></div>
+        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-users"></i> All Tutors</div></div><div class="card-b"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tutor</th><th>Spec</th><th>County</th><th>Sessions</th><th>Students</th><th>Status</th><th>Actions</th></tr></thead><tbody id="tutorsTbl"></tbody></table></div></div></div>
       </div>
 
+      <!-- BELTS PAGE (existing) -->
       <div class="page" id="page-belts">
         <div class="g3"><div class="kpi kgr"><div class="kpi-icon"><i class="fas fa-star"></i></div><div class="kpi-val" id="baTotalBelts">—</div><div class="kpi-lbl">Total Belts Awarded</div></div><div class="kpi kb"><div class="kpi-icon"><i class="fas fa-bullseye"></i></div><div class="kpi-val" id="baAvgAcc">—</div><div class="kpi-lbl">Avg Accuracy</div></div><div class="kpi kg"><div class="kpi-icon"><i class="fas fa-chart-simple"></i></div><div class="kpi-val" id="baSessions">—</div><div class="kpi-lbl">Total Sessions</div></div></div>
-        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-chart-bar"></i> Belt Performance Breakdown</div></div><div class="card-b"><div class="tbl-wrap"><table class="tbl"><thead> <tr><th>Belt</th><th>Tables</th><th>Students Passed</th><th>Pass Rate</th><th>Avg Accuracy</th><th>Avg Time (s)</th></tr> </thead><tbody id="beltTbl"></tbody> </table></div></div></div>
-        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-funnel-dollar"></i> Belt Completion Funnel</div></div><div class="card-b" id="beltFunnel"></div></div>
+        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-chart-bar"></i> Belt Performance</div></div><div class="card-b"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Belt</th><th>Tables</th><th>Passed</th><th>Pass Rate</th><th>Avg Accuracy</th><th>Avg Time</th></tr></thead><tbody id="beltTbl"></tbody></table></div></div></div>
+        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-funnel-dollar"></i> Belt Funnel</div></div><div class="card-b" id="beltFunnel"></div></div>
       </div>
 
+      <!-- KNOWLEDGE MAP PAGE (existing) -->
       <div class="page" id="page-knowledge">
-        <div style="font-size:12px;font-weight:700;color:var(--ink3);margin-bottom:14px"><i class="fas fa-chart-line"></i> Global average performance across all multiplication facts.</div>
-        <div class="g23"><div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-globe"></i> Global Fact Heatmap (12×12)</div></div><div class="card-b"><div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap"><div style="display:flex;align-items:center;gap:4px;font-size:10px"><div style="width:12px;height:12px;border-radius:3px;background:rgba(0,178,72,.55)"></div>Fast</div><div style="display:flex;align-items:center;gap:4px;font-size:10px"><div style="width:12px;height:12px;border-radius:3px;background:rgba(0,178,72,.2)"></div>Good</div><div style="display:flex;align-items:center;gap:4px;font-size:10px"><div style="width:12px;height:12px;border-radius:3px;background:rgba(245,124,0,.4)"></div>Slow</div><div style="display:flex;align-items:center;gap:4px;font-size:10px"><div style="width:12px;height:12px;border-radius:3px;background:rgba(229,57,53,.45)"></div>Weak</div><div style="display:flex;align-items:center;gap:4px;font-size:10px"><div style="width:12px;height:12px;border-radius:3px;background:rgba(26,58,107,.07)"></div>No data</div></div><div id="heatmap" style="overflow-x:auto"></div></div></div>
-          <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-skull"></i> Hardest Facts (by fail rate)</div></div><div class="card-b"><table class="tbl"><thead> <tr><th>#</th><th>Fact</th><th>Seen</th><th>Accuracy</th><th>Avg Time</th></tr> </thead><tbody id="hardFacts"></tbody> </table></div></div></div>
+        <div class="g23"><div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-globe"></i> Fact Heatmap</div></div><div class="card-b"><div id="heatmap" style="overflow-x:auto"></div></div></div>
+          <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-skull"></i> Hardest Facts</div></div><div class="card-b"><table class="tbl"><thead><tr><th>#</th><th>Fact</th><th>Seen</th><th>Accuracy</th><th>Avg Time</th></tr></thead><tbody id="hardFacts"></tbody></table></div></div></div>
       </div>
 
+      <!-- TUTOR REQUESTS PAGE (existing) -->
       <div class="page" id="page-requests">
-        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-comments"></i> All Tutor Requests</div></div><div class="card-b"><div class="tbl-wrap"><table class="tbl"><thead> <tr><th>Student</th><th>Tutor</th><th>School</th><th>County</th><th>Status</th><th>Date</th></tr> </thead><tbody id="requestsTbl"></tbody> </table></div></div></div>
+        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-comments"></i> Tutor Requests</div></div><div class="card-b"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Student</th><th>Tutor</th><th>School</th><th>County</th><th>Status</th><th>Date</th></tr></thead><tbody id="requestsTbl"></tbody></table></div></div></div>
       </div>
 
+      <!-- TUTOR INTERESTS PAGE (existing) -->
       <div class="page" id="page-interests">
-        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-envelope"></i> Tutor Interest Submissions</div><div class="card-a" id="exportInterestsBtn">Export CSV</div></div><div class="card-b"><div class="tbl-wrap"><table class="tbl"><thead> <tr><th>#</th><th>Email</th><th>Submitted At</th><th>Source</th><th>Actions</th></tr> </thead><tbody id="interestsTbl"></tbody> </table></div><div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center"><span id="interestStats"></span><button class="qa-btn" id="clearAllInterestsBtn" style="background:var(--red-lt);color:var(--red);width:auto;padding:6px 14px"><i class="fas fa-trash"></i> Clear All</button></div></div></div>
+        <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-envelope"></i> Tutor Interests</div><div class="card-a" id="exportInterestsBtn">Export CSV</div></div><div class="card-b"><div class="tbl-wrap"><table class="tbl"><thead><tr><th>#</th><th>Email</th><th>Submitted At</th><th>Actions</th></tr></thead><tbody id="interestsTbl"></tbody></table></div><div style="margin-top:12px;display:flex;justify-content:space-between"><span id="interestStats"></span><button class="qa-btn" id="clearAllInterestsBtn" style="background:var(--red-lt);color:var(--red);width:auto;padding:6px 14px"><i class="fas fa-trash"></i> Clear All</button></div></div></div>
       </div>
 
+      <!-- SETTINGS PAGE (existing) -->
       <div class="page" id="page-settings">
-        <div class="g2"><div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-cog"></i> Platform Settings</div></div><div class="card-b"><button class="qa-btn" onclick="toast('Payment gateway settings — coming soon')"><i class="fas fa-credit-card"></i> Configure Payment Gateway</button><button class="qa-btn" onclick="toast('Belt settings — coming soon')"><i class="fas fa-award"></i> Belt Threshold Settings</button><button class="qa-btn" onclick="toast('Badge config — coming soon')"><i class="fas fa-medal"></i> Badge & Reward Config</button><button class="qa-btn" onclick="toast('Email settings — coming soon')"><i class="fas fa-envelope"></i> Email Notifications</button><button class="qa-btn" style="color:var(--red);border-color:rgba(229,57,53,.25)" id="signOutBtn"><i class="fas fa-sign-out-alt"></i> Sign Out</button></div></div>
+        <div class="g2"><div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-cog"></i> Settings</div></div><div class="card-b"><button class="qa-btn" id="paymentSettingsBtn"><i class="fas fa-credit-card"></i> Payment Settings</button><button class="qa-btn" id="beltSettingsBtn"><i class="fas fa-award"></i> Belt Settings</button><button class="qa-btn" id="badgeSettingsBtn"><i class="fas fa-medal"></i> Badge Settings</button><button class="qa-btn" id="emailSettingsBtn"><i class="fas fa-envelope"></i> Email Settings</button><button class="qa-btn" style="color:var(--red);border-color:rgba(229,57,53,.25)" id="signOutBtn"><i class="fas fa-sign-out-alt"></i> Sign Out</button></div></div>
           <div class="card"><div class="card-h"><div class="card-t"><i class="fas fa-server"></i> System Status</div></div><div class="card-b"><div id="sysStatus"></div></div></div></div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- MODALS -->
+<div class="modal-ov" id="questionModal"><div class="modal-box"><div class="mh"><div class="mh-av" style="background:var(--blue)"><i class="fas fa-question"></i></div><div><div class="mh-name">Question Editor</div><div class="mh-meta">Set correct answer for auto-grading</div></div><button class="mc-btn" id="closeQuestionModalBtn"><i class="fas fa-times"></i></button></div><div class="mb" id="questionModalBody"></div></div></div>
+<div class="modal-ov" id="submissionDetailModal"><div class="modal-box" style="max-width:900px"><div class="mh"><div class="mh-av" style="background:var(--green)"><i class="fas fa-file-alt"></i></div><div><div class="mh-name" id="submissionModalTitle">Submission Details</div><div class="mh-meta" id="submissionModalMeta">Student submission with files</div></div><button class="mc-btn" id="closeSubmissionModalBtn"><i class="fas fa-times"></i></button></div><div class="mb" id="submissionModalBody"></div></div></div>
+<div class="modal-ov" id="curriculumModal"><div class="modal-box"><div class="mh"><div class="mh-av" style="background:var(--green)"><i class="fas fa-school"></i></div><div><div class="mh-name">Add/Edit Curriculum</div><div class="mh-meta">Manage educational systems</div></div><button class="mc-btn" id="closeCurriculumModalBtn"><i class="fas fa-times"></i></button></div><div class="mb" id="curriculumModalBody"></div></div></div>
 <div class="modal-ov" id="userModal"><div class="modal-box"><div class="mh"><div class="mh-av" id="mhAv"></div><div><div class="mh-name" id="mhName"></div><div class="mh-meta" id="mhMeta"></div></div><button class="mc-btn" id="closeModalBtn"><i class="fas fa-times"></i></button></div><div class="mb" id="modalBody"></div></div></div>
 <div id="toast"></div>
 
-<script src="{% static 'dojo/js/csrf.js' %}"></script>
 <script>
 'use strict';
 
-const BELTS = [{id:'white',name:'White Belt',color:'#b0b0b0',tables:'2,5,10,11'},{id:'yellow',name:'Yellow Belt',color:'#f9a825',tables:'2–5,10,11'},{id:'blue',name:'Blue Belt',color:'#1565c0',tables:'2–7,10,11'},{id:'red',name:'Red Belt',color:'#c62828',tables:'2–11'},{id:'black',name:'Black Belt',color:'#333',tables:'2–13'},{id:'brown',name:'Brown Belt',color:'#4e342e',tables:'2–15'},{id:'purple',name:'Purple Belt',color:'#6a1b9a',tables:'2–17'},{id:'gold',name:'Gold Belt',color:'#b8860b',tables:'2–19'},{id:'master',name:'Master Belt',color:'#1a237e',tables:'2–20'}];
+const BELTS = [{id:'white',name:'White Belt',color:'#b0b0b0'},{id:'yellow',name:'Yellow Belt',color:'#f9a825'},{id:'blue',name:'Blue Belt',color:'#1565c0'},{id:'red',name:'Red Belt',color:'#c62828'},{id:'black',name:'Black Belt',color:'#333'},{id:'brown',name:'Brown Belt',color:'#4e342e'},{id:'purple',name:'Purple Belt',color:'#6a1b9a'},{id:'gold',name:'Gold Belt',color:'#b8860b'},{id:'master',name:'Master Belt',color:'#1a237e'}];
 
 let currentStudents = [];
 let studentFilter = 'all';
 let currentInterests = [];
+let contentItems = [];
+let currentQuestions = [];
+let extractedText = '';
+let detectedQuestions = [];
+let selectedFile = null;
+let editingQuestionIndex = null;
+let currentStep = 1;
 
 async function api(method, path, body) {
   const opts = { method, headers: { 'Content-Type': 'application/json' }, credentials: 'include' };
@@ -282,32 +497,39 @@ function toast(msg, bg = 'var(--navy)', col = '#fff') {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-function timeSince(isoStr) {
-  if (!isoStr) return '—';
-  const diff = Math.floor((Date.now() - new Date(isoStr)) / 1000);
-  if (diff < 60) return 'just now';
-  if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
-  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
-  return `${Math.floor(diff/86400)}d ago`;
-}
-
 function formatDate(isoStr) {
   if (!isoStr) return '—';
   return new Date(isoStr).toLocaleString('en-GB', { dateStyle:'medium', timeStyle:'short' });
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
 }
 
 function navTo(page) {
   document.querySelectorAll('.sb-item').forEach(i => i.classList.toggle('active', i.dataset.page === page));
   document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
   document.getElementById(`page-${page}`).classList.add('on');
-  const titles = { overview:'Dashboard Overview', activity:'Live Activity', students:'Students', tutors:'Tutors', belts:'Belt Analytics', knowledge:'Knowledge Map', requests:'Tutor Requests', interests:'Tutor Interests', settings:'Settings' };
-  document.getElementById('topTitle').innerHTML = titles[page] + ' <span>' + (page === 'overview' ? 'Overview' : '') + '</span>';
+  const titles = { 
+    overview:'Dashboard', activity:'Live Activity', 
+    create:'Create Assessment', library:'Content Library', bank:'Question Bank', 
+    submissions:'Student Submissions', curriculum:'Curriculum Manager',
+    students:'Students', tutors:'Tutors', belts:'Belt Analytics', knowledge:'Knowledge Map', 
+    requests:'Tutor Requests', interests:'Tutor Interests', settings:'Settings' 
+  };
+  document.getElementById('topTitle').innerHTML = titles[page] || page;
   loadPage(page);
 }
 
 async function loadPage(page) {
   if (page === 'overview') await loadOverview();
   else if (page === 'activity') await loadActivity();
+  else if (page === 'create') initCreatePage();
+  else if (page === 'library') await loadContentLibrary();
+  else if (page === 'submissions') await loadSubmissions();
+  else if (page === 'bank') await loadQuestionBank();
+  else if (page === 'curriculum') await loadCurriculumManager();
   else if (page === 'students') await loadStudents();
   else if (page === 'tutors') await loadTutors();
   else if (page === 'belts') await loadBelts();
@@ -317,63 +539,102 @@ async function loadPage(page) {
   else if (page === 'settings') buildSettings();
 }
 
+// ============ OVERVIEW FUNCTIONS ============
 async function loadOverview() {
-  const [ov, counties, sessions, ba] = await Promise.all([GET('/api/admin/overview/'), GET('/api/admin/county/'), GET('/api/admin/activity/'), GET('/api/admin/belts/')]);
-  if (!ov.error) {
-    const kpiData = [
-      { icon:'fa-user-friends', val: ov.total_students.toLocaleString(), lbl:'Total Students', cls:'kb' },
-      { icon:'fa-chalkboard', val: ov.total_tutors, lbl:'Active Tutors', cls:'ka' },
-      { icon:'fa-star', val: ov.total_belts.toLocaleString(), lbl:'Belts Awarded', cls:'kgr' },
-      { icon:'fa-dollar-sign', val: '$'+ov.revenue_total.toLocaleString(), lbl:'Est. Revenue', cls:'kg' },
-      { icon:'fa-school', val: ov.active_schools, lbl:'Schools', cls:'kp' },
-      { icon:'fa-check-circle', val: ov.paid_students.toLocaleString(), lbl:'Paid Users', cls:'kb' },
-      { icon:'fa-chart-line', val: ov.avg_accuracy.toFixed(1)+'%', lbl:'Avg Accuracy', cls:'kgr' },
-      { icon:'fa-question-circle', val: ov.total_questions.toLocaleString(), lbl:'Questions Answered', cls:'kr' }
-    ];
-    document.getElementById('kpiRow').innerHTML = kpiData.map(d => `<div class="kpi ${d.cls}"><div class="kpi-icon"><i class="fas ${d.icon}"></i></div><div class="kpi-val">${d.val}</div><div class="kpi-lbl">${d.lbl}</div></div>`).join('');
-    document.getElementById('ovSessions').textContent = ov.total_sessions.toLocaleString();
-    document.getElementById('ovBelts').textContent = ov.total_belts.toLocaleString();
-    document.getElementById('ovAcc').textContent = ov.avg_accuracy.toFixed(1) + '%';
-  }
-  if (!ba.error && ba.belt_analytics) {
-    const max = Math.max(...ba.belt_analytics.map(b => b.holders), 1);
-    document.getElementById('beltMatrixOv').innerHTML = ba.belt_analytics.map((b, i) => `<div class="bm-row"><div class="bm-lbl"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${BELTS[i]?.color || '#666'}"></span> ${BELTS[i]?.name.split(' ')[0]}</div><div style="flex:1;background:var(--sky2);border-radius:4px;height:22px"><div class="bm-bar" style="width:${Math.max(8, Math.round(b.holders/max*100))}%;background:${BELTS[i]?.color || '#666'}">${b.holders}</div></div><div class="bm-cnt">${b.holders}</div></div>`).join('');
-  }
-  if (!sessions.error && sessions.sessions) {
-    document.getElementById('actFeed').innerHTML = sessions.sessions.slice(0,10).map(s => {
-      const belt = BELTS.find(b => b.id === s.belt_id) || BELTS[0];
-      return `<div class="feed-item"><div class="feed-icon" style="background:${belt.color}22;color:${belt.color}">${s.passed ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-pen"></i>'}</div><div class="feed-body"><div class="feed-main"><strong>${s.student_name || 'Student'}</strong> — ${belt.name} (${(s.accuracy||0).toFixed(0)}% accuracy)</div><div class="feed-time">${s.school || ''} · ${timeSince(s.created_at)}</div></div></div>`;
-    }).join('');
-  }
-  if (!counties.error && counties.counties) {
-    const max = Math.max(...counties.counties.map(c => c.students), 1);
-    document.getElementById('countyChart').innerHTML = counties.counties.slice(0,10).map(c => `<div style="display:flex;align-items:center;gap:10px;margin-bottom:9px"><div style="width:72px;font-size:11px;font-weight:900;color:var(--ink2);text-align:right">${c.county}</div><div style="flex:1;background:var(--sky2);border-radius:99px;height:16px"><div style="height:100%;width:${Math.round(c.students/max*100)}%;background:linear-gradient(90deg,var(--navy),var(--blue2));border-radius:99px"></div></div><div style="width:40px;font-size:11px;font-weight:900;color:var(--navy)">${c.students}</div></div>`).join('');
-  }
-  const s = await GET('/api/admin/students/');
-  if (!s.error && s.students) {
-    const top = s.students.sort((a,b) => (b.accuracy||0) - (a.accuracy||0)).slice(0,8);
-    document.getElementById('topStudents').innerHTML = top.map((s,i) => `<tr onclick="openUserModal('${s.id}')">  <td><strong>${i+1}</strong>  <td><div><strong>${s.first_name} ${s.last_name}</strong><div style="font-size:10px">${s.school || ''}</div></div>  <td><span style="display:inline-flex;align-items:center;gap:4px;border-radius:99px;background:${BELTS[s.belt_idx]?.color}22;color:${BELTS[s.belt_idx]?.color};padding:2px 8px;font-size:10px">${BELTS[s.belt_idx]?.name || 'No Belt'}</span>  <td><strong style="color:${(s.accuracy||0)>=90?'var(--green-dk)':(s.accuracy||0)>=70?'var(--amber)':'var(--red)'}">${(s.accuracy||0).toFixed(0)}%</strong>  <td>${s.sessions||0}  `).join('');
-  }
+  try {
+    const [ov, counties, sessions, ba] = await Promise.all([
+      GET('/api/admin/overview/'), GET('/api/admin/county/'), 
+      GET('/api/admin/activity/'), GET('/api/admin/belts/')
+    ]);
+    if (!ov.error) {
+      document.getElementById('kpiRow').innerHTML = `
+        <div class="kpi kb"><div class="kpi-icon"><i class="fas fa-user-friends"></i></div><div class="kpi-val">${ov.total_students?.toLocaleString() || 0}</div><div class="kpi-lbl">Students</div></div>
+        <div class="kpi ka"><div class="kpi-icon"><i class="fas fa-chalkboard"></i></div><div class="kpi-val">${ov.total_tutors || 0}</div><div class="kpi-lbl">Tutors</div></div>
+        <div class="kpi kgr"><div class="kpi-icon"><i class="fas fa-star"></i></div><div class="kpi-val">${ov.total_belts?.toLocaleString() || 0}</div><div class="kpi-lbl">Belts</div></div>
+        <div class="kpi kg"><div class="kpi-icon"><i class="fas fa-dollar-sign"></i></div><div class="kpi-val">$${ov.revenue_total?.toLocaleString() || 0}</div><div class="kpi-lbl">Revenue</div></div>
+        <div class="kpi kp"><div class="kpi-icon"><i class="fas fa-school"></i></div><div class="kpi-val">${ov.active_schools || 0}</div><div class="kpi-lbl">Schools</div></div>
+        <div class="kpi kb"><div class="kpi-icon"><i class="fas fa-check-circle"></i></div><div class="kpi-val">${ov.paid_students?.toLocaleString() || 0}</div><div class="kpi-lbl">Paid</div></div>
+        <div class="kpi kgr"><div class="kpi-icon"><i class="fas fa-chart-line"></i></div><div class="kpi-val">${ov.avg_accuracy?.toFixed(1) || 0}%</div><div class="kpi-lbl">Avg Acc</div></div>
+        <div class="kpi kr"><div class="kpi-icon"><i class="fas fa-question-circle"></i></div><div class="kpi-val">${ov.total_questions?.toLocaleString() || 0}</div><div class="kpi-lbl">Questions</div></div>
+      `;
+      document.getElementById('ovSessions').textContent = ov.total_sessions?.toLocaleString() || 0;
+      document.getElementById('ovBelts').textContent = ov.total_belts?.toLocaleString() || 0;
+      document.getElementById('ovAcc').textContent = (ov.avg_accuracy?.toFixed(1) || 0) + '%';
+    }
+    if (!ba.error && ba.belt_analytics) {
+      const max = Math.max(...ba.belt_analytics.map(b => b.holders), 1);
+      document.getElementById('beltMatrixOv').innerHTML = ba.belt_analytics.map((b, i) => `
+        <div class="bm-row"><div class="bm-lbl">${BELTS[i]?.name || 'Belt'}</div>
+        <div style="flex:1;background:var(--sky2);border-radius:4px;height:22px">
+          <div class="bm-bar" style="width:${Math.max(8, Math.round(b.holders/max*100))}%;background:${BELTS[i]?.color || '#666'}">${b.holders}</div>
+        </div><div class="bm-cnt">${b.holders}</div></div>
+      `).join('');
+    }
+    if (!sessions.error && sessions.sessions) {
+      document.getElementById('actFeed').innerHTML = sessions.sessions.slice(0,10).map(s => {
+        const belt = BELTS.find(b => b.id === s.belt_id) || BELTS[0];
+        return `<div class="feed-item"><div class="feed-icon" style="background:${belt.color}22;color:${belt.color}">${s.passed ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-pen"></i>'}</div><div class="feed-body"><div class="feed-main"><strong>${s.student_name || 'Student'}</strong> — ${belt.name} (${(s.accuracy||0).toFixed(0)}%)</div><div class="feed-time">${timeSince(s.created_at)}</div></div></div>`;
+      }).join('');
+    }
+    if (!counties.error && counties.counties) {
+      const max = Math.max(...counties.counties.map(c => c.students), 1);
+      document.getElementById('countyChart').innerHTML = counties.counties.slice(0,10).map(c => `
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">
+          <div style="width:72px;font-size:11px;font-weight:900;text-align:right">${c.county}</div>
+          <div style="flex:1;background:var(--sky2);border-radius:99px;height:16px">
+            <div style="height:100%;width:${Math.round(c.students/max*100)}%;background:linear-gradient(90deg,var(--navy),var(--blue2));border-radius:99px"></div>
+          </div>
+          <div style="width:40px;font-size:11px;font-weight:900">${c.students}</div>
+        </div>
+      `).join('');
+    }
+    const s = await GET('/api/admin/students/');
+    if (!s.error && s.students) {
+      const top = s.students.sort((a,b) => (b.accuracy||0) - (a.accuracy||0)).slice(0,8);
+      document.getElementById('topStudents').innerHTML = top.map((s,i) => `
+        <tr onclick="openUserModal('${s.id}')">
+          <td><strong>${i+1}</strong></td>
+          <td><div><strong>${s.first_name} ${s.last_name}</strong><div style="font-size:10px">${s.school || ''}</div></div></td>
+          <td><span style="background:${BELTS[s.belt_idx]?.color}22;color:${BELTS[s.belt_idx]?.color};padding:2px 8px;border-radius:99px;font-size:10px">${BELTS[s.belt_idx]?.name || 'No Belt'}</span></td>
+          <td><strong style="color:${(s.accuracy||0)>=90?'var(--green-dk)':(s.accuracy||0)>=70?'var(--amber)':'var(--red)'}">${(s.accuracy||0).toFixed(0)}%</strong></td>
+          <td>${s.sessions||0}</td>
+        </tr>
+      `).join('');
+    }
+  } catch(e) { console.error('Overview error:', e); }
 }
 
+function timeSince(isoStr) {
+  if (!isoStr) return '—';
+  const diff = Math.floor((Date.now() - new Date(isoStr)) / 1000);
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+  return `${Math.floor(diff/86400)}d ago`;
+}
+
+// ============ ACTIVITY FUNCTIONS ============
 async function loadActivity() {
-  const [ov, sessions] = await Promise.all([GET('/api/admin/overview/'), GET('/api/admin/activity/')]);
-  if (!ov.error) {
-    document.getElementById('actStudents').textContent = ov.total_students.toLocaleString();
-    document.getElementById('actBelts').textContent = ov.total_belts.toLocaleString();
-    document.getElementById('actRev').textContent = '$' + ov.revenue_total.toLocaleString();
-    document.getElementById('actQ').textContent = ov.total_questions.toLocaleString();
-  }
-  if (!sessions.error && sessions.sessions) {
-    document.getElementById('actCount').textContent = `Showing ${sessions.sessions.length} recent sessions`;
-    document.getElementById('actTable').innerHTML = sessions.sessions.map(s => {
-      const belt = BELTS.find(b => b.id === s.belt_id) || BELTS[0];
-      const dt = new Date(s.created_at).toLocaleString('en-GB', { dateStyle:'short', timeStyle:'short' });
-      return `<tr><td style="font-size:11px">${dt}<td><strong>${s.student_name || '—'}</strong><td>${s.county || '—'}<td>${s.school || '—'}<td><span style="display:inline-flex;align-items:center;gap:4px;border-radius:99px;background:${belt.color}22;color:${belt.color};padding:2px 8px;font-size:10px">${belt.name}</span><td>${s.passed ? '<span class="status-pill sp-ok">Passed</span>' : '<span class="status-pill sp-free">Attempted</span>'}<td><strong>${(s.accuracy||0).toFixed(0)}%</strong><td>${Math.floor(s.time_used/60)}m ${s.time_used%60}s<td>${s.total_q||0}`;
-    }).join('') || '<tr><td colspan="9" class="empty">No sessions yet';
-  }
+  try {
+    const [ov, sessions] = await Promise.all([GET('/api/admin/overview/'), GET('/api/admin/activity/')]);
+    if (!ov.error) {
+      document.getElementById('actStudents').textContent = ov.total_students?.toLocaleString() || 0;
+      document.getElementById('actBelts').textContent = ov.total_belts?.toLocaleString() || 0;
+      document.getElementById('actRev').textContent = '$' + (ov.revenue_total?.toLocaleString() || 0);
+      document.getElementById('actQ').textContent = ov.total_questions?.toLocaleString() || 0;
+    }
+    if (!sessions.error && sessions.sessions) {
+      document.getElementById('actCount').textContent = `Showing ${sessions.sessions.length} sessions`;
+      document.getElementById('actTable').innerHTML = sessions.sessions.map(s => {
+        const belt = BELTS.find(b => b.id === s.belt_id) || BELTS[0];
+        const dt = new Date(s.created_at).toLocaleString();
+        return `<tr><td style="font-size:11px">${dt}</td>}<td><strong>${s.student_name || '—'}</strong></td><td>${s.county || '—'}</td><td>${s.school || '—'}</td><td><span style="background:${belt.color}22;color:${belt.color};padding:2px 8px;border-radius:99px;font-size:10px">${belt.name}</span></td><td>${s.passed ? '<span class="status-pill sp-ok">Passed</span>' : '<span class="status-pill sp-free">Attempted</span>'}</td><td><strong>${(s.accuracy||0).toFixed(0)}%</strong></td><td>${Math.floor(s.time_used/60)}m ${s.time_used%60}s</span></td><td>${s.total_q||0}</td></tr>`;
+      }).join('') || '<tr><td colspan="9" class="empty">No sessions</td></tr>';
+    }
+  } catch(e) { console.error('Activity error:', e); }
 }
 
+// ============ STUDENT FUNCTIONS ============
 async function loadStudents() {
   const county = document.getElementById('countyFilter').value;
   const paid = studentFilter === 'paid' ? '1' : studentFilter === 'free' ? '0' : '';
@@ -383,14 +644,36 @@ async function loadStudents() {
   if (paid) params.set('paid', paid);
   if ([...params].length) url += '?' + params.toString();
   const r = await GET(url);
-  if (r.error) { document.getElementById('studentsTbl').innerHTML = '<tr><td colspan="10" class="empty">Error loading students'; return; }
+  if (r.error) { document.getElementById('studentsTbl').innerHTML = '<tr><td colspan="10" class="empty">Error loading students</td></tr>'; return; }
   currentStudents = r.students || [];
   document.getElementById('studentCount').textContent = `Showing ${currentStudents.length} students`;
-  document.getElementById('studentsTbl').innerHTML = currentStudents.map(s => {
+  renderStudentsTable(currentStudents);
+}
+
+function renderStudentsTable(students) {
+  const el = document.getElementById('studentsTbl');
+  if (!students.length) { el.innerHTML = '<tr><td colspan="10" class="empty">No students found</td></tr>'; return; }
+  el.innerHTML = students.map(s => {
     const belt = s.belt_idx >= 0 ? BELTS[s.belt_idx] : null;
     const acc = (s.accuracy || 0).toFixed(0);
-    const joined = s.created_at ? new Date(s.created_at).toLocaleDateString('en-GB') : '—';
-    return `<tr onclick="openUserModal('${s.id}')"><td><div><strong>${s.first_name} ${s.last_name}</strong><div style="font-size:10px;color:var(--blue)">${s.email || ''}</div></div><td>${s.county || '—'}<td>${s.school || '—'}<td>${belt ? `<span style="display:inline-flex;align-items:center;gap:4px;border-radius:99px;background:${belt.color}22;color:${belt.color};padding:2px 8px;font-size:10px">${belt.name}</span>` : '<span style="color:var(--ink3)">No Belt</span>'}<td><div style="display:flex;align-items:center;gap:7px"><strong style="color:${acc>=90?'var(--green-dk)':acc>=70?'var(--amber)':'var(--red)'}">${acc}%</strong><div class="prog"><div class="prog-fill ${acc>=90?'pg':acc>=70?'pa':'pr'}" style="width:${acc}%"></div></div></div><td>${s.sessions || 0}<td>${s.streak || 0}<i class="fas fa-fire" style="color:var(--gold)"></i><td><span class="status-pill ${s.is_paid ? 'sp-paid' : 'sp-free'}">${s.is_paid ? 'Paid' : 'Free'}</span><td>${joined}<td><button onclick="event.stopPropagation();openUserModal('${s.id}')" style="background:var(--blue-lt);border:none;color:var(--blue);font-size:10px;font-weight:900;padding:4px 10px;border-radius:99px;cursor:pointer"><i class="fas fa-eye"></i> VIEW</button>`;
+    const joined = s.created_at ? new Date(s.created_at).toLocaleDateString() : '—';
+    const statusClass = s.is_paid ? 'sp-paid' : 'sp-free';
+    const statusText = s.is_paid ? 'Paid' : 'Free';
+    const accColor = acc >= 90 ? 'var(--green-dk)' : acc >= 70 ? 'var(--amber)' : 'var(--red)';
+    return `
+      <tr>
+        <td><div><strong>${escapeHtml(s.first_name)} ${escapeHtml(s.last_name)}</strong><div style="font-size:10px;color:var(--blue)">${escapeHtml(s.email || '')}</div></div></td>
+        <td>${escapeHtml(s.county || '—')}</td>
+        <td>${escapeHtml(s.school || '—')}</td>
+        <td>${belt ? `<span style="background:${belt.color}22;color:${belt.color};padding:2px 8px;border-radius:99px;font-size:10px">${belt.name}</span>` : 'No Belt'}</td>
+        <td><div style="display:flex;align-items:center;gap:7px"><strong style="color:${accColor}">${acc}%</strong><div class="prog"><div class="prog-fill ${acc>=90?'pg':acc>=70?'pa':'pr'}" style="width:${acc}%"></div></div></div></td>
+        <td>${s.sessions || 0}</td>
+        <td>${s.streak || 0}<i class="fas fa-fire" style="color:var(--gold);margin-left:4px"></i></td>
+        <td><span class="status-pill ${statusClass}">${statusText}</span></td>
+        <td>${joined}</td>
+        <td><button onclick="event.stopPropagation();openUserModal('${s.id}')" class="student-view-btn"><i class="fas fa-eye"></i> View</button></td>
+      </tr>
+    `;
   }).join('');
 }
 
@@ -401,24 +684,44 @@ async function loadTutors() {
   document.getElementById('tutorCount').textContent = tutors.length;
   document.getElementById('tutorVerified').textContent = tutors.filter(t => t.is_paid).length;
   document.getElementById('tutorPending').textContent = tutors.filter(t => !t.is_paid).length;
-  document.getElementById('tutorsTbl').innerHTML = tutors.map(t => `<tr><td><div><strong>${t.first_name} ${t.last_name}</strong><div style="font-size:10px">${t.email}</div></div><td>${t.spec || '—'}<td>${t.county || '—'}<td>${t.sessions || 0}<td>${t.students || 0}<td><span class="status-pill ${t.is_paid ? 'sp-ok' : 'sp-pending'}">${t.is_paid ? 'Verified' : 'Pending'}</span><td>${!t.is_paid ? `<button onclick="approveTutor('${t.id}',this)" class="qa-btn" style="background:var(--green-lt);color:var(--green-dk);padding:4px 10px"><i class="fas fa-check"></i> Approve</button>` : ''}<button onclick="suspendUser('${t.id}',this)" class="qa-btn" style="background:var(--red-lt);color:var(--red);padding:4px 10px"><i class="fas fa-ban"></i> Suspend</button>`).join('') || '<tr><td colspan="7" class="empty">No tutors registered yet';
+  document.getElementById('tutorsTbl').innerHTML = tutors.map(t => `
+    <tr>
+      <td><div><strong>${escapeHtml(t.first_name)} ${escapeHtml(t.last_name)}</strong><div style="font-size:10px">${escapeHtml(t.email)}</div></div></td>
+      <td>${escapeHtml(t.spec || '—')}</td>
+      <td>${escapeHtml(t.county || '—')}</td>
+      <td>${t.sessions || 0}</td>
+      <td>${t.students || 0}</td>
+      <td><span class="status-pill ${t.is_paid ? 'sp-ok' : 'sp-pending'}">${t.is_paid ? 'Verified' : 'Pending'}</span></td>
+      <td>${!t.is_paid ? `<button onclick="approveTutor('${t.id}',this)" class="qa-btn btn-sm" style="background:var(--green-lt);color:var(--green-dk);width:auto"><i class="fas fa-check"></i> Approve</button>` : ''}
+      <button onclick="suspendUser('${t.id}',this)" class="qa-btn btn-sm" style="background:var(--red-lt);color:var(--red);width:auto"><i class="fas fa-ban"></i> Suspend</button></td>
+    </tr>
+  `).join('') || '<tr><td colspan="7" class="empty">No tutors</td></tr>';
 }
 
 async function loadBelts() {
   const [ba, ov] = await Promise.all([GET('/api/admin/belts/'), GET('/api/admin/overview/')]);
   if (!ov.error) {
-    document.getElementById('baTotalBelts').textContent = ov.total_belts.toLocaleString();
-    document.getElementById('baAvgAcc').textContent = ov.avg_accuracy.toFixed(1) + '%';
-    document.getElementById('baSessions').textContent = ov.total_sessions.toLocaleString();
+    document.getElementById('baTotalBelts').textContent = ov.total_belts?.toLocaleString() || 0;
+    document.getElementById('baAvgAcc').textContent = (ov.avg_accuracy?.toFixed(1) || 0) + '%';
+    document.getElementById('baSessions').textContent = ov.total_sessions?.toLocaleString() || 0;
   }
   if (ba.error || !ba.belt_analytics) return;
   document.getElementById('beltTbl').innerHTML = ba.belt_analytics.map((b,i) => {
     const belt = BELTS[i];
     const pr = b.pass_rate || 0;
-    return `<tr><td><span style="display:inline-flex;align-items:center;gap:5px;border-radius:99px;background:${belt.color}22;color:${belt.color};padding:3px 10px">${belt.name}</span><td>${belt.tables}<td><strong>${b.holders}</strong><td><div style="display:flex;align-items:center;gap:8px"><strong style="color:${pr>=80?'var(--green-dk)':pr>=65?'var(--amber)':'var(--red)'}">${pr.toFixed(0)}%</strong><div class="prog"><div class="prog-fill ${pr>=80?'pg':pr>=65?'pa':'pr'}" style="width:${pr}%"></div></div></div><td><strong>${(b.avg_accuracy||0).toFixed(0)}%</strong><td>${b.avg_time_secs ? b.avg_time_secs.toFixed(0)+'s' : '—'}`;
+    return `<tr><td><span style="background:${belt.color}22;color:${belt.color};padding:3px 10px;border-radius:99px">${belt.name}</span></td>
+    <td>${belt.tables}</td><td><strong>${b.holders}</strong></td>
+    <td><div style="display:flex;align-items:center;gap:8px"><strong style="color:${pr>=80?'var(--green-dk)':pr>=65?'var(--amber)':'var(--red)'}">${pr.toFixed(0)}%</strong><div class="prog"><div class="prog-fill ${pr>=80?'pg':pr>=65?'pa':'pr'}" style="width:${pr}%"></div></div></div></td>
+    <td><strong>${(b.avg_accuracy||0).toFixed(0)}%</strong></td>
+    <td>${b.avg_time_secs ? b.avg_time_secs.toFixed(0)+'s' : '—'}</td></tr>`;
   }).join('');
   const maxH = Math.max(...ba.belt_analytics.map(b => b.holders), 1);
-  document.getElementById('beltFunnel').innerHTML = ba.belt_analytics.map((b,i) => `<div style="width:${Math.max(8, Math.round(b.holders/maxH*100))}%;min-width:80px;background:${BELTS[i].color};border-radius:var(--r);padding:7px;text-align:center"><div class="kpi-val" style="color:#fff">${b.holders}</div><div style="font-size:9px;color:rgba(255,255,255,.75)">${BELTS[i].name}</div></div>`).join('');
+  document.getElementById('beltFunnel').innerHTML = ba.belt_analytics.map((b,i) => `
+    <div style="width:${Math.max(8, Math.round(b.holders/maxH*100))}%;min-width:80px;background:${BELTS[i].color};border-radius:var(--r);padding:7px;text-align:center">
+      <div class="kpi-val" style="color:#fff">${b.holders}</div>
+      <div style="font-size:9px;color:rgba(255,255,255,.75)">${BELTS[i].name}</div>
+    </div>
+  `).join('');
 }
 
 async function loadKnowledge() {
@@ -440,87 +743,77 @@ async function loadKnowledge() {
         else if (acc >= 0.60) { bg = 'rgba(245,124,0,.4)'; textCol = '#b25000'; }
         else { bg = 'rgba(229,57,53,.45)'; textCol = '#b71c1c'; }
       }
-      html += `<div class="hm-cell" style="background:${bg};color:${textCol}" title="${a}×${b}=${a*b} | ${f?.seen || 0} seen | ${f ? ((f.correct/f.seen*100).toFixed(0)) : 0}%">${a*b}</div>`;
+      html += `<div class="hm-cell" style="background:${bg};color:${textCol}" title="${a}×${b}=${a*b} | ${f?.seen || 0} seen">${a*b}</div>`;
     }
   }
   html += '</div>';
   document.getElementById('heatmap').innerHTML = html;
   const allFacts = Object.entries(factMap).filter(([,f]) => f.seen >= 1).map(([k,f]) => ({ fact: k, acc: f.correct/f.seen, seen: f.seen, avgTime: f.avg_time })).sort((a,b) => a.acc - b.acc).slice(0,12);
-  document.getElementById('hardFacts').innerHTML = allFacts.map((f,i) => `<tr><td><strong>${i+1}</strong><td><strong style="color:var(--red)">${f.fact}</strong><td>${f.seen}<td><strong style="color:var(--red)">${(f.acc*100).toFixed(0)}%</strong><td>${(f.avgTime/1000).toFixed(1)}s`).join('') || '<tr><td colspan="5" class="empty">No data yet';
+  document.getElementById('hardFacts').innerHTML = allFacts.map((f,i) => `
+    <tr>
+      <td><strong>${i+1}</strong></td>
+      <td><strong style="color:var(--red)">${f.fact}</strong></td>
+      <td>${f.seen}</td>
+      <td><strong style="color:var(--red)">${(f.acc*100).toFixed(0)}%</strong></td>
+      <td>${(f.avgTime/1000).toFixed(1)}s</span></td>
+    </tr>
+  `).join('') || '<tr><td colspan="5" class="empty">No data</td></tr>';
 }
 
 async function loadRequests() {
   const r = await GET('/api/admin/tutor-requests/');
   if (r.error) return;
   const reqs = r.requests || [];
-  document.getElementById('requestsTbl').innerHTML = reqs.map(req => `<tr><td><strong>${req.student_name || '—'}</strong><td>${req.tutor_name || '—'}<td>${req.school || '—'}<td>${req.county || '—'}<td><span class="status-pill ${req.status === 'pending' ? 'sp-pending' : req.status === 'accepted' ? 'sp-ok' : 'sp-free'}">${req.status}</span><td>${new Date(req.created_at).toLocaleDateString('en-GB')}`).join('') || '<tr><td colspan="6" class="empty">No tutor requests yet';
+  document.getElementById('requestsTbl').innerHTML = reqs.map(req => `
+    <tr>
+      <td><strong>${escapeHtml(req.student_name || '—')}</strong></td>
+      <td>${escapeHtml(req.tutor_name || '—')}</td>
+      <td>${escapeHtml(req.school || '—')}</td>
+      <td>${escapeHtml(req.county || '—')}</td>
+      <td><span class="status-pill ${req.status === 'pending' ? 'sp-pending' : req.status === 'accepted' ? 'sp-ok' : 'sp-free'}">${req.status}</span></td>
+      <td>${new Date(req.created_at).toLocaleDateString()}</td>
+    </tr>
+  `).join('') || '<tr><td colspan="6" class="empty">No requests</td></tr>';
 }
 
 async function loadInterests() {
   const r = await GET('/api/admin/tutor-interests/');
-  if (r.error) {
-    console.error('Error loading interests:', r.error);
-    document.getElementById('interestsTbl').innerHTML = '<tr><td colspan="5" class="empty">Error loading interests</td></tr>';
-    return;
-  }
+  if (r.error) { console.error(r.error); return; }
   currentInterests = r.interests || [];
-  const badge = document.getElementById('interestBadge');
-  if (badge) badge.textContent = currentInterests.length;
-  document.getElementById('interestStats').innerHTML = `<span><i class="fas fa-envelope"></i> Total submissions: <strong>${currentInterests.length}</strong></span>`;
-  if (currentInterests.length === 0) {
-    document.getElementById('interestsTbl').innerHTML = '<tr><td colspan="5" class="empty">No tutor interest submissions yet</td></tr>';
-    return;
-  }
+  document.getElementById('interestBadge').textContent = currentInterests.length;
+  document.getElementById('interestStats').innerHTML = `Total: <strong>${currentInterests.length}</strong>`;
   document.getElementById('interestsTbl').innerHTML = currentInterests.map((interest, idx) => `
     <tr>
       <td>${idx + 1}</td>
       <td><strong style="color:var(--blue)">${escapeHtml(interest.email)}</strong></td>
-      <td>${formatDate(interest.created_at)}</td>
-      <td><span class="status-pill sp-new"><i class="fas fa-graduation-cap"></i> Landing Page</span></td>
-      <td>
-        <button onclick="copyEmail('${escapeHtml(interest.email)}')" class="qa-btn" style="background:var(--blue-lt);color:var(--blue);width:auto;padding:4px 10px;margin:0 2px"><i class="fas fa-copy"></i> Copy</button>
-        <button onclick="deleteInterest(${interest.id})" class="qa-btn" style="background:var(--red-lt);color:var(--red);width:auto;padding:4px 10px;margin:0 2px"><i class="fas fa-trash"></i> Delete</button>
-      </td>
+      <td>${formatDate(interest.created_at)}</span></td>
+      <td><button onclick="copyEmail('${escapeHtml(interest.email)}')" class="qa-btn btn-sm" style="background:var(--blue-lt);color:var(--blue);width:auto"><i class="fas fa-copy"></i> Copy</button>
+      <button onclick="deleteInterest(${interest.id})" class="qa-btn btn-sm" style="background:var(--red-lt);color:var(--red);width:auto"><i class="fas fa-trash"></i> Delete</button></td>
     </tr>
-  `).join('');
+  `).join('') || '<tr><td colspan="5" class="empty">No interests</td></tr>';
 }
 
-window.copyEmail = function(email) {
-  navigator.clipboard.writeText(email);
-  toast('Email copied to clipboard!', 'var(--green)');
-};
-
+window.copyEmail = function(email) { navigator.clipboard.writeText(email); toast('Email copied!', 'var(--green)'); };
 window.deleteInterest = async function(id) {
-  if (!confirm('Delete this email from the list?')) return;
+  if (!confirm('Delete this email?')) return;
   const r = await DELETE(`/api/admin/tutor-interests/${id}/delete/`);
-  if (r.error) {
-    toast(r.error, 'var(--red)');
-    return;
-  }
-  toast('Email deleted', 'var(--amber)');
+  if (r.error) { toast(r.error, 'var(--red)'); return; }
+  toast('Deleted', 'var(--amber)');
   loadInterests();
 };
 
 document.getElementById('clearAllInterestsBtn')?.addEventListener('click', async () => {
-  if (!confirm('Delete ALL tutor interest submissions? This cannot be undone.')) return;
+  if (!confirm('Delete ALL?')) return;
   const r = await POST('/api/admin/tutor-interests/clear-all/', {});
-  if (r.error) {
-    toast(r.error, 'var(--red)');
-    return;
-  }
-  toast('All interests cleared', 'var(--amber)');
+  if (r.error) { toast(r.error, 'var(--red)'); return; }
+  toast('All cleared', 'var(--amber)');
   loadInterests();
 });
 
 document.getElementById('exportInterestsBtn')?.addEventListener('click', () => {
-  if (currentInterests.length === 0) {
-    toast('No data to export', 'var(--amber)');
-    return;
-  }
+  if (currentInterests.length === 0) { toast('No data', 'var(--amber)'); return; }
   let csv = 'Email,Submitted At\n';
-  currentInterests.forEach(i => {
-    csv += `"${i.email}","${new Date(i.created_at).toLocaleString()}"\n`;
-  });
+  currentInterests.forEach(i => csv += `"${i.email}","${new Date(i.created_at).toLocaleString()}"\n`);
   const blob = new Blob([csv], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -528,20 +821,647 @@ document.getElementById('exportInterestsBtn')?.addEventListener('click', () => {
   a.download = `tutor_interests_${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
-  toast('CSV exported!', 'var(--green)');
+  toast('Exported!', 'var(--green)');
 });
 
-function buildSettings() {
-  document.getElementById('sysStatus').innerHTML = [
-    ['API Server', 'Online', 'sp-ok'], ['PostgreSQL Database', 'Healthy', 'sp-ok'],
-    ['Session Store', 'Active', 'sp-ok'], ['File Server', 'Running', 'sp-ok']
-  ].map(([name, st, cls]) => `<div style="display:flex;justify-content:space-between;padding:10px;background:var(--sky);border-radius:var(--r);margin-bottom:8px"><span><i class="fas fa-check-circle" style="color:var(--green)"></i> ${name}</span><span class="status-pill ${cls}">${st}</span></div>`).join('');
+// ============ CONTENT MANAGEMENT FUNCTIONS ============
+async function loadCurriculumsAndSubjects() {
+  const curriculums = await GET('/api/admin/curriculums/');
+  if (!curriculums.error && curriculums.curriculums) {
+    const select = document.getElementById('curriculumSelect');
+    select.innerHTML = '<option value="">Select Curriculum</option>' + 
+      curriculums.curriculums.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+    select.onchange = async () => {
+      const selected = curriculums.curriculums.find(c => c.id == select.value);
+      if (selected && selected.grades) {
+        document.getElementById('gradeSelect').innerHTML = '<option value="">Select Grade</option>' + 
+          selected.grades.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
+      }
+    };
+  }
+  const subjects = await GET('/api/admin/subjects/');
+  if (!subjects.error && subjects.subjects) {
+    const subjectSelect = document.getElementById('subjectSelect');
+    const qSubjectSelect = document.getElementById('qFilterSubject');
+    subjectSelect.innerHTML = '<option value="">Select Subject</option>' + 
+      subjects.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+    if (qSubjectSelect) {
+      qSubjectSelect.innerHTML = '<option value="">All Subjects</option>' + 
+        subjects.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+    }
+    subjectSelect.onchange = async () => {
+      const topics = await GET(`/api/admin/topics/${subjectSelect.value}/`);
+      if (!topics.error && topics.topics) {
+        document.getElementById('topicSelect').innerHTML = '<option value="">Select Topic</option>' + 
+          topics.topics.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+      }
+    };
+  }
 }
 
-function escapeHtml(str) {
-  if (!str) return '';
-  return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+function initCreatePage() {
+  loadCurriculumsAndSubjects();
+  currentStep = 1;
+  updateStepUI();
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('pdfFileInput');
+  dropZone.ondragover = (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); };
+  dropZone.ondragleave = () => dropZone.classList.remove('drag-over');
+  dropZone.ondrop = (e) => { e.preventDefault(); dropZone.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); };
+  fileInput.onchange = (e) => handleFile(e.target.files[0]);
+  document.getElementById('extractBtn').onclick = extractQuestionsFromPDF;
+  document.getElementById('detectQuestionsBtn').onclick = detectQuestionsFromText;
+  document.getElementById('addQuestionBtn').onclick = () => openQuestionModal();
+  document.getElementById('manualAddBtn').onclick = () => { currentStep = 3; updateStepUI(); openQuestionModal(); };
+  document.getElementById('saveAsDraftBtn').onclick = () => saveContent(false);
+  document.getElementById('publishBtn').onclick = () => saveContent(true);
 }
+
+function updateStepUI() {
+  for (let i = 1; i <= 4; i++) {
+    const step = document.getElementById(`step${i}`);
+    const content = document.getElementById(`step${i}Content`);
+    if (i === currentStep) {
+      step.classList.add('active'); step.classList.remove('completed');
+      if (content) content.style.display = 'block';
+    } else if (i < currentStep) {
+      step.classList.add('completed'); step.classList.remove('active');
+      if (content) content.style.display = 'none';
+    } else {
+      step.classList.remove('active', 'completed');
+      if (content) content.style.display = 'none';
+    }
+  }
+}
+
+function handleFile(file) {
+  if (!file || file.type !== 'application/pdf') { toast('Please select a PDF file', 'var(--red)'); return; }
+  selectedFile = file;
+  document.getElementById('selectedFileInfo').innerHTML = `
+    <div class="file-preview"><i class="fas fa-file-pdf" style="font-size:24px;color:var(--red)"></i>
+    <div><strong>${escapeHtml(file.name)}</strong><br><span style="font-size:11px">${(file.size / 1024).toFixed(1)} KB</span></div>
+    <button onclick="clearSelectedFile()" class="qa-btn btn-sm" style="background:var(--red-lt);color:var(--red);width:auto;margin-left:auto"><i class="fas fa-times"></i> Remove</button></div>
+  `;
+  document.getElementById('selectedFileInfo').style.display = 'block';
+  document.getElementById('extractBtn').style.display = 'block';
+  toast('PDF loaded! Click Extract Questions', 'var(--blue)');
+}
+
+window.clearSelectedFile = function() {
+  selectedFile = null;
+  document.getElementById('selectedFileInfo').style.display = 'none';
+  document.getElementById('pdfFileInput').value = '';
+  document.getElementById('extractBtn').style.display = 'none';
+  toast('File removed', 'var(--amber)');
+};
+
+async function extractQuestionsFromPDF() {
+  if (!selectedFile) { toast('Select a PDF first', 'var(--red)'); return; }
+  const formData = new FormData();
+  formData.append('pdf', selectedFile);
+  const btn = document.getElementById('extractBtn');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+  btn.disabled = true;
+  try {
+    const r = await fetch('/api/admin/content/extract-text/', { method: 'POST', body: formData, credentials: 'include' });
+    const res = await r.json();
+    if (res.error) { toast(res.error, 'var(--red)'); return; }
+    extractedText = res.extracted_text;
+    detectedQuestions = res.detected_questions;
+    document.getElementById('extractedTextPreview').innerHTML = `<pre style="white-space:pre-wrap;font-family:monospace;font-size:11px">${escapeHtml(extractedText)}</pre>`;
+    document.getElementById('extractedTextPreview').innerHTML += `<div style="margin-top:12px;padding:10px;background:var(--green-lt);border-radius:var(--r)"><strong>✓ Detected ${res.question_count} questions</strong> - Click "Detect Questions" to review</div>`;
+    currentStep = 2;
+    updateStepUI();
+    toast(`Extracted ${res.question_count} questions!`, 'var(--green)');
+  } catch(e) { toast('Error processing PDF', 'var(--red)'); }
+  finally { btn.innerHTML = originalText; btn.disabled = false; }
+}
+
+function detectQuestionsFromText() {
+  if (detectedQuestions.length === 0) { toast('No questions detected. Try a different PDF.', 'var(--amber)'); return; }
+  currentQuestions = detectedQuestions.map((q, i) => ({
+    text: q.text, type: 'mcq', options: ['', '', '', ''], correct: '', marks: 1, explanation: '', requires_upload: false
+  }));
+  renderQuestionsList();
+  currentStep = 3;
+  updateStepUI();
+  toast(`Loaded ${currentQuestions.length} questions. Set correct answers and upload requirements!`, 'var(--green)');
+}
+
+function openQuestionModal(index = null) {
+  editingQuestionIndex = index;
+  const q = index !== null ? currentQuestions[index] : { text: '', type: 'mcq', options: ['', '', '', ''], correct: '', marks: 1, explanation: '', requires_upload: false };
+  document.getElementById('questionModalBody').innerHTML = `
+    <div style="display:grid;gap:12px">
+      <div><label style="font-weight:800">Question Type</label>
+        <select id="qType" class="filter-select" style="width:100%" onchange="toggleOptions()">
+          <option value="mcq" ${q.type === 'mcq' ? 'selected' : ''}>Multiple Choice (Auto-grade)</option>
+          <option value="short_answer" ${q.type === 'short_answer' ? 'selected' : ''}>Short Answer (Auto-grade)</option>
+          <option value="essay" ${q.type === 'essay' ? 'selected' : ''}>Essay (Manual Grade)</option>
+        </select>
+      </div>
+      <div><label style="font-weight:800">Question Text *</label><textarea id="qText" class="filter-select" style="width:100%;min-height:80px">${escapeHtml(q.text)}</textarea></div>
+      <div id="optionsContainer">
+        ${q.type === 'mcq' ? `
+          <label style="font-weight:800">Options</label>
+          <div class="options-grid">
+            ${['A','B','C','D'].map((l,i) => `<input type="text" id="opt${l}" class="filter-select" placeholder="Option ${l}" value="${escapeHtml(q.options[i] || '')}">`).join('')}
+          </div>
+        ` : ''}
+      </div>
+      <div><label style="font-weight:800;color:var(--red)">* Correct Answer</label>
+        ${q.type === 'mcq' ? `<select id="correctAnswer" class="filter-select" style="width:100%"><option value="">Select correct option</option>${['A','B','C','D'].map(l => `<option value="${l}" ${q.correct === l ? 'selected' : ''}>Option ${l}</option>`).join('')}</select>` : 
+          `<textarea id="correctAnswer" class="filter-select" style="width:100%;min-height:60px" placeholder="Enter the correct answer">${escapeHtml(q.correct)}</textarea>`}
+      </div>
+      <div><label style="font-weight:800">Marks</label><input type="number" id="marks" class="filter-select" style="width:100%" value="${q.marks || 1}"></div>
+      <div><label style="font-weight:800">Explanation</label><textarea id="explanation" class="filter-select" style="width:100%;min-height:60px" placeholder="Explain why this answer is correct">${escapeHtml(q.explanation)}</textarea></div>
+      
+      <!-- NEW: Requires File Upload Checkbox -->
+      <div style="display:flex;align-items:center;gap:12px;padding:8px;background:var(--amber-lt);border-radius:var(--r)">
+        <input type="checkbox" id="requiresUpload" ${q.requires_upload ? 'checked' : ''} style="width:18px;height:18px">
+        <label for="requiresUpload" style="font-weight:800;color:var(--amber);cursor:pointer">
+          <i class="fas fa-paperclip"></i> Student must upload a working file to answer this question
+        </label>
+      </div>
+      
+      <button class="qa-btn" style="background:var(--green);color:#fff;border:none" onclick="saveQuestion()">Save Question</button>
+    </div>
+  `;
+  document.getElementById('questionModal').classList.add('on');
+}
+
+window.toggleOptions = function() {
+  const type = document.getElementById('qType').value;
+  const container = document.getElementById('optionsContainer');
+  if (type === 'mcq') {
+    container.innerHTML = `<label style="font-weight:800">Options</label><div class="options-grid">${['A','B','C','D'].map(l => `<input type="text" id="opt${l}" class="filter-select" placeholder="Option ${l}">`).join('')}</div>`;
+  } else {
+    container.innerHTML = '';
+  }
+};
+
+window.saveQuestion = function() {
+  const type = document.getElementById('qType').value;
+  const text = document.getElementById('qText').value;
+  if (!text.trim()) { toast('Question text required', 'var(--red)'); return; }
+  let correct = document.getElementById('correctAnswer').value;
+  if (!correct.trim()) { toast('Correct answer required', 'var(--red)'); return; }
+  const marks = parseInt(document.getElementById('marks').value) || 1;
+  const explanation = document.getElementById('explanation').value;
+  const requiresUpload = document.getElementById('requiresUpload')?.checked || false;
+  let options = ['', '', '', ''];
+  if (type === 'mcq') {
+    options = ['A','B','C','D'].map(l => document.getElementById(`opt${l}`)?.value || '');
+  }
+  const question = { text, type, options, correct, marks, explanation, requires_upload: requiresUpload };
+  if (editingQuestionIndex !== null) {
+    currentQuestions[editingQuestionIndex] = question;
+    toast('Question updated', 'var(--green)');
+  } else {
+    currentQuestions.push(question);
+    toast('Question added', 'var(--green)');
+  }
+  document.getElementById('questionModal').classList.remove('on');
+  renderQuestionsList();
+};
+
+function renderQuestionsList() {
+  const container = document.getElementById('questionsList');
+  if (currentQuestions.length === 0) {
+    container.innerHTML = '<div class="empty">No questions. Click "Detect Questions" or "Add Manually"</div>';
+    return;
+  }
+  container.innerHTML = currentQuestions.map((q, i) => `
+    <div class="question-preview-card">
+      <div class="question-text"><strong>Q${i+1}.</strong> ${escapeHtml(q.text.substring(0, 100))}${q.text.length > 100 ? '...' : ''}
+        ${q.requires_upload ? '<span class="requires-upload-badge"><i class="fas fa-paperclip"></i> Requires Upload</span>' : ''}
+      </div>
+      ${q.type === 'mcq' ? `<div class="options-grid">${q.options.map((opt, idx) => `<div class="option-item ${q.correct === String.fromCharCode(65+idx) ? 'correct-badge' : ''}">${String.fromCharCode(65+idx)}. ${escapeHtml(opt)}</div>`).join('')}</div>` : `<div class="option-item" style="background:var(--green-lt)"><strong>✓ Answer:</strong> ${escapeHtml(q.correct)}</div>`}
+      <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
+        <span class="tag-badge"><i class="fas fa-star"></i> ${q.marks} marks</span>
+        <button onclick="editQuestion(${i})" class="qa-btn btn-sm" style="width:auto;background:var(--blue-lt);color:var(--blue)"><i class="fas fa-edit"></i> Edit</button>
+        <button onclick="deleteQuestion(${i})" class="qa-btn btn-sm" style="width:auto;background:var(--red-lt);color:var(--red)"><i class="fas fa-trash"></i> Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.editQuestion = function(idx) { openQuestionModal(idx); };
+window.deleteQuestion = function(idx) { currentQuestions.splice(idx, 1); renderQuestionsList(); toast('Question deleted', 'var(--amber)'); };
+
+async function saveContent(publish = false) {
+  const title = document.getElementById('contentTitle').value;
+  if (!title) { toast('Enter a title', 'var(--red)'); return; }
+  if (currentQuestions.length === 0) { toast('Add at least one question', 'var(--red)'); return; }
+  const formData = new FormData();
+  formData.append('title', title);
+  formData.append('content_type', document.getElementById('contentType').value);
+  formData.append('curriculum', document.getElementById('curriculumSelect').value);
+  formData.append('grade', document.getElementById('gradeSelect').value);
+  formData.append('subject', document.getElementById('subjectSelect').value);
+  formData.append('topic', document.getElementById('topicSelect').value);
+  formData.append('difficulty', document.getElementById('difficultySelect').value);
+  formData.append('time_limit', document.getElementById('timeLimit').value);
+  formData.append('questions', JSON.stringify(currentQuestions));
+  formData.append('status', publish ? 'published' : 'draft');
+  if (selectedFile) formData.append('pdf', selectedFile);
+  const btn = publish ? document.getElementById('publishBtn') : document.getElementById('saveAsDraftBtn');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+  btn.disabled = true;
+  try {
+    const r = await fetch('/api/admin/content/save/', { method: 'POST', body: formData, credentials: 'include' });
+    const res = await r.json();
+    if (res.error) { toast(res.error, 'var(--red)'); return; }
+    toast(publish ? 'Published!' : 'Saved as draft', 'var(--green)');
+    currentQuestions = []; detectedQuestions = []; selectedFile = null;
+    renderQuestionsList();
+    document.getElementById('contentTitle').value = '';
+    document.getElementById('selectedFileInfo').style.display = 'none';
+    document.getElementById('pdfFileInput').value = '';
+    document.getElementById('extractBtn').style.display = 'none';
+    currentStep = 1;
+    updateStepUI();
+    navTo('library');
+  } catch(e) { toast('Error saving', 'var(--red)'); }
+  finally { btn.innerHTML = originalText; btn.disabled = false; }
+}
+
+async function loadContentLibrary() {
+  const r = await GET('/api/admin/content/');
+  if (r.error) return;
+  contentItems = r.items || [];
+  document.getElementById('contentCount').textContent = contentItems.length;
+  document.getElementById('contentLibraryTbl').innerHTML = contentItems.map(item => `
+    <tr>
+      <td><strong>${escapeHtml(item.title)}</strong></td>
+      <td><span class="tag-badge">${item.content_type_display}</span></td>
+      <td>${escapeHtml(item.curriculum || '—')}</td>
+      <td>${escapeHtml(item.grade || '—')}</td>
+      <td>${escapeHtml(item.subject || '—')}</td>
+      <td>${item.question_count || 0}</td>
+      <td>${item.attempt_count || 0}</td>
+      <td><span class="status-pill ${item.status === 'published' ? 'sp-ok' : 'sp-draft'}">${item.status_display}</span></td>
+      <td>${formatDate(item.created_at)}</span></td>
+      <td><button onclick="viewContent(${item.id})" class="qa-btn btn-sm" style="width:auto"><i class="fas fa-eye"></i> View</button>
+      <button onclick="viewContentSubmissions(${item.id})" class="qa-btn btn-sm" style="background:var(--green-lt);color:var(--green-dk);width:auto"><i class="fas fa-file-upload"></i> Submissions (${item.attempt_count || 0})</button>
+      <button onclick="deleteContent(${item.id})" class="qa-btn btn-sm" style="width:auto;background:var(--red-lt);color:var(--red)"><i class="fas fa-trash"></i> Delete</button></td>
+    </tr>
+  `).join('') || '<tr><td colspan="10" class="empty">No content</td></tr>';
+}
+
+async function loadSubmissions() {
+  try {
+    // Get all quiz attempts with attachments
+    const r = await GET('/api/admin/submissions/');
+    if (r.error) {
+      document.getElementById('submissionsList').innerHTML = '<div class="empty">Error loading submissions</div>';
+      return;
+    }
+    const submissions = r.submissions || [];
+    document.getElementById('submissionsBadge').textContent = submissions.length;
+    
+    // Populate filters
+    const contentFilter = document.getElementById('submissionContentFilter');
+    const studentFilter = document.getElementById('submissionStudentFilter');
+    const uniqueContent = [...new Map(submissions.map(s => [s.content_id, {id: s.content_id, title: s.content_title}])).values()];
+    const uniqueStudents = [...new Map(submissions.map(s => [s.student_id, {id: s.student_id, name: s.student_name}])).values()];
+    
+    contentFilter.innerHTML = '<option value="">All Content</option>' + uniqueContent.map(c => `<option value="${c.id}">${escapeHtml(c.title)}</option>`).join('');
+    studentFilter.innerHTML = '<option value="">All Students</option>' + uniqueStudents.map(s => `<option value="${s.id}">${escapeHtml(s.name)}</option>`).join('');
+    
+    renderSubmissionsList(submissions);
+    
+    // Add filter listeners
+    contentFilter.onchange = () => filterSubmissions(submissions);
+    studentFilter.onchange = () => filterSubmissions(submissions);
+    document.getElementById('submissionSearch').oninput = () => filterSubmissions(submissions);
+  } catch(e) {
+    console.error('Error loading submissions:', e);
+    document.getElementById('submissionsList').innerHTML = '<div class="empty">Error loading submissions</div>';
+  }
+}
+
+function filterSubmissions(allSubmissions) {
+  const contentId = document.getElementById('submissionContentFilter').value;
+  const studentId = document.getElementById('submissionStudentFilter').value;
+  const searchTerm = document.getElementById('submissionSearch').value.toLowerCase();
+  
+  let filtered = [...allSubmissions];
+  if (contentId) filtered = filtered.filter(s => s.content_id == contentId);
+  if (studentId) filtered = filtered.filter(s => s.student_id == studentId);
+  if (searchTerm) filtered = filtered.filter(s => s.student_name.toLowerCase().includes(searchTerm));
+  
+  renderSubmissionsList(filtered);
+}
+
+function renderSubmissionsList(submissions) {
+  const container = document.getElementById('submissionsList');
+  if (!submissions.length) {
+    container.innerHTML = '<div class="empty">No student submissions found</div>';
+    return;
+  }
+  
+  container.innerHTML = submissions.map(sub => `
+    <div class="submission-card">
+      <div class="submission-header">
+        <div class="submission-student">
+          <i class="fas fa-user-graduate"></i> ${escapeHtml(sub.student_name)}
+          <span style="font-size:11px;margin-left:8px">${escapeHtml(sub.student_email)}</span>
+        </div>
+        <div class="submission-date">
+          <i class="fas fa-calendar"></i> ${formatDate(sub.completed_at)}
+        </div>
+      </div>
+      <div class="submission-body">
+        <div style="margin-bottom:12px">
+          <strong>Quiz:</strong> ${escapeHtml(sub.content_title)}
+          <span class="tag-badge" style="margin-left:8px">Score: ${sub.score}/${sub.max_score} (${Math.round(sub.percentage)}%)</span>
+        </div>
+        <button class="qa-btn btn-sm" style="width:auto" onclick="viewSubmissionDetail(${sub.attempt_id})">
+          <i class="fas fa-eye"></i> View Full Submission (${sub.files_count} file(s) attached)
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.viewSubmissionDetail = async function(attemptId) {
+  try {
+    const r = await GET(`/api/admin/submissions/${attemptId}/`);
+    if (r.error) { toast(r.error, 'var(--red)'); return; }
+    
+    const data = r.submission;
+    let answersHtml = '';
+    for (const ans of data.answers) {
+      answersHtml += `
+        <div class="submission-question">
+          <div class="submission-question-text">${escapeHtml(ans.question_text)}</div>
+          <div class="submission-answer">
+            <strong>Student's answer:</strong> ${escapeHtml(ans.user_answer || 'Not answered')}
+            ${ans.is_correct ? '<span class="status-pill sp-ok" style="margin-left:8px">Correct</span>' : '<span class="status-pill sp-free" style="margin-left:8px">Incorrect</span>'}
+          </div>
+          ${ans.attachments && ans.attachments.length ? `
+            <div class="submission-files">
+              <strong><i class="fas fa-paperclip"></i> Uploaded files:</strong>
+              ${ans.attachments.map(att => `
+                <div class="attachment-badge">
+                  <i class="fas ${att.is_image ? 'fa-file-image' : att.is_pdf ? 'fa-file-pdf' : 'fa-file'}"></i>
+                  ${escapeHtml(att.filename)}
+                  <button onclick="viewFile('${att.url}')" class="file-view-btn" style="margin-left:6px"><i class="fas fa-eye"></i> View</button>
+                  <button onclick="downloadFile('${att.url}', '${escapeHtml(att.filename)}')" class="file-download-btn"><i class="fas fa-download"></i> Download</button>
+                </div>
+              `).join('')}
+            </div>
+          ` : '<div class="submission-files"><em>No files uploaded for this question</em></div>'}
+        </div>
+      `;
+    }
+    
+    document.getElementById('submissionModalTitle').innerHTML = `${escapeHtml(data.student_name)}'s Submission`;
+    document.getElementById('submissionModalMeta').innerHTML = `${escapeHtml(data.content_title)} - Score: ${data.score}/${data.max_score} (${Math.round(data.percentage)}%)`;
+    document.getElementById('submissionModalBody').innerHTML = answersHtml;
+    document.getElementById('submissionDetailModal').classList.add('on');
+  } catch(e) {
+    toast('Error loading submission details', 'var(--red)');
+  }
+};
+
+window.viewFile = function(url) {
+  // For web URLs, open in new tab
+  if (url && (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/'))) {
+    window.open(url, '_blank');
+  } else {
+    // For file:// URLs or others, force download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = '';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    toast('File downloaded - check your downloads folder', 'var(--blue)');
+  }
+};
+
+window.downloadFile = function(url, filename) {
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+};
+
+window.viewContentSubmissions = async function(contentId) {
+  // Switch to submissions page and filter by this content
+  navTo('submissions');
+  setTimeout(() => {
+    const filter = document.getElementById('submissionContentFilter');
+    if (filter) {
+      filter.value = contentId;
+      filter.dispatchEvent(new Event('change'));
+    }
+  }, 100);
+};
+
+async function loadQuestionBank() {
+  const search = document.getElementById('searchQuestion')?.value || '';
+  const subject = document.getElementById('qFilterSubject')?.value || '';
+  const difficulty = document.getElementById('qFilterDifficulty')?.value || '';
+  let url = '/api/admin/questions/';
+  const params = new URLSearchParams();
+  if (search) params.set('search', search);
+  if (subject) params.set('subject', subject);
+  if (difficulty) params.set('difficulty', difficulty);
+  if ([...params].length) url += '?' + params.toString();
+  const r = await GET(url);
+  if (r.error) return;
+  const questions = r.questions || [];
+  document.getElementById('questionBankList').innerHTML = questions.map((q, i) => `
+    <div class="question-preview-card">
+      <div><strong>${i+1}.</strong> ${escapeHtml(q.text.substring(0, 150))}</div>
+      <div style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap">
+        <span class="tag-badge"><i class="fas fa-tag"></i> ${escapeHtml(q.subject || '—')}</span>
+        <span class="tag-badge"><i class="fas fa-chart-line"></i> Difficulty: ${q.difficulty}</span>
+        <span class="tag-badge"><i class="fas fa-star"></i> ${q.marks} marks</span>
+        ${q.requires_upload ? '<span class="tag-badge" style="background:var(--amber-lt);color:var(--amber)"><i class="fas fa-paperclip"></i> Requires Upload</span>' : ''}
+        <span class="tag-badge">${q.usage_count || 0} uses</span>
+        <span class="tag-badge">Accuracy: ${(q.accuracy || 0).toFixed(0)}%</span>
+      </div>
+      <div style="margin-top:6px;background:var(--green-lt);padding:6px 10px;border-radius:6px"><strong>✓ Answer:</strong> ${escapeHtml(q.correct_answer)}</div>
+    </div>
+  `).join('') || '<div class="empty">No questions in bank</div>';
+}
+
+async function loadCurriculumManager() {
+  const r = await GET('/api/admin/curriculums/');
+  if (!r.error && r.curriculums) {
+    document.getElementById('curriculumList').innerHTML = r.curriculums.map(c => `
+      <div class="bm-row"><div class="bm-lbl">${escapeHtml(c.name)}</div><div style="flex:1"><span class="status-pill sp-ok">Active</span></div>
+      <div><button class="qa-btn btn-sm" style="width:auto" onclick="editCurriculum(${c.id})">Edit</button>
+      <button class="qa-btn btn-sm" style="width:auto;background:var(--red-lt);color:var(--red)" onclick="deleteCurriculum(${c.id})">Delete</button></div></div>
+    `).join('');
+    document.getElementById('gradeList').innerHTML = r.curriculums.map(c => `
+      <div><strong>${escapeHtml(c.name)}:</strong> ${c.grades?.map(g => g.name).join(', ') || 'No grades'}
+      <button class="qa-btn btn-sm" style="width:auto;margin-left:8px" onclick="manageGrades(${c.id})">Manage</button></div>
+    `).join('');
+  }
+  const subjects = await GET('/api/admin/subjects/');
+  if (!subjects.error && subjects.subjects) {
+    document.getElementById('subjectMatrix').innerHTML = subjects.subjects.map(s => `
+      <div class="card" style="padding:12px"><div class="card-t">${escapeHtml(s.name)}</div>
+      <div style="margin-top:8px;display:flex;gap:6px"><button class="qa-btn btn-sm" style="width:auto" onclick="editSubject(${s.id})">Edit</button>
+      <button class="qa-btn btn-sm" style="width:auto;background:var(--red-lt);color:var(--red)" onclick="deleteSubject(${s.id})">Delete</button>
+      <button class="qa-btn btn-sm" style="width:auto" onclick="manageTopics(${s.id})">Manage Topics</button></div></div>
+    `).join('');
+  }
+}
+
+// Curriculum CRUD Operations
+async function addCurriculum() {
+  const name = prompt('Enter curriculum name (e.g., Kenya CBC):');
+  if (!name) return;
+  const code = prompt('Enter curriculum code (e.g., CBC):');
+  if (!code) return;
+  const r = await POST('/api/admin/curriculums/add/', { name, code });
+  if (r.error) { toast(r.error, 'var(--red)'); return; }
+  toast('Curriculum added!', 'var(--green)');
+  loadCurriculumManager();
+  loadCurriculumsAndSubjects();
+}
+
+async function editCurriculum(id) {
+  const r = await GET(`/api/admin/curriculums/${id}/`);
+  if (r.error) { toast(r.error, 'var(--red)'); return; }
+  const newName = prompt('Edit curriculum name:', r.name);
+  if (!newName) return;
+  const newCode = prompt('Edit curriculum code:', r.code);
+  if (!newCode) return;
+  const update = await POST(`/api/admin/curriculums/${id}/update/`, { name: newName, code: newCode });
+  if (update.error) { toast(update.error, 'var(--red)'); return; }
+  toast('Curriculum updated!', 'var(--green)');
+  loadCurriculumManager();
+  loadCurriculumsAndSubjects();
+}
+
+async function deleteCurriculum(id) {
+  if (!confirm('Delete this curriculum? All associated grades will be deleted.')) return;
+  const r = await DELETE(`/api/admin/curriculums/${id}/delete/`);
+  if (r.error) { toast(r.error, 'var(--red)'); return; }
+  toast('Curriculum deleted', 'var(--amber)');
+  loadCurriculumManager();
+  loadCurriculumsAndSubjects();
+}
+
+async function addGrade() {
+  const curriculums = await GET('/api/admin/curriculums/');
+  if (!curriculums.curriculums) { toast('No curriculums found', 'var(--red)'); return; }
+  const options = curriculums.curriculums.map((c, i) => `${i+1}. ${c.name}`).join('\n');
+  const idx = prompt(`Select curriculum:\n${options}\n\nEnter number:`);
+  const curriculumId = curriculums.curriculums[parseInt(idx)-1]?.id;
+  if (!curriculumId) { toast('Invalid selection', 'var(--red)'); return; }
+  const name = prompt('Enter grade name (e.g., Grade 5, Form 2):');
+  if (!name) return;
+  const levelOrder = prompt('Enter level order (e.g., 5):', '0');
+  const r = await POST('/api/admin/grades/add/', { curriculum_id: curriculumId, name, level_order: parseInt(levelOrder) || 0 });
+  if (r.error) { toast(r.error, 'var(--red)'); return; }
+  toast('Grade added!', 'var(--green)');
+  loadCurriculumManager();
+  loadCurriculumsAndSubjects();
+}
+
+async function manageGrades(curriculumId) {
+  const r = await GET(`/api/admin/curriculums/${curriculumId}/`);
+  if (r.error) { toast(r.error, 'var(--red)'); return; }
+  const grades = r.grades || [];
+  const gradeList = grades.map((g, i) => `${i+1}. ${g.name} (Order: ${g.level_order})`).join('\n');
+  alert(`Grades for ${r.name}:\n\n${gradeList || 'No grades'}\n\nUse the interface to edit/delete grades.`);
+}
+
+async function addSubject() {
+  const name = prompt('Enter subject name (e.g., Mathematics):');
+  if (!name) return;
+  const code = prompt('Enter subject code (e.g., MATH):');
+  if (!code) return;
+  const r = await POST('/api/admin/subjects/add/', { name, code });
+  if (r.error) { toast(r.error, 'var(--red)'); return; }
+  toast('Subject added!', 'var(--green)');
+  loadCurriculumManager();
+  loadCurriculumsAndSubjects();
+}
+
+async function editSubject(id) {
+  const r = await GET(`/api/admin/subjects/${id}/`);
+  if (r.error) { toast(r.error, 'var(--red)'); return; }
+  const newName = prompt('Edit subject name:', r.name);
+  if (!newName) return;
+  const newCode = prompt('Edit subject code:', r.code);
+  if (!newCode) return;
+  const update = await POST(`/api/admin/subjects/${id}/update/`, { name: newName, code: newCode });
+  if (update.error) { toast(update.error, 'var(--red)'); return; }
+  toast('Subject updated!', 'var(--green)');
+  loadCurriculumManager();
+  loadCurriculumsAndSubjects();
+}
+
+async function deleteSubject(id) {
+  if (!confirm('Delete this subject? All topics will be deleted.')) return;
+  const r = await DELETE(`/api/admin/subjects/${id}/delete/`);
+  if (r.error) { toast(r.error, 'var(--red)'); return; }
+  toast('Subject deleted', 'var(--amber)');
+  loadCurriculumManager();
+  loadCurriculumsAndSubjects();
+}
+
+async function manageTopics(subjectId) {
+  const subject = await GET(`/api/admin/subjects/${subjectId}/`);
+  if (subject.error) { toast(subject.error, 'var(--red)'); return; }
+  const topics = await GET(`/api/admin/topics/${subjectId}/`);
+  const topicList = topics.topics?.map((t, i) => `${i+1}. ${t.name} (Order: ${t.order})`).join('\n') || 'No topics';
+  const action = prompt(`Topics for ${subject.name}:\n\n${topicList}\n\nOptions:\n1. Add Topic\n2. Delete Topic\n\nEnter number:`);
+  if (action === '1') {
+    const name = prompt('Enter topic name:');
+    if (!name) return;
+    const order = prompt('Enter display order:', '0');
+    const add = await POST('/api/admin/topics/add/', { subject_id: subjectId, name, order: parseInt(order) || 0 });
+    if (add.error) { toast(add.error, 'var(--red)'); return; }
+    toast('Topic added!', 'var(--green)');
+  } else if (action === '2') {
+    const idx = prompt(`Select topic number to delete:\n${topicList}`);
+    const topicId = topics.topics?.[parseInt(idx)-1]?.id;
+    if (topicId) {
+      const del = await DELETE(`/api/admin/topics/${topicId}/delete/`);
+      if (del.error) { toast(del.error, 'var(--red)'); return; }
+      toast('Topic deleted', 'var(--amber)');
+    }
+  }
+  loadCurriculumManager();
+  loadCurriculumsAndSubjects();
+}
+
+window.viewContent = async function(id) {
+  const r = await GET(`/api/admin/content/${id}/`);
+  if (r.error) { toast(r.error, 'var(--red)'); return; }
+  const questionsHtml = r.questions.map((q, i) => `
+    <div class="question-preview-card"><div><strong>Q${i+1}.</strong> ${escapeHtml(q.text)}</div>
+    <div style="margin-top:6px"><span class="tag-badge">${q.type}</span> <span class="tag-badge">${q.marks} marks</span>
+    ${q.requires_upload ? '<span class="tag-badge" style="background:var(--amber-lt);color:var(--amber)"><i class="fas fa-paperclip"></i> Requires Upload</span>' : ''}</div>
+    <div style="margin-top:6px;background:var(--green-lt);padding:6px 10px;border-radius:6px"><strong>✓ Answer:</strong> ${escapeHtml(q.correct_answer)}</div>
+    ${q.explanation ? `<div style="margin-top:6px"><em>Explanation: ${escapeHtml(q.explanation)}</em></div>` : ''}</div>
+  `).join('');
+  document.getElementById('modalBody').innerHTML = `<h3>${escapeHtml(r.title)}</h3><div class="ms-g"><div class="ms-s"><div class="ms-n">${r.questions.length}</div><div class="ms-l">Questions</div></div><div class="ms-s"><div class="ms-n">${r.total_marks}</div><div class="ms-l">Marks</div></div><div class="ms-s"><div class="ms-n">${r.time_limit || '∞'}</div><div class="ms-l">Minutes</div></div></div>${questionsHtml}`;
+  document.getElementById('mhName').textContent = r.title;
+  document.getElementById('mhAv').style.background = 'var(--blue)';
+  document.getElementById('mhAv').innerHTML = '<i class="fas fa-book"></i>';
+  document.getElementById('userModal').classList.add('on');
+};
+
+window.deleteContent = async function(id) {
+  if (!confirm('Delete this content and all questions?')) return;
+  const r = await DELETE(`/api/admin/content/${id}/delete/`);
+  if (r.error) { toast(r.error, 'var(--red)'); return; }
+  toast('Deleted', 'var(--amber)');
+  loadContentLibrary();
+};
 
 window.openUserModal = async function(uid) {
   const s = currentStudents.find(x => x.id == uid);
@@ -551,7 +1471,14 @@ window.openUserModal = async function(uid) {
   document.getElementById('mhAv').textContent = (s.first_name || '?')[0];
   document.getElementById('mhName').textContent = `${s.first_name} ${s.last_name}`;
   document.getElementById('mhMeta').textContent = `${s.school || ''} · ${s.county || ''} · ${s.email || ''}`;
-  document.getElementById('modalBody').innerHTML = `<div class="ms-t"><i class="fas fa-chart-simple"></i> Quick Stats</div><div class="ms-g"><div class="ms-s sg"><div class="ms-n">${(s.accuracy||0).toFixed(0)}%</div><div class="ms-l">Accuracy</div></div><div class="ms-s sb"><div class="ms-n">${s.sessions||0}</div><div class="ms-l">Sessions</div></div><div class="ms-s so"><div class="ms-n">${s.streak||0}</div><div class="ms-l">Streak</div></div><div class="ms-s"><div class="ms-n">${s.total_correct||0}</div><div class="ms-l">Correct</div></div></div><div class="ms-t"><i class="fas fa-award"></i> Belt Progress</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">${BELTS.map(b => `<span style="display:inline-flex;align-items:center;gap:4px;border-radius:99px;background:${b.color}22;color:${b.color};padding:3px 10px;opacity:${belt && BELTS.indexOf(b) <= s.belt_idx ? 1 : 0.35}">${b.name.split(' ')[0]}</span>`).join('')}</div><div class="ms-t"><i class="fas fa-user"></i> Account</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px"><span class="status-pill ${s.is_paid?'sp-paid':'sp-free'}">${s.is_paid?'Paid':'Free'}</span><span><i class="fas fa-calendar"></i> Joined ${new Date(s.created_at).toLocaleDateString('en-GB')}</span></div><div class="ms-t"><i class="fas fa-tools"></i> Actions</div><div style="display:flex;gap:8px">${!s.is_paid ? `<button onclick="upgradeUser('${s.id}')" class="btn" style="background:var(--gold);color:var(--navy);padding:9px 18px;border:none;border-radius:var(--r);cursor:pointer"><i class="fas fa-gem"></i> Grant Paid Access</button>` : ''}<button onclick="suspendUser('${s.id}', this)" class="btn" style="background:var(--red-lt);color:var(--red);border:1px solid rgba(229,57,53,.25);padding:9px 18px;border-radius:var(--r);cursor:pointer"><i class="fas fa-ban"></i> Suspend</button></div>`;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="ms-g"><div class="ms-s sg"><div class="ms-n">${(s.accuracy||0).toFixed(0)}%</div><div class="ms-l">Accuracy</div></div>
+    <div class="ms-s sb"><div class="ms-n">${s.sessions||0}</div><div class="ms-l">Sessions</div></div>
+    <div class="ms-s so"><div class="ms-n">${s.streak||0}</div><div class="ms-l">Streak</div></div>
+    <div class="ms-s"><div class="ms-n">${s.total_correct||0}</div><div class="ms-l">Correct</div></div></div>
+    <div style="margin-top:16px;display:flex;gap:8px">${!s.is_paid ? `<button onclick="upgradeUser('${s.id}')" class="qa-btn btn-sm" style="background:var(--gold);color:var(--navy);width:auto"><i class="fas fa-gem"></i> Grant Paid</button>` : ''}
+    <button onclick="suspendUser('${s.id}', this)" class="qa-btn btn-sm" style="background:var(--red-lt);color:var(--red);width:auto"><i class="fas fa-ban"></i> Suspend</button></div>
+  `;
   document.getElementById('userModal').classList.add('on');
 };
 
@@ -565,9 +1492,9 @@ window.approveTutor = async function(uid, btn) {
 
 window.suspendUser = async function(uid, btn) {
   if (!confirm('Suspend this user?')) return;
-  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
   const r = await POST('/api/admin/user/suspend/', { user_id: uid });
-  if (r.error) { toast(r.error, 'var(--red)'); btn.disabled = false; return; }
+  if (r.error) { toast(r.error, 'var(--red)'); if(btn) btn.disabled = false; return; }
   toast('User suspended', 'var(--amber)');
   loadStudents();
   loadTutors();
@@ -576,50 +1503,77 @@ window.suspendUser = async function(uid, btn) {
 window.upgradeUser = async function(uid) {
   const r = await POST('/api/admin/user/upgrade/', { user_id: uid, paid: true });
   if (r.error) { toast(r.error, 'var(--red)'); return; }
-  toast('User upgraded to paid!', 'var(--green)');
+  toast('Upgraded to paid!', 'var(--green)');
   closeModal();
   loadStudents();
 };
 
 function closeModal() { document.getElementById('userModal').classList.remove('on'); }
 
-function startClock() {
-  function tick() { document.getElementById('liveTime').textContent = new Date().toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit' }) + ' EAT'; }
-  tick(); setInterval(tick, 1000);
+function buildSettings() {
+  document.getElementById('sysStatus').innerHTML = [
+    ['API Server', 'Online', 'sp-ok'], ['Database', 'Healthy', 'sp-ok'],
+    ['Storage', 'Active', 'sp-ok'], ['PDF Service', 'Running', 'sp-ok']
+  ].map(([name, st, cls]) => `<div style="display:flex;justify-content:space-between;padding:10px;background:var(--sky);border-radius:var(--r);margin-bottom:8px"><span><i class="fas fa-check-circle" style="color:var(--green)"></i> ${name}</span><span class="status-pill ${cls}">${st}</span></div>`).join('');
 }
 
+// Settings buttons
+document.getElementById('paymentSettingsBtn')?.addEventListener('click', () => {
+  toast('Payment settings - Configure Paystack API keys', 'var(--blue)');
+});
+document.getElementById('beltSettingsBtn')?.addEventListener('click', () => {
+  toast('Belt settings - Coming soon to production', 'var(--amber)');
+});
+document.getElementById('badgeSettingsBtn')?.addEventListener('click', () => {
+  toast('Badge settings - Coming soon to production', 'var(--amber)');
+});
+document.getElementById('emailSettingsBtn')?.addEventListener('click', () => {
+  toast('Email settings - Configure SMTP', 'var(--blue)');
+});
+
+// Curriculum buttons
+document.getElementById('addCurriculumBtn')?.addEventListener('click', addCurriculum);
+document.getElementById('addGradeBtn')?.addEventListener('click', addGrade);
+document.getElementById('addSubjectBtn')?.addEventListener('click', addSubject);
+
+// Filter listeners
+document.getElementById('filterCurriculum')?.addEventListener('change', () => loadContentLibrary());
+document.getElementById('filterGrade')?.addEventListener('change', () => loadContentLibrary());
+document.getElementById('filterSubject')?.addEventListener('change', () => loadContentLibrary());
+document.getElementById('filterContentType')?.addEventListener('change', () => loadContentLibrary());
+document.getElementById('filterStatus')?.addEventListener('change', () => loadContentLibrary());
+document.getElementById('searchQuestion')?.addEventListener('input', () => loadQuestionBank());
+document.getElementById('qFilterSubject')?.addEventListener('change', () => loadQuestionBank());
+document.getElementById('qFilterDifficulty')?.addEventListener('change', () => loadQuestionBank());
+
+// Modal close buttons
+document.getElementById('closeQuestionModalBtn')?.addEventListener('click', () => document.getElementById('questionModal').classList.remove('on'));
+document.getElementById('closeSubmissionModalBtn')?.addEventListener('click', () => document.getElementById('submissionDetailModal').classList.remove('on'));
+document.getElementById('closeCurriculumModalBtn')?.addEventListener('click', () => document.getElementById('curriculumModal').classList.remove('on'));
+document.getElementById('closeModalBtn')?.addEventListener('click', closeModal);
+document.getElementById('userModal')?.addEventListener('click', e => { if (e.target === document.getElementById('userModal')) closeModal(); });
+document.getElementById('submissionDetailModal')?.addEventListener('click', e => { if (e.target === document.getElementById('submissionDetailModal')) document.getElementById('submissionDetailModal').classList.remove('on'); });
+
+function startClock() {
+  function tick() { document.getElementById('liveTime').textContent = new Date().toLocaleTimeString() + ' EAT'; }
+  tick(); setInterval(tick, 1000);
+}
 function startLiveTicker() {
-  setInterval(async () => {
-    const ov = await GET('/api/admin/overview/');
-    if (!ov.error) document.getElementById('liveCount').textContent = ov.total_students;
-  }, 10000);
+  setInterval(async () => { const ov = await GET('/api/admin/overview/'); if (!ov.error) document.getElementById('liveCount').textContent = ov.total_students; }, 30000);
 }
 
 document.querySelectorAll('.sb-item').forEach(item => item.addEventListener('click', () => navTo(item.dataset.page)));
 document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => { studentFilter = tab.dataset.filter; document.querySelectorAll('.tab').forEach(t => t.classList.remove('on')); tab.classList.add('on'); loadStudents(); }));
-document.getElementById('countyFilter').addEventListener('change', loadStudents);
-document.getElementById('globalSearch').addEventListener('input', (e) => {
+document.getElementById('countyFilter')?.addEventListener('change', loadStudents);
+document.getElementById('globalSearch')?.addEventListener('input', (e) => {
   const q = e.target.value.toLowerCase();
   if (!q) { renderStudentsTable(currentStudents); return; }
   renderStudentsTable(currentStudents.filter(s => `${s.first_name} ${s.last_name}`.toLowerCase().includes(q) || (s.school || '').toLowerCase().includes(q) || (s.county || '').toLowerCase().includes(q)));
 });
-document.getElementById('refreshBtn').addEventListener('click', () => { loadPage(document.querySelector('.sb-item.active')?.dataset.page || 'overview'); toast('Dashboard refreshed!', 'var(--navy)', '#fff'); });
+document.getElementById('refreshBtn')?.addEventListener('click', () => { loadPage(document.querySelector('.sb-item.active')?.dataset.page || 'overview'); toast('Refreshed!', 'var(--navy)', '#fff'); });
 document.getElementById('viewAllStudents')?.addEventListener('click', () => navTo('students'));
-document.getElementById('closeModalBtn')?.addEventListener('click', closeModal);
-document.getElementById('userModal')?.addEventListener('click', e => { if (e.target === document.getElementById('userModal')) closeModal(); });
 document.getElementById('signOutBtn')?.addEventListener('click', async () => { await POST('/api/logout/', {}); window.location.href = '/admin/login/'; });
 document.getElementById('logoutBtn')?.addEventListener('click', async () => { await POST('/api/logout/', {}); window.location.href = '/admin/login/'; });
-
-function renderStudentsTable(students) {
-  const el = document.getElementById('studentsTbl');
-  if (!students.length) { el.innerHTML = '作用<td colspan="10" class="empty">No students found'; return; }
-  el.innerHTML = students.map(s => {
-    const belt = s.belt_idx >= 0 ? BELTS[s.belt_idx] : null;
-    const acc = (s.accuracy || 0).toFixed(0);
-    const joined = s.created_at ? new Date(s.created_at).toLocaleDateString('en-GB') : '—';
-    return `<tr onclick="openUserModal('${s.id}')"><td><div><strong>${s.first_name} ${s.last_name}</strong><div style="font-size:10px;color:var(--blue)">${s.email || ''}</div></div><td>${s.county || '—'}学历:${s.school || '—'}学历:${belt ? `<span style="display:inline-flex;align-items:center;gap:4px;border-radius:99px;background:${belt.color}22;color:${belt.color};padding:2px 8px;font-size:10px">${belt.name}</span>` : '<span style="color:var(--ink3)">No Belt</span>'}学历:<div style="display:flex;align-items:center;gap:7px"><strong style="color:${acc>=90?'var(--green-dk)':acc>=70?'var(--amber)':'var(--red)'}">${acc}%</strong><div class="prog"><div class="prog-fill ${acc>=90?'pg':acc>=70?'pa':'pr'}" style="width:${acc}%"></div></div></div>学历:${s.sessions || 0}学历:${s.streak || 0}<i class="fas fa-fire" style="color:var(--gold)"></i>学历:<span class="status-pill ${s.is_paid ? 'sp-paid' : 'sp-free'}">${s.is_paid ? 'Paid' : 'Free'}</span>学历:${joined}学历:<button onclick="event.stopPropagation();openUserModal('${s.id}')" style="background:var(--blue-lt);border:none;color:var(--blue);font-size:10px;font-weight:900;padding:4px 10px;border-radius:99px;cursor:pointer"><i class="fas fa-eye"></i> VIEW</button>`;
-  }).join('');
-}
 
 (async function init() {
   const r = await GET('/api/me/');

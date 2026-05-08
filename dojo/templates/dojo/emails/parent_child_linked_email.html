@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Student Linked to Your Account</title>
+    <style>
+        body { font-family: 'Nunito', Arial, sans-serif; line-height: 1.6; color: #1a2638; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #1a3a6b, #1565c0); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #fff; padding: 30px; border: 1px solid #d0e8fa; border-top: none; border-radius: 0 0 10px 10px; }
+        .btn { display: inline-block; background: #ffc107; color: #1a2638; padding: 12px 24px; text-decoration: none; border-radius: 10px; font-weight: bold; margin: 20px 0; }
+        .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #7088a0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>New Student Linked!</h1>
+            <p>Your Parent Dashboard Has Been Updated</p>
+        </div>
+        <div class="content">
+            <h2>Hello {{ parent.first_name }},</h2>
+            <p><strong>{{ student.first_name }} {{ student.last_name }}</strong> has registered on Revision Dojo and linked your existing parent account.</p>
+            
+            <p>This student is now visible in your parent dashboard. You can monitor their progress alongside your other children.</p>
+            
+            <center>
+                <a href="{{ dashboard_url }}" class="btn">View Updated Dashboard</a>
+            </center>
+            
+            <p>Your login credentials remain the same. Simply log in to your parent portal to see all your linked children.</p>
+            
+            <p>Best regards,<br><strong>Revision Dojo Team</strong></p>
+        </div>
+        <div class="footer">
+            <p>© 2026 Revision Dojo. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

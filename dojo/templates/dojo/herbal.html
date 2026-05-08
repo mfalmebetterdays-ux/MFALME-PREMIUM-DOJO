@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verdana Botanicals — Premium Herbal Medicine</title>
+<meta name="description" content="Premium organic herbal supplements and botanical medicine. Science-backed. Nature-sourced.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ================================================
+   VERDANA BOTANICALS — SINGLE FILE SPA
+   ================================================ */
+
+:root {
+  --green-deep:   #1a3a2a;
+  --green-mid:    #2d5a3d;
+  --green-light:  #4a8c5c;
+  --green-pale:   #e8f2eb;
+  --green-tint:   #f4f9f5;
+  --gold:         #c9a84c;
+  --gold-light:   #e8c96a;
+  --gold-pale:    #fdf8ee;
+  --white:        #ffffff;
+  --off-white:    #fafaf8;
+  --cream:        #f7f5f0;
+  --text-dark:    #1a1a1a;
+  --text-mid:     #3d3d3d;
+  --text-soft:    #6b7280;
+  --text-muted:   #9ca3af;
+  --border-light: #e5e7eb;
+  --border-mid:   #d1d5db;
+  --shadow-sm:    0 1px 3px rgba(26,58,42,.08);
+  --shadow-md:    0 4px 16px rgba(26,58,42,.12);
+  --shadow-lg:    0 12px 40px rgba(26,58,42,.16);
+  --shadow-xl:    0 24px 60px rgba(26,58,42,.20);
+  --r-sm: 6px; --r-md: 12px; --r-lg: 20px; --r-xl: 32px;
+  --t: all .3s cubic-bezier(.4,0,.2,1);
+  --ts: all .5s cubic-bezier(.4,0,.2,1);
+  --fd: 'Cormorant Garamond', serif;
+  --fb: 'DM Sans', sans-serif;
+  --nav: 72px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--fb);background:var(--off-white);color:var(--text-dark);line-height:1.6;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+button{cursor:pointer;border:none;background:none;font-family:var(--fb)}
+input,textarea,select{font-family:var(--fb)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--cream)}
+::-webkit-scrollbar-thumb{background:var(--green-light);border-radius:3px}
+
+/* ── PAGE ROUTING ── */
+.page{display:none;animation:pageIn .35s ease}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── NAVBAR ── */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--nav);background:rgba(255,255,255,.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(26,58,42,.07);transition:var(--t)}
+#navbar.scrolled{box-shadow:var(--shadow-md);background:rgba(255,255,255,.98)}
+.nav-inner{max-width:1440px;margin:0 auto;padding:0 48px;height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0;cursor:pointer}
+.nav-logo-icon{width:36px;height:36px;background:var(--green-deep);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.nav-logo-icon svg{width:20px;height:20px;fill:var(--gold)}
+.nav-logo-text{font-family:var(--fd);font-size:1.35rem;font-weight:500;color:var(--green-deep);letter-spacing:.02em}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:.83rem;font-weight:500;letter-spacing:.06em;color:var(--text-mid);transition:var(--t);position:relative;cursor:pointer}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1.5px;background:var(--green-mid);transform:scaleX(0);transform-origin:left;transition:var(--t)}
+.nav-links a:hover,.nav-links a.active{color:var(--green-deep)}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+.nav-search{display:flex;align-items:center;background:var(--green-tint);border:1px solid var(--border-light);border-radius:50px;padding:7px 14px;gap:7px;transition:var(--t);flex:1;max-width:220px}
+.nav-search:focus-within{border-color:var(--green-light);box-shadow:0 0 0 3px rgba(74,140,92,.1)}
+.nav-search svg{width:14px;height:14px;stroke:var(--text-soft);flex-shrink:0}
+.nav-search input{border:none;background:transparent;font-size:.8rem;color:var(--text-dark);width:100%;outline:none}
+.nav-search input::placeholder{color:var(--text-muted)}
+.nav-actions{display:flex;align-items:center;gap:6px}
+.nav-icon-btn{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--t);position:relative;color:var(--text-mid);cursor:pointer}
+.nav-icon-btn:hover{background:var(--green-tint);color:var(--green-deep)}
+.nav-icon-btn svg{width:19px;height:19px}
+.cart-badge{position:absolute;top:4px;right:4px;width:16px;height:16px;background:var(--gold);border-radius:50%;font-size:.6rem;font-weight:700;color:var(--white);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0);transition:var(--t)}
+.cart-badge.has-items{opacity:1;transform:scale(1)}
+.nav-cta{background:var(--green-deep);color:var(--white);padding:9px 20px;border-radius:50px;font-size:.8rem;font-weight:500;letter-spacing:.04em;transition:var(--t);cursor:pointer}
+.nav-cta:hover{background:var(--green-mid);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.nav-mobile-toggle{display:none}
+.mobile-menu{display:none;position:fixed;inset:0;background:rgba(26,58,42,.96);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:28px;backdrop-filter:blur(10px)}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:var(--fd);font-size:2.2rem;font-weight:300;color:var(--white);transition:var(--t);cursor:pointer}
+.mobile-menu a:hover{color:var(--gold)}
+.mobile-menu-close{position:absolute;top:24px;right:24px;width:44px;height:44px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;color:var(--white);border:none}
+
+/* ── BUTTONS ── */
+.btn-primary{background:var(--green-deep);color:var(--white);padding:13px 28px;border-radius:50px;font-size:.86rem;font-weight:500;letter-spacing:.04em;transition:var(--t);display:inline-flex;align-items:center;gap:7px;cursor:pointer;border:none}
+.btn-primary:hover{background:var(--green-mid);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.btn-primary svg{width:15px;height:15px;transition:var(--t)}
+.btn-primary:hover svg{transform:translateX(3px)}
+.btn-outline{background:transparent;color:var(--green-deep);padding:12px 24px;border:1.5px solid var(--green-deep);border-radius:50px;font-size:.86rem;font-weight:500;letter-spacing:.04em;transition:var(--t);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.btn-outline:hover{background:var(--green-tint);transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--white);padding:13px 28px;border-radius:50px;font-size:.86rem;font-weight:500;letter-spacing:.04em;transition:var(--t);display:inline-flex;align-items:center;gap:7px;cursor:pointer;border:none}
+.btn-gold:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+
+/* ── LAYOUT ── */
+.container{max-width:1440px;margin:0 auto;padding:0 72px}
+.container-sm{max-width:1200px;margin:0 auto;padding:0 40px}
+section{padding:96px 0}
+.section-header{text-align:center;margin-bottom:60px}
+.section-tag{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.section-title{font-family:var(--fd);font-size:clamp(1.9rem,3.2vw,3rem);font-weight:300;color:var(--green-deep);line-height:1.15;margin-bottom:14px}
+.section-sub{font-size:.93rem;color:var(--text-soft);max-width:480px;margin:0 auto;line-height:1.7}
+.page-header{padding:calc(var(--nav) + 52px) 0 52px;background:var(--white);border-bottom:1px solid var(--border-light);text-align:center}
+.breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:.78rem;color:var(--text-muted);margin-bottom:14px}
+.breadcrumb a{color:var(--green-mid);cursor:pointer;transition:var(--t)}
+.breadcrumb a:hover{color:var(--green-deep)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;padding-top:var(--nav);display:grid;grid-template-columns:1fr 1fr;overflow:hidden;background:var(--off-white)}
+.hero-content{display:flex;flex-direction:column;justify-content:center;padding:72px 56px 72px 96px}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--gold-pale);border:1px solid var(--gold);color:var(--gold);padding:5px 13px;border-radius:50px;font-size:.68rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;margin-bottom:26px;width:fit-content}
+.hero-headline{font-family:var(--fd);font-size:clamp(3rem,5.2vw,6.2rem);font-weight:300;line-height:1.02;letter-spacing:-.02em;color:var(--green-deep);margin-bottom:22px}
+.hero-headline em{font-style:italic;color:var(--green-light)}
+.hero-sub{font-size:.97rem;color:var(--text-soft);line-height:1.75;max-width:370px;margin-bottom:38px}
+.hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.hero-stats{display:flex;gap:28px;margin-top:52px;padding-top:28px;border-top:1px solid var(--border-light)}
+.hero-stat-num{font-family:var(--fd);font-size:1.9rem;font-weight:500;color:var(--green-deep);display:block;line-height:1}
+.hero-stat-lbl{font-size:.76rem;color:var(--text-soft);margin-top:3px}
+.hero-visual{position:relative;background:var(--green-tint);overflow:hidden}
+.hero-img-container{width:100%;height:100%;overflow:hidden}
+.hero-img-container img{width:100%;height:100%;object-fit:cover;transition:opacity .4s ease}
+.hero-badge{position:absolute;bottom:36px;left:36px;background:var(--white);border-radius:var(--r-lg);padding:14px 18px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:11px}
+.hero-badge-icon{width:42px;height:42px;background:var(--green-pale);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.35rem}
+.hero-badge-text{font-size:.78rem;color:var(--text-soft)}
+.hero-badge-text strong{display:block;font-size:.87rem;color:var(--green-deep);font-weight:600}
+
+/* ── CATEGORIES ── */
+.cats-section{background:var(--white)}
+.cats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.cat-card{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:3/4;cursor:pointer;transition:var(--t)}
+.cat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-xl)}
+.cat-card img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.cat-card:hover img{transform:scale(1.06)}
+.cat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,58,42,.85) 0%,rgba(26,58,42,.2) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:22px}
+.cat-icon{font-size:1.9rem;margin-bottom:7px;display:block}
+.cat-name{font-family:var(--fd);font-size:1.45rem;font-weight:400;color:var(--white);line-height:1.2}
+.cat-count{font-size:.75rem;color:rgba(255,255,255,.65);margin-top:3px}
+.cat-arrow{position:absolute;top:18px;right:18px;width:34px;height:34px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(4px);transition:var(--t)}
+.cat-card:hover .cat-arrow{opacity:1;transform:translateY(0)}
+.cat-arrow svg{width:15px;height:15px;stroke:var(--white)}
+
+/* ── PRODUCT CARDS ── */
+.products-section{background:var(--off-white)}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(274px,1fr));gap:22px}
+.product-card{background:var(--white);border-radius:var(--r-lg);overflow:hidden;transition:var(--t);border:1px solid transparent;position:relative}
+.product-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-xl);border-color:var(--border-light)}
+.product-img-wrap{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--green-tint)}
+.product-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.product-card:hover .product-img-wrap img{transform:scale(1.06)}
+.product-badge{position:absolute;top:11px;left:11px;background:var(--green-deep);color:var(--white);padding:3px 9px;border-radius:50px;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;z-index:1}
+.product-badge.gold{background:var(--gold)}
+.product-badge.sale{background:#e53935}
+.product-actions{position:absolute;bottom:10px;left:10px;right:10px;display:flex;gap:7px;opacity:0;transform:translateY(7px);transition:var(--t);z-index:2}
+.product-card:hover .product-actions{opacity:1;transform:translateY(0)}
+.btn-add-cart{flex:1;background:var(--green-deep);color:var(--white);padding:9px 14px;border-radius:50px;font-size:.77rem;font-weight:500;letter-spacing:.04em;transition:var(--t);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+.btn-add-cart:hover{background:var(--green-mid)}
+.btn-add-cart svg{width:13px;height:13px}
+.btn-wish{width:36px;height:36px;background:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--t);flex-shrink:0;cursor:pointer;border:none}
+.btn-wish:hover{background:var(--green-tint)}
+.btn-wish svg{width:14px;height:14px;stroke:var(--text-mid)}
+.product-info{padding:14px 16px 18px}
+.product-cat{font-size:.68rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.product-name{font-family:var(--fd);font-size:1.15rem;font-weight:400;color:var(--green-deep);line-height:1.25;margin-bottom:7px;cursor:pointer}
+.product-name:hover{color:var(--green-light)}
+.product-desc{font-size:.78rem;color:var(--text-soft);line-height:1.5;margin-bottom:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.product-footer{display:flex;align-items:center;justify-content:space-between}
+.product-price{font-size:1.1rem;font-weight:600;color:var(--green-deep)}
+.product-price-old{font-size:.79rem;color:var(--text-muted);text-decoration:line-through;margin-left:5px}
+.product-rating{display:flex;align-items:center;gap:3px;font-size:.76rem;color:var(--text-soft)}
+.stars{color:var(--gold);font-size:.73rem}
+.no-products{text-align:center;padding:72px 20px;color:var(--text-soft);grid-column:1/-1}
+.no-products .icon{font-size:2.8rem;margin-bottom:10px;opacity:.4}
+
+/* ── WHY US ── */
+.why-section{background:var(--green-deep);color:var(--white)}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px}
+.why-card{text-align:center}
+.why-icon{width:68px;height:68px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:1.7rem;transition:var(--t)}
+.why-card:hover .why-icon{background:rgba(201,168,76,.2);border-color:var(--gold)}
+.why-title{font-family:var(--fd);font-size:1.15rem;font-weight:400;color:var(--white);margin-bottom:7px}
+.why-desc{font-size:.8rem;color:rgba(255,255,255,.55);line-height:1.6}
+.why-section .section-tag{color:var(--gold-light)}
+.why-section .section-title{color:var(--white)}
+.why-section .section-sub{color:rgba(255,255,255,.55)}
+
+/* ── TESTIMONIALS ── */
+.test-section{background:var(--cream)}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.test-card{background:var(--white);border-radius:var(--r-lg);padding:28px;transition:var(--t);border:1px solid var(--border-light)}
+.test-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.test-stars{color:var(--gold);font-size:.83rem;margin-bottom:14px}
+.test-text{font-family:var(--fd);font-size:1rem;font-weight:300;color:var(--text-dark);line-height:1.75;font-style:italic;margin-bottom:18px}
+.test-author{display:flex;align-items:center;gap:11px}
+.test-avatar{width:40px;height:40px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.test-name{font-size:.85rem;font-weight:600;color:var(--green-deep)}
+.test-loc{font-size:.73rem;color:var(--text-muted)}
+
+/* ── CTA ── */
+.cta-section{background:var(--gold-pale);border-top:1px solid rgba(201,168,76,.2);border-bottom:1px solid rgba(201,168,76,.2);padding:72px 0}
+.cta-inner{display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap}
+.cta-text h2{font-family:var(--fd);font-size:clamp(1.7rem,2.8vw,2.6rem);font-weight:300;color:var(--green-deep);margin-bottom:7px}
+.cta-text p{font-size:.9rem;color:var(--text-soft)}
+.cta-form{display:flex;gap:9px;flex-wrap:wrap}
+.cta-input{padding:11px 18px;border:1.5px solid var(--border-mid);border-radius:50px;font-size:.86rem;min-width:220px;outline:none;background:var(--white);transition:var(--t)}
+.cta-input:focus{border-color:var(--green-light);box-shadow:0 0 0 3px rgba(74,140,92,.1)}
+
+/* ── SHOP PAGE ── */
+.shop-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:28px}
+.shop-filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.filter-btn{padding:7px 16px;border-radius:50px;font-size:.78rem;font-weight:500;border:1.5px solid var(--border-mid);color:var(--text-mid);background:var(--white);transition:var(--t);cursor:pointer}
+.filter-btn:hover,.filter-btn.active{background:var(--green-deep);border-color:var(--green-deep);color:var(--white)}
+.shop-sort select{padding:7px 14px;border:1.5px solid var(--border-mid);border-radius:var(--r-sm);font-size:.8rem;color:var(--text-mid);background:var(--white);outline:none;cursor:pointer;transition:var(--t)}
+.shop-sort select:focus{border-color:var(--green-light)}
+.results-count{font-size:.8rem;color:var(--text-soft)}
+.price-filter{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.price-filter label{font-size:.8rem;color:var(--text-mid)}
+.price-filter input[type="range"]{accent-color:var(--green-mid);width:110px}
+.shop-search-wrap{display:flex;align-items:center;gap:7px;background:var(--white);border:1.5px solid var(--border-mid);border-radius:50px;padding:7px 14px;transition:var(--t)}
+.shop-search-wrap:focus-within{border-color:var(--green-light);box-shadow:0 0 0 3px rgba(74,140,92,.1)}
+.shop-search-wrap svg{width:14px;height:14px;stroke:var(--text-soft);flex-shrink:0}
+.shop-search-wrap input{border:none;background:transparent;font-size:.8rem;color:var(--text-dark);outline:none;width:150px}
+
+/* ── PRODUCT DETAIL ── */
+.pd-layout{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.gallery-sticky{position:sticky;top:calc(var(--nav) + 18px)}
+.gallery-main{aspect-ratio:1;border-radius:var(--r-lg);overflow:hidden;background:var(--green-tint);margin-bottom:11px}
+.gallery-main img{width:100%;height:100%;object-fit:cover;transition:opacity .25s}
+.gallery-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.gallery-thumb{aspect-ratio:1;border-radius:var(--r-sm);overflow:hidden;cursor:pointer;border:2px solid transparent;transition:var(--t);background:var(--green-tint)}
+.gallery-thumb:hover,.gallery-thumb.active{border-color:var(--green-mid)}
+.gallery-thumb img{width:100%;height:100%;object-fit:cover}
+.pd-tag{font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:11px}
+.pd-name{font-family:var(--fd);font-size:clamp(1.9rem,3.2vw,3rem);font-weight:300;color:var(--green-deep);line-height:1.1;margin-bottom:14px}
+.pd-rating{display:flex;align-items:center;gap:7px;margin-bottom:18px}
+.pd-price{font-size:1.9rem;font-weight:600;color:var(--green-deep);margin-bottom:22px}
+.pd-price span{font-size:.95rem;font-weight:400;color:var(--text-muted);text-decoration:line-through;margin-left:9px}
+.pd-desc{font-size:.9rem;color:var(--text-soft);line-height:1.8;margin-bottom:26px;padding-bottom:26px;border-bottom:1px solid var(--border-light)}
+.benefits-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:26px}
+.benefit-item{display:flex;align-items:center;gap:9px;font-size:.83rem;color:var(--text-mid)}
+.benefit-item span:first-child{font-size:1.15rem}
+.qty-cart-row{display:flex;align-items:center;gap:11px;margin-bottom:18px;flex-wrap:wrap}
+.qty-control{display:flex;align-items:center;border:1.5px solid var(--border-mid);border-radius:50px;overflow:hidden}
+.qty-btn{width:38px;height:42px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--text-mid);cursor:pointer;transition:var(--t);background:transparent;border:none}
+.qty-btn:hover{background:var(--green-tint);color:var(--green-deep)}
+.qty-num{width:38px;text-align:center;font-size:.88rem;font-weight:600;color:var(--green-deep)}
+.tag-pill{padding:3px 11px;background:var(--green-pale);color:var(--green-mid);border-radius:50px;font-size:.73rem;font-weight:500}
+.product-tags{display:flex;gap:7px;flex-wrap:wrap;padding-top:18px;border-top:1px solid var(--border-light)}
+.guarantees-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:18px 0}
+.guarantee-item{text-align:center;padding:13px 9px;background:var(--green-tint);border-radius:11px}
+.guarantee-item .gi{font-size:1.3rem;margin-bottom:3px}
+.guarantee-item .gl{font-size:.7rem;color:var(--text-soft)}
+
+/* ── CART ── */
+.cart-layout{display:grid;grid-template-columns:1fr 360px;gap:36px;align-items:start}
+.cart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border-light)}
+.cart-header h2{font-family:var(--fd);font-size:1.55rem;font-weight:400;color:var(--green-deep)}
+.btn-clear{font-size:.78rem;color:var(--text-soft);cursor:pointer;background:none;border:none;text-decoration:underline;transition:var(--t)}
+.btn-clear:hover{color:#e53935}
+.cart-item{display:grid;grid-template-columns:96px 1fr auto;gap:18px;align-items:center;padding:18px 0;border-bottom:1px solid var(--border-light);transition:var(--t)}
+.cart-item:hover{background:var(--green-tint);margin:0 -14px;padding:18px 14px;border-radius:var(--r-md)}
+.cart-item-img{width:96px;height:96px;border-radius:var(--r-md);overflow:hidden;background:var(--green-tint);flex-shrink:0}
+.cart-item-img img{width:100%;height:100%;object-fit:cover}
+.cart-item-cat{font-size:.68rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.cart-item-name{font-family:var(--fd);font-size:1.05rem;font-weight:400;color:var(--green-deep);margin-bottom:7px}
+.cart-item-controls{display:flex;align-items:center;gap:9px}
+.cart-item-price{font-size:1.05rem;font-weight:600;color:var(--green-deep);text-align:right;white-space:nowrap}
+.btn-remove{width:27px;height:27px;border-radius:50%;background:transparent;display:flex;align-items:center;justify-content:center;transition:var(--t);cursor:pointer;color:var(--text-muted);border:none}
+.btn-remove:hover{background:#fef2f2;color:#e53935}
+.btn-remove svg{width:13px;height:13px}
+.cart-summary{background:var(--white);border-radius:var(--r-lg);padding:26px;border:1px solid var(--border-light);position:sticky;top:calc(var(--nav) + 18px)}
+.cart-summary h3{font-family:var(--fd);font-size:1.35rem;font-weight:400;color:var(--green-deep);margin-bottom:22px}
+.summary-line{display:flex;justify-content:space-between;font-size:.86rem;color:var(--text-soft);margin-bottom:11px}
+.summary-line.total{font-size:1.08rem;font-weight:600;color:var(--green-deep);padding-top:14px;margin-top:7px;border-top:2px solid var(--green-deep);margin-bottom:22px}
+.cart-empty{text-align:center;padding:72px 20px;grid-column:1/-1}
+.cart-empty-icon{font-size:3.8rem;margin-bottom:14px;opacity:.3}
+.cart-empty h3{font-family:var(--fd);font-size:1.7rem;font-weight:300;color:var(--green-deep);margin-bottom:7px}
+.cart-empty p{font-size:.88rem;color:var(--text-soft);margin-bottom:22px}
+.trust-badges{display:flex;justify-content:center;gap:14px;margin-top:18px;padding-top:18px;border-top:1px solid var(--border-light)}
+.trust-badge{text-align:center}
+.trust-badge .ti{font-size:1.25rem}
+.trust-badge .tl{font-size:.65rem;color:var(--text-muted)}
+
+/* ── CHECKOUT ── */
+.checkout-layout{display:grid;grid-template-columns:1fr 390px;gap:36px;align-items:start}
+.checkout-form-panel{background:var(--white);border-radius:var(--r-lg);padding:36px;border:1px solid var(--border-light)}
+.step-title{font-family:var(--fd);font-size:1.4rem;font-weight:400;color:var(--green-deep);margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border-light)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-mid);margin-bottom:5px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 14px;border:1.5px solid var(--border-mid);border-radius:var(--r-sm);font-size:.88rem;color:var(--text-dark);background:var(--white);outline:none;transition:var(--t)}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--green-light);box-shadow:0 0 0 3px rgba(74,140,92,.1)}
+.form-group textarea{resize:vertical;min-height:72px}
+.payment-option{display:flex;align-items:center;gap:11px;padding:13px 14px;border:1.5px solid var(--border-mid);border-radius:10px;cursor:pointer;transition:var(--t);margin-bottom:9px}
+.payment-option.selected,.payment-option:has(input:checked){border-color:var(--green-mid);background:var(--green-tint)}
+.payment-option input{accent-color:var(--green-mid)}
+.payment-option .pi{font-size:1.15rem}
+.payment-option .pn{font-weight:600;font-size:.88rem;color:var(--green-deep)}
+.payment-option .ps{font-size:.73rem;color:var(--text-soft)}
+.checkout-summary-panel{background:var(--white);border-radius:var(--r-lg);padding:26px;border:1px solid var(--border-light);position:sticky;top:calc(var(--nav) + 18px)}
+.checkout-item{display:flex;gap:11px;align-items:center;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border-light)}
+.checkout-item:last-of-type{border-bottom:none;margin-bottom:0}
+.checkout-item-img{width:52px;height:52px;border-radius:var(--r-sm);overflow:hidden;background:var(--green-tint);flex-shrink:0}
+.checkout-item-img img{width:100%;height:100%;object-fit:cover}
+.checkout-item-details{flex:1}
+.checkout-item-name{font-size:.85rem;font-weight:500;color:var(--green-deep)}
+.checkout-item-qty{font-size:.75rem;color:var(--text-muted)}
+.checkout-item-price{font-size:.88rem;font-weight:600;color:var(--green-deep)}
+.perks-box{margin-top:18px;padding:14px;background:var(--green-tint);border-radius:11px}
+.perks-box .pk-title{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--green-mid);margin-bottom:9px}
+.perks-box .perk{font-size:.8rem;color:var(--text-mid);margin-bottom:6px}
+.checkout-progress{display:flex;align-items:center;gap:16px;font-size:.78rem}
+.co-step{display:flex;align-items:center;gap:5px;color:var(--text-muted)}
+.co-step.done{color:var(--green-mid)}
+.co-step.current{color:var(--green-deep);font-weight:600}
+.co-step-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700}
+.co-step.done .co-step-num{background:var(--green-mid);color:var(--white)}
+.co-step.current .co-step-num{background:var(--green-deep);color:var(--white)}
+.co-step.pending .co-step-num{background:var(--border-light);color:var(--text-muted)}
+.co-divider{color:var(--border-mid);font-size:.7rem}
+
+/* ── SUCCESS OVERLAY ── */
+.success-overlay{display:none;position:fixed;inset:0;background:rgba(26,58,42,.9);backdrop-filter:blur(10px);z-index:2000;align-items:center;justify-content:center}
+.success-overlay.show{display:flex}
+.success-card{background:var(--white);border-radius:var(--r-xl);padding:56px 44px;text-align:center;max-width:480px;width:90%;animation:popIn .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{from{opacity:0;transform:scale(.8) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.success-icon{width:76px;height:76px;background:var(--green-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:2rem}
+.success-card h2{font-family:var(--fd);font-size:2.1rem;font-weight:300;color:var(--green-deep);margin-bottom:11px}
+.success-card p{font-size:.88rem;color:var(--text-soft);line-height:1.6;margin-bottom:7px}
+.success-order-id{background:var(--green-tint);border:1px solid var(--green-pale);border-radius:var(--r-md);padding:11px 18px;font-size:.83rem;color:var(--green-deep);font-weight:600;letter-spacing:.08em;margin:18px 0 26px;display:inline-block}
+.success-actions{display:flex;gap:11px;justify-content:center;flex-wrap:wrap}
+
+/* ── ADMIN ── */
+.admin-top-bar{background:var(--green-deep);color:var(--white);padding:9px 0;text-align:center;font-size:.75rem;letter-spacing:.1em;font-weight:500;position:fixed;top:0;left:0;right:0;z-index:1001}
+.admin-top-bar span{color:var(--gold-light)}
+.admin-page{padding-top:calc(34px + var(--nav) + 28px);min-height:100vh;background:var(--off-white)}
+.admin-layout{display:grid;grid-template-columns:250px 1fr;gap:28px;align-items:start}
+.admin-sidebar{background:var(--white);border-radius:var(--r-lg);padding:22px;border:1px solid var(--border-light);position:sticky;top:calc(34px + var(--nav) + 18px)}
+.admin-sidebar-title{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--border-light)}
+.admin-nav-item{display:flex;align-items:center;gap:9px;padding:9px 13px;border-radius:var(--r-sm);font-size:.85rem;color:var(--text-mid);cursor:pointer;transition:var(--t);margin-bottom:3px}
+.admin-nav-item:hover,.admin-nav-item.active{background:var(--green-tint);color:var(--green-deep)}
+.admin-nav-item span:first-child{font-size:.97rem}
+.admin-panel{display:none}
+.admin-panel.active{display:block}
+.admin-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:11px}
+.admin-panel-header h2{font-family:var(--fd);font-size:1.7rem;font-weight:300;color:var(--green-deep)}
+.admin-table-wrap{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--border-light);overflow:hidden}
+.admin-table{width:100%;border-collapse:collapse}
+.admin-table th{background:var(--green-tint);padding:13px 14px;text-align:left;font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--green-mid)}
+.admin-table td{padding:13px 14px;border-bottom:1px solid var(--border-light);font-size:.85rem;color:var(--text-mid);vertical-align:middle}
+.admin-table tr:last-child td{border-bottom:none}
+.admin-table tr:hover td{background:var(--off-white)}
+.admin-product-img{width:46px;height:46px;border-radius:var(--r-sm);object-fit:cover;background:var(--green-tint)}
+.btn-edit,.btn-delete{padding:5px 13px;border-radius:50px;font-size:.72rem;font-weight:500;cursor:pointer;transition:var(--t);border:none}
+.btn-edit{background:var(--green-pale);color:var(--green-mid)}
+.btn-edit:hover{background:var(--green-mid);color:var(--white)}
+.btn-delete{background:#fef2f2;color:#e53935;margin-left:3px}
+.btn-delete:hover{background:#e53935;color:var(--white)}
+.admin-form-card{background:var(--white);border-radius:var(--r-lg);padding:28px;border:1px solid var(--border-light)}
+.admin-form-card h3{font-family:var(--fd);font-size:1.35rem;font-weight:400;color:var(--green-deep);margin-bottom:22px}
+.admin-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+.admin-stat-card{background:var(--white);border-radius:var(--r-lg);padding:22px;border:1px solid var(--border-light);text-align:center}
+.admin-stat-icon{font-size:1.7rem;margin-bottom:7px}
+.admin-stat-num{font-family:var(--fd);font-size:1.9rem;font-weight:500;color:var(--green-deep)}
+.admin-stat-label{font-size:.75rem;color:var(--text-soft)}
+.img-preview{width:76px;height:76px;border-radius:var(--r-sm);object-fit:cover;margin-top:7px;border:1px solid var(--border-light);display:none}
+.order-card{background:var(--white);border:1px solid var(--border-light);border-radius:var(--r-lg);padding:18px 22px;transition:var(--t);margin-bottom:14px}
+.order-card:hover{box-shadow:var(--shadow-md)}
+.order-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
+.order-id{font-weight:700;color:var(--green-deep);font-size:.88rem}
+.order-date{font-size:.75rem;color:var(--text-muted)}
+.order-status{padding:3px 11px;border-radius:50px;font-size:.7rem;font-weight:600;background:var(--green-pale);color:var(--green-mid)}
+.order-customer{font-size:.83rem;color:var(--text-mid);margin-bottom:3px}
+.order-total{font-size:.97rem;font-weight:700;color:var(--green-deep)}
+
+/* ── FOOTER ── */
+footer{background:var(--green-deep);color:var(--white);padding:72px 0 36px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:44px;margin-bottom:56px}
+.footer-logo{display:flex;align-items:center;gap:9px;margin-bottom:14px}
+.footer-logo-icon{width:34px;height:34px;background:rgba(201,168,76,.2);border:1px solid var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.footer-logo-icon svg{width:18px;height:18px;fill:var(--gold)}
+.footer-logo-text{font-family:var(--fd);font-size:1.25rem;font-weight:500;color:var(--white)}
+.footer-tagline{font-size:.83rem;color:rgba(255,255,255,.5);line-height:1.6;max-width:270px;margin-bottom:22px}
+.footer-socials{display:flex;gap:9px}
+.footer-social{width:34px;height:34px;background:rgba(255,255,255,.07);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.95rem;transition:var(--t);cursor:pointer}
+.footer-social:hover{background:var(--gold)}
+.footer-col-title{font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:18px}
+.footer-links{display:flex;flex-direction:column;gap:9px}
+.footer-links a{font-size:.85rem;color:rgba(255,255,255,.6);transition:var(--t);cursor:pointer}
+.footer-links a:hover{color:var(--gold)}
+.footer-newsletter p{font-size:.83rem;color:rgba(255,255,255,.5);margin-bottom:14px;line-height:1.6}
+.footer-input-row{display:flex;border:1px solid rgba(255,255,255,.14);border-radius:50px;overflow:hidden;background:rgba(255,255,255,.05)}
+.footer-input{flex:1;background:transparent;border:none;padding:10px 14px;font-size:.8rem;color:var(--white);outline:none}
+.footer-input::placeholder{color:rgba(255,255,255,.32)}
+.footer-input-btn{background:var(--gold);color:var(--white);padding:10px 16px;font-size:.8rem;font-weight:500;cursor:pointer;border:none;transition:var(--t)}
+.footer-input-btn:hover{background:var(--gold-light)}
+.footer-bottom{padding-top:26px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:11px;font-size:.77rem;color:rgba(255,255,255,.38)}
+.footer-bottom-links{display:flex;gap:18px}
+.footer-bottom-links a{color:rgba(255,255,255,.38);transition:var(--t);cursor:pointer}
+.footer-bottom-links a:hover{color:var(--gold)}
+
+/* ── TOAST ── */
+#toast-container{position:fixed;bottom:22px;right:22px;z-index:9999;display:flex;flex-direction:column;gap:9px;pointer-events:none}
+.toast{display:flex;align-items:center;gap:11px;background:var(--green-deep);color:var(--white);padding:13px 18px;border-radius:var(--r-md);font-size:.85rem;font-weight:500;box-shadow:var(--shadow-xl);pointer-events:auto;animation:toastIn .4s cubic-bezier(.34,1.56,.64,1);max-width:320px}
+.toast.error{background:#c62828}
+.toast.info{background:#1565c0}
+.toast-icon{font-size:1rem;flex-shrink:0}
+.toast.removing{animation:toastOut .3s ease forwards}
+@keyframes toastIn{from{opacity:0;transform:translateX(18px) scale(.9)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes toastOut{from{opacity:1;transform:translateX(0) scale(1)}to{opacity:0;transform:translateX(18px) scale(.9)}}
+
+/* ── SKELETON ── */
+.skeleton{background:linear-gradient(90deg,var(--border-light) 25%,var(--cream) 50%,var(--border-light) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--r-sm)}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── FADE IN ── */
+.fade-in{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.stagger-1{transition-delay:.1s}.stagger-2{transition-delay:.2s}.stagger-3{transition-delay:.3s}.stagger-4{transition-delay:.4s}
+
+/* ── UTILS ── */
+.text-center{text-align:center}
+.mt-40{margin-top:40px}.mt-24{margin-top:24px}.mt-16{margin-top:16px}
+.mb-24{margin-bottom:24px}
+.w-full{width:100%}
+.flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .container{padding:0 36px}
+  .hero-content{padding:56px 36px 56px 56px}
+  .cats-grid{grid-template-columns:repeat(2,1fr)}
+  .why-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .cart-layout{grid-template-columns:1fr}
+  .cart-summary{position:static}
+  .checkout-layout{grid-template-columns:1fr}
+  .checkout-summary-panel{position:static}
+  .admin-layout{grid-template-columns:1fr}
+  .admin-sidebar{position:static}
+  .admin-stats-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:820px){
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-visual{min-height:380px;order:-1}
+  .hero-content{padding:56px 36px}
+  .nav-links,.nav-search{display:none}
+  .nav-mobile-toggle{display:flex;align-items:center;justify-content:center}
+  .pd-layout{grid-template-columns:1fr}
+  .gallery-sticky{position:static}
+  .test-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .container,.container-sm{padding:0 18px}
+  section{padding:56px 0}
+  .cats-grid{gap:11px}
+  .nav-inner{padding:0 18px}
+  .hero-content{padding:36px 18px}
+  .hero-stats{flex-wrap:wrap;gap:14px}
+  .products-grid{grid-template-columns:1fr 1fr;gap:11px}
+  .admin-table th:nth-child(3),.admin-table td:nth-child(3),.admin-table th:nth-child(4),.admin-table td:nth-child(4){display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="navigate('home')">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.5 2 5.5 4.5 5 8c-.5 3 1 5.5 3.5 7L12 22l3.5-7c2.5-1.5 4-4 3.5-7-.5-3.5-3.5-6-7-6z"/></svg>
+      </div>
+      <span class="nav-logo-text">Verdana</span>
+    </div>
+    <ul class="nav-links">
+      <li><a onclick="navigate('home')" data-page="home">Home</a></li>
+      <li><a onclick="navigate('shop')" data-page="shop">Shop</a></li>
+      <li><a onclick="navigate('shop','Immunity')" data-page="immunity">Immunity</a></li>
+      <li><a onclick="navigate('shop','Energy')" data-page="energy">Energy</a></li>
+      <li><a onclick="navigate('shop','Skin')" data-page="skin">Skin</a></li>
+    </ul>
+    <div class="nav-search">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="nav-search" placeholder="Search herbs…" onkeydown="navSearchHandler(event)">
+    </div>
+    <div class="nav-actions">
+      <div class="nav-icon-btn" onclick="navigate('cart')" title="Cart">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </div>
+      <div class="nav-cta" onclick="navigate('admin')">Admin</div>
+      <button class="nav-icon-btn nav-mobile-toggle" id="mobile-toggle">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="mobile-menu">
+  <button class="mobile-menu-close" id="mobile-menu-close">✕</button>
+  <a onclick="navigate('home');closeMobileMenu()">Home</a>
+  <a onclick="navigate('shop');closeMobileMenu()">Shop</a>
+  <a onclick="navigate('cart');closeMobileMenu()">Cart</a>
+  <a onclick="navigate('admin');closeMobileMenu()">Admin</a>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: HOME
+═══════════════════════════════════════════ -->
+<div id="page-home" class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-tag">✦ Certified Organic &amp; Lab Tested</div>
+      <h1 class="hero-headline">Heal with<br><em>Nature's</em><br>Wisdom</h1>
+      <p class="hero-sub">Premium botanical extracts, adaptogenic herbs, and functional mushrooms — crafted for modern wellness seekers.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="navigate('shop')">
+          Shop Collection
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <button class="btn-outline" onclick="navigate('shop','Immunity')">Explore Herbs</button>
+      </div>
+      <div class="hero-stats">
+        <div><span class="hero-stat-num">200+</span><div class="hero-stat-lbl">Botanical Sources</div></div>
+        <div><span class="hero-stat-num">12K+</span><div class="hero-stat-lbl">Happy Customers</div></div>
+        <div><span class="hero-stat-num">98%</span><div class="hero-stat-lbl">Satisfaction Rate</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-img-container">
+        <img id="hero-img" src="https://images.unsplash.com/photo-1577995971063-74a38ed3f6f1?w=1200&q=80" alt="Herbal botanicals" loading="eager">
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-icon">🌿</div>
+        <div class="hero-badge-text"><strong>100% Organic</strong>Certified &amp; Lab Verified</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="cats-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Explore</div>
+        <h2 class="section-title">Shop by Wellness Goal</h2>
+        <p class="section-sub">Each collection is curated to address your specific health aspirations with precision</p>
+      </div>
+      <div class="cats-grid">
+        <div class="cat-card fade-in" onclick="navigate('shop','Immunity')">
+          <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=600&q=80" alt="Immunity" loading="lazy">
+          <div class="cat-overlay"><span class="cat-icon">🛡️</span><div class="cat-name">Immunity</div><div class="cat-count">3 products</div></div>
+          <div class="cat-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+        <div class="cat-card fade-in stagger-1" onclick="navigate('shop','Energy')">
+          <img src="https://images.unsplash.com/photo-1559181567-c3190bfa4cbe?w=600&q=80" alt="Energy" loading="lazy">
+          <div class="cat-overlay"><span class="cat-icon">⚡</span><div class="cat-name">Energy</div><div class="cat-count">2 products</div></div>
+          <div class="cat-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+        <div class="cat-card fade-in stagger-2" onclick="navigate('shop','Detox')">
+          <img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=600&q=80" alt="Detox" loading="lazy">
+          <div class="cat-overlay"><span class="cat-icon">🌊</span><div class="cat-name">Detox</div><div class="cat-count">2 products</div></div>
+          <div class="cat-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+        <div class="cat-card fade-in stagger-3" onclick="navigate('shop','Skin')">
+          <img src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=600&q=80" alt="Skin" loading="lazy">
+          <div class="cat-overlay"><span class="cat-icon">✨</span><div class="cat-name">Skin</div><div class="cat-count">1 product</div></div>
+          <div class="cat-arrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="products-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Featured</div>
+        <h2 class="section-title">Our Best Sellers</h2>
+        <p class="section-sub">Handpicked formulas trusted by thousands of wellness seekers</p>
+      </div>
+      <div class="products-grid" id="home-products"></div>
+      <div class="text-center mt-40">
+        <button class="btn-outline" onclick="navigate('shop')">View All Products</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="why-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Why Verdana</div>
+        <h2 class="section-title">Purity You Can Trust</h2>
+        <p class="section-sub">Every product we make is held to the highest standards of quality and integrity</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-card fade-in"><div class="why-icon">🌱</div><div class="why-title">100% Organic</div><div class="why-desc">All herbs are sourced from certified organic farms with full traceability from soil to shelf.</div></div>
+        <div class="why-card fade-in stagger-1"><div class="why-icon">🔬</div><div class="why-title">Lab Verified</div><div class="why-desc">Every batch undergoes third-party testing for purity, potency, and absence of contaminants.</div></div>
+        <div class="why-card fade-in stagger-2"><div class="why-icon">📜</div><div class="why-title">Research-Backed</div><div class="why-desc">Formulas developed by herbalists and pharmacists based on peer-reviewed clinical evidence.</div></div>
+        <div class="why-card fade-in stagger-3"><div class="why-icon">♻️</div><div class="why-title">Sustainably Made</div><div class="why-desc">Eco-conscious packaging, carbon-neutral shipping, and ethical wild-harvesting practices.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="test-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Reviews</div>
+        <h2 class="section-title">Loved by Our Community</h2>
+      </div>
+      <div class="test-grid">
+        <div class="test-card fade-in"><div class="test-stars">★★★★★</div><p class="test-text">"The Ashwagandha extract has completely transformed my relationship with stress. I sleep deeper and feel calmer throughout the day."</p><div class="test-author"><div class="test-avatar">👩🏾</div><div><div class="test-name">Amara Osei</div><div class="test-loc">Nairobi, Kenya</div></div></div></div>
+        <div class="test-card fade-in stagger-1"><div class="test-stars">★★★★★</div><p class="test-text">"I've tried many herbal supplements. Verdana is on another level — you can actually taste and feel the quality difference immediately."</p><div class="test-author"><div class="test-avatar">👨🏽</div><div><div class="test-name">Samuel Mwangi</div><div class="test-loc">Mombasa, Kenya</div></div></div></div>
+        <div class="test-card fade-in stagger-2"><div class="test-stars">★★★★☆</div><p class="test-text">"The Glow Botanical Serum is genuinely remarkable. My skin has never looked this clear. The packaging alone is worth the price."</p><div class="test-author"><div class="test-avatar">👩🏼</div><div><div class="test-name">Lena Fischer</div><div class="test-loc">Dubai, UAE</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-inner">
+        <div class="cta-text"><h2>Join Our Wellness Circle</h2><p>Get 15% off your first order, plus exclusive content on herbal living.</p></div>
+        <div class="cta-form">
+          <input type="email" id="cta-email" class="cta-input" placeholder="Enter your email address">
+          <button class="btn-gold" onclick="ctaSubscribe()">Subscribe</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <div class="footer-logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.5 2 5.5 4.5 5 8c-.5 3 1 5.5 3.5 7L12 22l3.5-7c2.5-1.5 4-4 3.5-7-.5-3.5-3.5-6-7-6z"/></svg></div>
+            <span class="footer-logo-text">Verdana Botanicals</span>
+          </div>
+          <p class="footer-tagline">Premium herbal medicine crafted with integrity. Science-backed. Nature-sourced. Community-first.</p>
+          <div class="footer-socials"><div class="footer-social">🐦</div><div class="footer-social">📸</div><div class="footer-social">📘</div><div class="footer-social">▶️</div></div>
+        </div>
+        <div><div class="footer-col-title">Shop</div><ul class="footer-links"><li><a onclick="navigate('shop')">All Products</a></li><li><a onclick="navigate('shop','Immunity')">Immunity</a></li><li><a onclick="navigate('shop','Energy')">Energy</a></li><li><a onclick="navigate('shop','Detox')">Detox</a></li><li><a onclick="navigate('shop','Skin')">Skin Care</a></li></ul></div>
+        <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a>About Us</a></li><li><a>Our Standards</a></li><li><a>Sustainability</a></li><li><a onclick="navigate('admin')">Admin Panel</a></li></ul></div>
+        <div class="footer-newsletter"><div class="footer-col-title">Newsletter</div><p>Weekly insights on herbal wellness, new arrivals, and exclusive member deals.</p><div class="footer-input-row"><input type="email" id="footer-email" class="footer-input" placeholder="Your email"><button class="footer-input-btn" onclick="footerSubscribe()">Join</button></div></div>
+      </div>
+      <div class="footer-bottom"><div>© 2025 Verdana Botanicals. All rights reserved.</div><div class="footer-bottom-links"><a>Privacy</a><a>Terms</a><a>Shipping</a></div></div>
+    </div>
+  </footer>
+</div><!-- /page-home -->
+
+<!-- ═══════════════════════════════════════════
+     PAGE: SHOP
+═══════════════════════════════════════════ -->
+<div id="page-shop" class="page">
+  <div class="page-header">
+    <div class="container-sm">
+      <div class="breadcrumb"><a onclick="navigate('home')">Home</a><span>›</span><span>Shop</span></div>
+      <h1 class="section-title">All Products</h1>
+      <p class="section-sub" style="margin-top:8px">Premium herbal supplements and botanical formulas</p>
+    </div>
+  </div>
+  <section style="padding:44px 0 96px;background:var(--off-white)">
+    <div class="container">
+      <div class="shop-toolbar">
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+          <div class="shop-filters" id="shop-filter-btns">
+            <button class="filter-btn" data-cat="all" onclick="setShopFilter('all',this)">All</button>
+            <button class="filter-btn" data-cat="Immunity" onclick="setShopFilter('Immunity',this)">Immunity</button>
+            <button class="filter-btn" data-cat="Energy" onclick="setShopFilter('Energy',this)">Energy</button>
+            <button class="filter-btn" data-cat="Detox" onclick="setShopFilter('Detox',this)">Detox</button>
+            <button class="filter-btn" data-cat="Skin" onclick="setShopFilter('Skin',this)">Skin</button>
+          </div>
+          <div class="price-filter">
+            <label>Max:</label>
+            <input type="range" id="price-range" min="500" max="5000" value="5000" step="100" oninput="priceFilterChange(this)">
+            <span id="price-label" style="font-size:.78rem;font-weight:600;color:var(--green-deep);white-space:nowrap">KES 5,000</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:13px;flex-wrap:wrap">
+          <div class="shop-search-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="shop-search" placeholder="Search products…" oninput="shopSearchChange(this)">
+          </div>
+          <div class="shop-sort"><select id="sort-select" onchange="shopSortChange(this)"><option value="default">Sort: Featured</option><option value="price-asc">Price: Low to High</option><option value="price-desc">Price: High to Low</option><option value="rating">Top Rated</option></select></div>
+          <span class="results-count" id="results-count">8 products</span>
+        </div>
+      </div>
+      <div class="products-grid" id="shop-products">
+        <div class="skeleton" style="height:360px;border-radius:20px"></div>
+        <div class="skeleton" style="height:360px;border-radius:20px"></div>
+        <div class="skeleton" style="height:360px;border-radius:20px"></div>
+        <div class="skeleton" style="height:360px;border-radius:20px"></div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none;padding-top:28px"><div>© 2025 Verdana Botanicals.</div></div>
+    </div>
+  </footer>
+</div><!-- /page-shop -->
+
+<!-- ═══════════════════════════════════════════
+     PAGE: PRODUCT DETAIL
+═══════════════════════════════════════════ -->
+<div id="page-product" class="page">
+  <div style="padding-top:var(--nav)"></div>
+  <div style="padding:48px 0 96px">
+    <div class="container-sm">
+      <div class="breadcrumb" style="justify-content:flex-start;margin-bottom:32px">
+        <a onclick="navigate('home')">Home</a><span>›</span>
+        <a onclick="navigate('shop')">Shop</a><span>›</span>
+        <span id="pd-breadcrumb" style="color:var(--text-dark)">Product</span>
+      </div>
+      <div class="pd-layout">
+        <!-- GALLERY -->
+        <div class="gallery-sticky">
+          <div class="gallery-main"><img id="gallery-main-img" src="https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=800&q=80" alt="Product"></div>
+          <div class="gallery-thumbs">
+            <div class="gallery-thumb active" onclick="setThumb(this,0)"><img id="thumb-0" src="https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=300&q=80" alt=""></div>
+            <div class="gallery-thumb" onclick="setThumb(this,1)"><img id="thumb-1" src="https://images.unsplash.com/photo-1502224562085-639556652f33?w=300&q=80" alt=""></div>
+            <div class="gallery-thumb" onclick="setThumb(this,2)"><img id="thumb-2" src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=300&q=80" alt=""></div>
+            <div class="gallery-thumb" onclick="setThumb(this,3)"><img id="thumb-3" src="https://images.unsplash.com/photo-1622428051717-dcd81b71571a?w=300&q=80" alt=""></div>
+          </div>
+        </div>
+        <!-- INFO -->
+        <div>
+          <div class="pd-tag" id="pd-category">Category</div>
+          <h1 class="pd-name" id="pd-name">Loading…</h1>
+          <div class="pd-rating" id="pd-rating"></div>
+          <div class="pd-price"><span id="pd-price">KES 0</span><span id="pd-old-price"></span></div>
+          <p class="pd-desc" id="pd-desc">Loading…</p>
+          <div style="margin-bottom:24px">
+            <div style="font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:11px">Key Benefits</div>
+            <div class="benefits-grid" id="pd-benefits"></div>
+          </div>
+          <div class="qty-cart-row">
+            <div class="qty-control">
+              <button class="qty-btn" id="qty-minus">−</button>
+              <span class="qty-num" id="pd-qty">1</span>
+              <button class="qty-btn" id="qty-plus">+</button>
+            </div>
+            <button class="btn-primary" id="pd-add-cart" style="flex:1;justify-content:center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+              Add to Cart
+            </button>
+          </div>
+          <div class="guarantees-row">
+            <div class="guarantee-item"><div class="gi">🛡️</div><div class="gl">30-Day Guarantee</div></div>
+            <div class="guarantee-item"><div class="gi">🚚</div><div class="gl">Free Shipping 3K+</div></div>
+            <div class="guarantee-item"><div class="gi">🔬</div><div class="gl">Lab Certified</div></div>
+          </div>
+          <div class="product-tags" id="pd-tags"></div>
+        </div>
+      </div>
+      <!-- Related -->
+      <div style="margin-top:72px">
+        <div style="margin-bottom:28px">
+          <div class="section-tag">Related</div>
+          <h2 class="section-title" style="font-size:1.75rem">You Might Also Like</h2>
+        </div>
+        <div class="products-grid" id="related-products"></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-product -->
+
+<!-- ═══════════════════════════════════════════
+     PAGE: CART
+═══════════════════════════════════════════ -->
+<div id="page-cart" class="page">
+  <div style="padding-top:var(--nav)"></div>
+  <div style="padding:52px 0 96px;min-height:90vh">
+    <div class="container-sm">
+      <div class="breadcrumb" style="justify-content:flex-start;margin-bottom:22px"><a onclick="navigate('home')">Home</a><span>›</span><span>Cart</span></div>
+
+      <!-- Empty state -->
+      <div id="cart-empty-state" class="cart-empty" style="display:none">
+        <div class="cart-empty-icon">🛒</div>
+        <h3>Your cart is empty</h3>
+        <p>Discover our premium herbal collection and find what your body needs.</p>
+        <button class="btn-primary" onclick="navigate('shop')">Browse Products</button>
+      </div>
+
+      <div id="cart-content" class="cart-layout">
+        <div>
+          <div class="cart-header">
+            <h2>Shopping Cart</h2>
+            <button class="btn-clear" onclick="clearCartConfirm()">Clear all</button>
+          </div>
+          <div id="cart-items"></div>
+          <div style="margin-top:22px"><button onclick="navigate('shop')" style="display:inline-flex;align-items:center;gap:5px;font-size:.83rem;color:var(--green-mid);background:none;border:none;cursor:pointer;padding:0"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Continue Shopping</button></div>
+        </div>
+        <div class="cart-summary">
+          <h3>Order Summary</h3>
+          <div class="summary-line"><span>Subtotal</span><span id="summary-subtotal">KES 0</span></div>
+          <div class="summary-line"><span>Shipping</span><span id="summary-shipping">KES 300</span></div>
+          <div class="summary-line"><span style="font-size:.75rem;color:var(--text-muted)">Free shipping over KES 3,000</span></div>
+          <div class="summary-line total"><span>Total</span><span id="summary-total">KES 0</span></div>
+          <button class="btn-primary w-full" style="justify-content:center" onclick="navigate('checkout')">
+            Checkout
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <div class="trust-badges">
+            <div class="trust-badge"><div class="ti">🔒</div><div class="tl">Secure</div></div>
+            <div class="trust-badge"><div class="ti">🚚</div><div class="tl">Fast Delivery</div></div>
+            <div class="trust-badge"><div class="ti">↩️</div><div class="tl">Easy Returns</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-cart -->
+
+<!-- ═══════════════════════════════════════════
+     PAGE: CHECKOUT
+═══════════════════════════════════════════ -->
+<div id="page-checkout" class="page">
+  <div style="padding-top:var(--nav)"></div>
+  <div style="padding:52px 0 96px;min-height:90vh;background:var(--off-white)">
+    <div class="container-sm">
+      <!-- Progress -->
+      <div class="checkout-progress" style="margin-bottom:28px">
+        <div class="co-step done"><span class="co-step-num">✓</span>Cart</div>
+        <span class="co-divider">—</span>
+        <div class="co-step current"><span class="co-step-num">2</span>Checkout</div>
+        <span class="co-divider">—</span>
+        <div class="co-step pending"><span class="co-step-num">3</span>Confirmed</div>
+      </div>
+      <div class="checkout-layout">
+        <!-- FORM -->
+        <div class="checkout-form-panel">
+          <div class="step-title">Delivery Information</div>
+          <form id="checkout-form" onsubmit="placeOrder(event)" novalidate>
+            <div class="form-row">
+              <div class="form-group"><label>Full Name *</label><input type="text" id="co-name" placeholder="Jane Doe" required></div>
+              <div class="form-group"><label>Phone *</label><input type="tel" id="co-phone" placeholder="+254 700 000 000" required></div>
+            </div>
+            <div class="form-group"><label>Email</label><input type="email" id="co-email" placeholder="jane@example.com"></div>
+            <div class="form-group"><label>Delivery Address *</label><input type="text" id="co-address" placeholder="Street, Building, Area" required></div>
+            <div class="form-row">
+              <div class="form-group"><label>City</label><input type="text" id="co-city" value="Nairobi"></div>
+              <div class="form-group"><label>County</label><select id="co-county"><option>Nairobi</option><option>Mombasa</option><option>Kisumu</option><option>Nakuru</option><option>Thika</option><option>Eldoret</option><option>Other</option></select></div>
+            </div>
+            <div class="form-group"><label>Order Notes</label><textarea id="co-notes" placeholder="Special delivery instructions…"></textarea></div>
+            <div class="step-title" style="margin-top:24px">Payment Method</div>
+            <label class="payment-option"><input type="radio" name="payment" value="mpesa" checked><span class="pi">📱</span><div><div class="pn">M-Pesa</div><div class="ps">Pay via M-Pesa STK Push</div></div></label>
+            <label class="payment-option"><input type="radio" name="payment" value="card"><span class="pi">💳</span><div><div class="pn">Card Payment</div><div class="ps">Visa, Mastercard accepted</div></div></label>
+            <label class="payment-option"><input type="radio" name="payment" value="cod"><span class="pi">💵</span><div><div class="pn">Cash on Delivery</div><div class="ps">Pay when your order arrives</div></div></label>
+            <button type="submit" class="btn-primary w-full" style="justify-content:center;margin-top:24px;padding:15px">
+              Place Order
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <p style="font-size:.73rem;color:var(--text-muted);text-align:center;margin-top:11px">🔒 Your order is secured. No payment info stored.</p>
+          </form>
+        </div>
+        <!-- SUMMARY -->
+        <div class="checkout-summary-panel">
+          <h3 style="font-family:var(--fd);font-size:1.3rem;font-weight:400;color:var(--green-deep);margin-bottom:18px">Your Order</h3>
+          <div id="checkout-items"></div>
+          <div style="padding-top:14px;border-top:1px solid var(--border-light)">
+            <div class="summary-line"><span>Subtotal</span><span id="co-subtotal">KES 0</span></div>
+            <div class="summary-line"><span>Shipping</span><span id="co-shipping">KES 0</span></div>
+            <div class="summary-line total"><span>Total</span><span id="co-total">KES 0</span></div>
+          </div>
+          <div class="perks-box"><div class="pk-title">Order Includes</div><div class="perk">✓ Free samples with every order</div><div class="perk">✓ Eco-friendly packaging</div><div class="perk">✓ Track your shipment</div><div class="perk">✓ 30-day return policy</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-checkout -->
+
+<!-- ═══════════════════════════════════════════
+     PAGE: ADMIN
+═══════════════════════════════════════════ -->
+<div id="page-admin" class="page">
+  <div class="admin-top-bar">🌿 <span>VERDANA BOTANICALS</span> — Admin Dashboard</div>
+  <div class="admin-page">
+    <div class="container">
+      <div class="admin-layout">
+        <!-- SIDEBAR -->
+        <div class="admin-sidebar">
+          <div class="admin-sidebar-title">Navigation</div>
+          <div class="admin-nav-item" data-panel="dashboard" onclick="switchAdminPanel('dashboard')"><span>📊</span>Dashboard</div>
+          <div class="admin-nav-item" data-panel="all-products" onclick="switchAdminPanel('all-products')"><span>🌿</span>All Products</div>
+          <div class="admin-nav-item" data-panel="add-product" onclick="switchAdminPanel('add-product')"><span>➕</span>Add Product</div>
+          <div class="admin-nav-item" data-panel="orders" onclick="switchAdminPanel('orders')"><span>📦</span>Orders</div>
+          <div style="margin-top:18px;padding-top:18px;border-top:1px solid var(--border-light)"><a onclick="navigate('home')" style="display:flex;align-items:center;gap:7px;font-size:.83rem;color:var(--text-soft);cursor:pointer"><span>🏪</span>View Store</a></div>
+        </div>
+        <!-- MAIN -->
+        <div>
+          <!-- Dashboard -->
+          <div class="admin-panel" id="admin-panel-dashboard">
+            <div class="admin-panel-header"><h2>Dashboard</h2><span style="font-size:.78rem;color:var(--text-soft)" id="dash-date"></span></div>
+            <div class="admin-stats-grid">
+              <div class="admin-stat-card"><div class="admin-stat-icon">🌿</div><div class="admin-stat-num" id="stat-products">0</div><div class="admin-stat-label">Products</div></div>
+              <div class="admin-stat-card"><div class="admin-stat-icon">📦</div><div class="admin-stat-num" id="stat-orders">0</div><div class="admin-stat-label">Orders</div></div>
+              <div class="admin-stat-card"><div class="admin-stat-icon">💰</div><div class="admin-stat-num" id="stat-revenue">KES 0</div><div class="admin-stat-label">Revenue</div></div>
+            </div>
+            <div class="admin-form-card"><h3>Quick Actions</h3>
+              <div style="display:flex;gap:11px;flex-wrap:wrap">
+                <button class="btn-primary" onclick="switchAdminPanel('add-product')">+ Add Product</button>
+                <button class="btn-outline" onclick="switchAdminPanel('all-products')">View Products</button>
+                <button class="btn-outline" onclick="switchAdminPanel('orders')">View Orders</button>
+                <button class="btn-outline" onclick="navigate('shop')">Visit Shop</button>
+              </div>
+            </div>
+          </div>
+          <!-- All Products -->
+          <div class="admin-panel" id="admin-panel-all-products">
+            <div class="admin-panel-header"><h2>All Products</h2><button class="btn-primary" onclick="switchAdminPanel('add-product')">+ Add Product</button></div>
+            <div class="admin-table-wrap">
+              <table class="admin-table"><thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Rating</th><th>Actions</th></tr></thead>
+              <tbody id="admin-products-tbody"></tbody></table>
+            </div>
+          </div>
+          <!-- Add/Edit Product -->
+          <div class="admin-panel" id="admin-panel-add-product">
+            <div class="admin-panel-header"><h2 id="form-title">Add New Product</h2></div>
+            <div class="admin-form-card">
+              <form id="product-form" onsubmit="submitProductForm(event)" novalidate>
+                <div class="form-row">
+                  <div class="form-group"><label>Product Name *</label><input type="text" id="pf-name" placeholder="e.g. Ashwagandha Extract" required></div>
+                  <div class="form-group"><label>Category *</label><select id="pf-category" required><option value="">Select…</option><option value="Immunity">Immunity</option><option value="Energy">Energy</option><option value="Detox">Detox</option><option value="Skin">Skin</option></select></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group"><label>Price (KES) *</label><input type="number" id="pf-price" placeholder="2500" min="1" required></div>
+                  <div class="form-group"><label>Badge</label><select id="pf-badge"><option value="">No badge</option><option value="bestseller">Best Seller</option><option value="new">New</option><option value="sale">Sale</option></select></div>
+                </div>
+                <div class="form-group">
+                  <label>Image URL</label>
+                  <input type="url" id="pf-image" placeholder="https://images.unsplash.com/…" oninput="previewImg(this.value)">
+                  <img id="img-preview" class="img-preview" alt="Preview">
+                </div>
+                <div class="form-group"><label>Description</label><textarea id="pf-desc" placeholder="Brief product description…"></textarea></div>
+                <div style="display:flex;gap:11px;flex-wrap:wrap">
+                  <button type="submit" class="btn-primary" id="submit-btn">Add Product</button>
+                  <button type="button" class="btn-outline" onclick="cancelAdminEdit()">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- Orders -->
+          <div class="admin-panel" id="admin-panel-orders">
+            <div class="admin-panel-header"><h2>Orders</h2></div>
+            <div id="orders-list"></div>
+            <div id="no-orders" style="display:none;text-align:center;padding:56px;color:var(--text-muted)"><div style="font-size:2.8rem;margin-bottom:11px">📦</div><p>No orders yet.</p><button class="btn-primary" style="margin-top:14px" onclick="navigate('shop')">Visit Shop</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-admin -->
+
+<!-- SUCCESS OVERLAY -->
+<div id="success-overlay" class="success-overlay">
+  <div class="success-card">
+    <div class="success-icon">✅</div>
+    <h2>Order Placed!</h2>
+    <p>Thank you, <strong id="success-name"></strong>! Your order has been received.</p>
+    <p>We'll contact you shortly to confirm delivery details.</p>
+    <div class="success-order-id" id="success-order-id">Order ID: VB-XXXXXX</div>
+    <div class="success-actions">
+      <button class="btn-primary" onclick="closeSuccess()">Continue Shopping</button>
+      <button class="btn-outline" onclick="navigate('shop');closeSuccess()">Browse More</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ─── STORAGE KEYS ─── */
+const K = { PRODUCTS:'vb_products', CART:'vb_cart', ORDERS:'vb_orders' };
+
+/* ─── DEFAULT PRODUCTS ─── */
+const DEFAULT_PRODUCTS = [
+  { id:'p001', name:'Ashwagandha Root Extract', category:'Immunity', price:2800, originalPrice:3500, image:'https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=600&q=80', description:'Premium KSM-66® ashwagandha root extract standardized to 5% withanolides. Supports stress resilience, energy, and immune function.', benefits:['Stress Relief','Energy Boost','Immune Support','Sleep Quality'], tags:['Organic','Vegan','Lab Tested'], badge:'bestseller', rating:4.8, reviews:124, inStock:true },
+  { id:'p002', name:'Turmeric Golden Blend', category:'Detox', price:2200, originalPrice:null, image:'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=600&q=80', description:'High-potency turmeric with 95% curcuminoids and black pepper extract for enhanced bioavailability. Anti-inflammatory support.', benefits:['Anti-Inflammatory','Joint Health','Antioxidant','Digestive Aid'], tags:['Organic','Non-GMO','Gluten Free'], badge:'new', rating:4.7, reviews:89, inStock:true },
+  { id:'p003', name:'Moringa Leaf Powder', category:'Energy', price:1800, originalPrice:2100, image:'https://images.unsplash.com/photo-1622428051717-dcd81b71571a?w=600&q=80', description:'Pure moringa oleifera leaf powder — a nutritional powerhouse rich in vitamins, minerals, and amino acids.', benefits:['Sustained Energy','Nutrient Dense','Metabolic Support','Vitality'], tags:['Raw','Organic','Vegan'], badge:null, rating:4.6, reviews:67, inStock:true },
+  { id:'p004', name:'Glow Botanical Serum', category:'Skin', price:3600, originalPrice:4200, image:'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=600&q=80', description:'Luxurious blend of rosehip, bakuchiol, and calendula extracts. Promotes radiance and skin renewal naturally.', benefits:['Skin Radiance','Anti-Aging','Hydration','Even Tone'], tags:['Vegan','Cruelty Free','Natural'], badge:'sale', rating:4.9, reviews:203, inStock:true },
+  { id:'p005', name:'Holy Basil Adaptogen Tea', category:'Immunity', price:1400, originalPrice:null, image:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&q=80', description:'Sacred tulsi (holy basil) loose leaf blend with calming adaptogenic herbs. Brewed for clarity and calm focus.', benefits:['Mental Clarity','Stress Balance','Immune Boost','Calming'], tags:['Organic','Fair Trade','Caffeine Free'], badge:null, rating:4.5, reviews:58, inStock:true },
+  { id:'p006', name:'Reishi Mushroom Complex', category:'Immunity', price:3200, originalPrice:3800, image:'https://images.unsplash.com/photo-1550159930-40066082a4fc?w=600&q=80', description:'Dual-extracted reishi mushroom complex. The "mushroom of immortality" revered for immune modulation and vitality.', benefits:['Immune Defense','Adaptogenic','Sleep Support','Longevity'], tags:['Organic','Dual Extract','Vegan'], badge:'bestseller', rating:4.8, reviews:156, inStock:true },
+  { id:'p007', name:'Triphala Digestive Blend', category:'Detox', price:1600, originalPrice:null, image:'https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=600&q=80', description:'Ancient Ayurvedic tri-fruit formula of amalaki, bibhitaki, and haritaki. Gentle, complete digestive support.', benefits:['Gut Health','Gentle Detox','Digestive Tone','Regularity'], tags:['Ayurvedic','Organic','Non-GMO'], badge:null, rating:4.4, reviews:43, inStock:true },
+  { id:'p008', name:"Lion's Mane Clarity Capsules", category:'Energy', price:2900, originalPrice:3400, image:'https://images.unsplash.com/photo-1472396961693-142e6e269027?w=600&q=80', description:"Certified organic lion's mane mushroom. Supports neuroplasticity, memory, and cognitive performance naturally.", benefits:['Brain Health','Focus & Memory','Nerve Growth','Mental Energy'], tags:['Organic','Nootropic','Lab Tested'], badge:'new', rating:4.7, reviews:78, inStock:true },
+];
+
+/* ─── API LAYER (localStorage-based, Django-ready) ─── */
+const API = {
+  getProducts(){ const s=localStorage.getItem(K.PRODUCTS); if(s) return JSON.parse(s); localStorage.setItem(K.PRODUCTS,JSON.stringify(DEFAULT_PRODUCTS)); return DEFAULT_PRODUCTS; },
+  saveProducts(p){ localStorage.setItem(K.PRODUCTS,JSON.stringify(p)); },
+  getProduct(id){ return API.getProducts().find(p=>p.id===id)||null; },
+  addProduct(p){ const ps=API.getProducts(); p.id='p'+Date.now(); ps.push(p); API.saveProducts(ps); return p; },
+  updateProduct(id,u){ const ps=API.getProducts(); const i=ps.findIndex(p=>p.id===id); if(i>-1){ps[i]={...ps[i],...u};API.saveProducts(ps);} },
+  deleteProduct(id){ API.saveProducts(API.getProducts().filter(p=>p.id!==id)); },
+  getCart(){ return JSON.parse(localStorage.getItem(K.CART)||'[]'); },
+  saveCart(c){ localStorage.setItem(K.CART,JSON.stringify(c)); },
+  getOrders(){ return JSON.parse(localStorage.getItem(K.ORDERS)||'[]'); },
+  saveOrder(o){ const os=API.getOrders(); os.push(o); localStorage.setItem(K.ORDERS,JSON.stringify(os)); return o; },
+};
+
+/* ─── CART ─── */
+const Cart = {
+  get(){ return API.getCart(); },
+  add(pid,qty=1){ const c=API.getCart(); const e=c.find(i=>i.productId===pid); if(e) e.qty+=qty; else c.push({productId:pid,qty}); API.saveCart(c); Cart.badge(); },
+  remove(pid){ API.saveCart(API.getCart().filter(i=>i.productId!==pid)); Cart.badge(); },
+  updateQty(pid,qty){ const c=API.getCart(); const it=c.find(i=>i.productId===pid); if(it){it.qty=Math.max(1,qty);API.saveCart(c);} Cart.badge(); },
+  clear(){ API.saveCart([]); Cart.badge(); },
+  total(){ return API.getCart().reduce((s,i)=>{ const p=API.getProduct(i.productId); return s+(p?p.price*i.qty:0); },0); },
+  count(){ return API.getCart().reduce((s,i)=>s+i.qty,0); },
+  badge(){ const b=document.getElementById('cart-badge'); const n=Cart.count(); if(b){b.textContent=n;b.classList.toggle('has-items',n>0);} },
+};
+
+/* ─── TOAST ─── */
+function toast(msg, type='success', dur=3400){
+  let c=document.getElementById('toast-container');
+  const icons={success:'✓',error:'✕',info:'ℹ'};
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  t.innerHTML=`<span class="toast-icon">${icons[type]||'✓'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(()=>{ t.classList.add('removing'); t.addEventListener('animationend',()=>t.remove()); },dur);
+}
+
+/* ─── UTILS ─── */
+const fmt=p=>'KES '+p.toLocaleString();
+const rStars=r=>`<span class="stars">${'★'.repeat(Math.round(r))}${'☆'.repeat(5-Math.round(r))}</span>`;
+const badgeHTML=b=>{ if(!b) return ''; const lbl={bestseller:'Best Seller',new:'New',sale:'Sale'}; const cls={bestseller:'',new:'gold',sale:'sale'}; return `<span class="product-badge ${cls[b]||''}">${lbl[b]||b}</span>`; };
+const genOid=()=>'VB-'+Date.now().toString(36).toUpperCase();
+function debounce(fn,ms=280){ let t; return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);} }
+
+/* ─── PRODUCT CARD ─── */
+function productCard(p){
+  const price=fmt(p.price);
+  const old=p.originalPrice?`<span class="product-price-old">${fmt(p.originalPrice)}</span>`:'';
+  return `
+    <div class="product-card fade-in" data-id="${p.id}">
+      <div class="product-img-wrap">
+        ${badgeHTML(p.badge)}
+        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=600&q=80'">
+        <div class="product-actions">
+          <button class="btn-add-cart" onclick="addToCart('${p.id}',event)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            Add to Cart
+          </button>
+          <button class="btn-wish" title="Wishlist"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">${p.category}</div>
+        <div class="product-name" onclick="navigate('product','${p.id}')">${p.name}</div>
+        <p class="product-desc">${p.description}</p>
+        <div class="product-footer">
+          <div><span class="product-price">${price}</span>${old}</div>
+          <div class="product-rating">${rStars(p.rating)}<span>(${p.reviews})</span></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function addToCart(pid,e){ if(e)e.stopPropagation(); Cart.add(pid); const p=API.getProduct(pid); toast(`${p?.name||'Item'} added to cart`,'success'); Cart.badge(); }
+
+/* ─── OBSERVER ─── */
+let _obs;
+function initObserver(){
+  if(_obs) _obs.disconnect();
+  _obs=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible');_obs.unobserve(e.target);} }); },{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.fade-in:not(.visible)').forEach(el=>_obs.observe(el));
+}
+
+/* ─── ROUTING ─── */
+let _currentPage='home';
+let _shopCategory='all';
+let _shopSearch='';
+let _shopSort='default';
+let _shopMaxPrice=5000;
+let _currentProductId=null;
+let _adminEditId=null;
+
+function navigate(page, param=null){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el=document.getElementById('page-'+page);
+  if(!el) return;
+  el.classList.add('active');
+  _currentPage=page;
+  window.scrollTo({top:0,behavior:'instant'});
+  // Update nav active
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const activeLink=document.querySelector(`.nav-links a[data-page="${page}"]`);
+  if(activeLink) activeLink.classList.add('active');
+  // Page-specific init
+  if(page==='home') initHome();
+  if(page==='shop'){ if(param){_shopCategory=param; setShopFilterActive(param);} else if(!param){ /* keep */ } renderShop(); }
+  if(page==='product' && param){ _currentProductId=param; renderProductDetail(param); }
+  if(page==='cart') renderCart();
+  if(page==='checkout') renderCheckout();
+  if(page==='admin'){ renderAdmin(); switchAdminPanel('dashboard'); }
+  setTimeout(initObserver,80);
+}
+
+/* ─── HOME ─── */
+let _heroIdx=0;
+const _heroImgs=['https://images.unsplash.com/photo-1577995971063-74a38ed3f6f1?w=1200&q=80','https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=1200&q=80','https://images.unsplash.com/photo-1602052793312-b99c2a9ee797?w=1200&q=80'];
+let _heroTimer=null;
+
+function initHome(){
+  const grid=document.getElementById('home-products');
+  if(grid){
+    const featured=API.getProducts().slice(0,4);
+    grid.innerHTML=featured.map(productCard).join('');
+  }
+  // Hero carousel
+  if(_heroTimer) clearInterval(_heroTimer);
+  _heroTimer=setInterval(()=>{
+    _heroIdx=(_heroIdx+1)%_heroImgs.length;
+    const img=document.getElementById('hero-img');
+    if(img){ img.style.transition='opacity .4s ease'; img.style.opacity='0'; setTimeout(()=>{img.src=_heroImgs[_heroIdx];img.style.opacity='1';},350); }
+  },5000);
+}
+
+function ctaSubscribe(){ const e=document.getElementById('cta-email'); if(e&&e.value.includes('@')){toast('Thank you for subscribing!');e.value='';}else toast('Please enter a valid email','error'); }
+function footerSubscribe(){ const e=document.getElementById('footer-email'); if(e&&e.value.includes('@')){toast('Subscribed successfully!');e.value='';}else toast('Please enter a valid email','error'); }
+
+/* ─── SHOP ─── */
+function renderShop(){
+  let ps=API.getProducts();
+  if(_shopCategory!=='all') ps=ps.filter(p=>p.category===_shopCategory);
+  if(_shopSearch){ const q=_shopSearch.toLowerCase(); ps=ps.filter(p=>p.name.toLowerCase().includes(q)||p.description.toLowerCase().includes(q)||p.category.toLowerCase().includes(q)); }
+  ps=ps.filter(p=>p.price<=_shopMaxPrice);
+  if(_shopSort==='price-asc') ps.sort((a,b)=>a.price-b.price);
+  else if(_shopSort==='price-desc') ps.sort((a,b)=>b.price-a.price);
+  else if(_shopSort==='rating') ps.sort((a,b)=>b.rating-a.rating);
+  const grid=document.getElementById('shop-products');
+  const cnt=document.getElementById('results-count');
+  if(cnt) cnt.textContent=`${ps.length} product${ps.length!==1?'s':''}`;
+  if(!grid) return;
+  if(!ps.length){ grid.innerHTML=`<div class="no-products"><div class="icon">🌿</div><p>No products found</p></div>`; return; }
+  grid.innerHTML=ps.map(productCard).join('');
+  setTimeout(initObserver,80);
+}
+
+function setShopFilter(cat,btn){ _shopCategory=cat; setShopFilterActive(cat); renderShop(); }
+function setShopFilterActive(cat){ document.querySelectorAll('.filter-btn').forEach(b=>{ b.classList.toggle('active',b.dataset.cat===cat); }); }
+function shopSearchChange(inp){ _shopSearch=inp.value; renderShop(); }
+function shopSortChange(sel){ _shopSort=sel.value; renderShop(); }
+function priceFilterChange(inp){ _shopMaxPrice=parseInt(inp.value); const lbl=document.getElementById('price-label'); if(lbl) lbl.textContent=fmt(_shopMaxPrice); renderShop(); }
+function navSearchHandler(e){ if(e.key==='Enter'){ const q=e.target.value.trim(); if(q){ _shopSearch=q; navigate('shop'); } } }
+
+/* ─── PRODUCT DETAIL ─── */
+function renderProductDetail(id){
+  const p=API.getProduct(id);
+  if(!p){ navigate('shop'); return; }
+  const set=(eid,val)=>{ const el=document.getElementById(eid); if(el) el.textContent=val; };
+  set('pd-name',p.name); set('pd-category',p.category);
+  set('pd-price',fmt(p.price));
+  const op=document.getElementById('pd-old-price'); if(op) op.textContent=p.originalPrice?fmt(p.originalPrice):'';
+  set('pd-desc',p.description);
+  set('pd-breadcrumb',p.name);
+  const rat=document.getElementById('pd-rating'); if(rat) rat.innerHTML=`${rStars(p.rating)}<span style="font-size:.8rem;color:var(--text-soft);margin-left:6px">(${p.reviews} reviews)</span>`;
+  const ben=document.getElementById('pd-benefits'); const bIcons=['🌿','⚡','🛡️','✨','💚','🔬'];
+  if(ben&&p.benefits) ben.innerHTML=p.benefits.map((b,i)=>`<div class="benefit-item"><span>${bIcons[i%bIcons.length]}</span><span>${b}</span></div>`).join('');
+  const tags=document.getElementById('pd-tags'); if(tags&&p.tags) tags.innerHTML=p.tags.map(t=>`<span class="tag-pill">${t}</span>`).join('');
+  // Gallery
+  const mi=document.getElementById('gallery-main-img'); if(mi) mi.src=p.image;
+  const t0=document.getElementById('thumb-0'); if(t0){ t0.src=p.image; }
+  // Qty
+  let qty=1;
+  const qEl=document.getElementById('pd-qty');
+  document.getElementById('qty-minus').onclick=()=>{ if(qty>1){qty--;if(qEl)qEl.textContent=qty;} };
+  document.getElementById('qty-plus').onclick=()=>{ qty++;if(qEl)qEl.textContent=qty; };
+  document.getElementById('pd-add-cart').onclick=()=>{ Cart.add(id,qty); toast(`${p.name} (×${qty}) added to cart`); };
+  // Related
+  const rel=API.getProducts().filter(r=>r.category===p.category&&r.id!==id).slice(0,4);
+  const rc=document.getElementById('related-products'); if(rc) rc.innerHTML=rel.map(productCard).join('');
+}
+
+function setThumb(el,idx){ document.querySelectorAll('.gallery-thumb').forEach(t=>t.classList.remove('active')); el.classList.add('active'); const mi=document.getElementById('gallery-main-img'); const ti=el.querySelector('img'); if(mi&&ti){ mi.style.transition='opacity .22s'; mi.style.opacity='0'; setTimeout(()=>{mi.src=ti.src.replace('w=300','w=800');mi.style.opacity='1';},200); } }
+
+/* ─── CART ─── */
+function renderCart(){
+  const cart=API.getCart();
+  const emptyEl=document.getElementById('cart-empty-state');
+  const contentEl=document.getElementById('cart-content');
+  if(!cart.length){ if(emptyEl)emptyEl.style.display='block'; if(contentEl)contentEl.style.display='none'; return; }
+  if(emptyEl)emptyEl.style.display='none'; if(contentEl)contentEl.style.display='grid';
+  let sub=0;
+  document.getElementById('cart-items').innerHTML=cart.map(item=>{
+    const p=API.getProduct(item.productId); if(!p) return '';
+    const line=p.price*item.qty; sub+=line;
+    return `<div class="cart-item"><div class="cart-item-img"><img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=600&q=80'"></div><div><div class="cart-item-cat">${p.category}</div><div class="cart-item-name">${p.name}</div><div class="cart-item-controls"><div class="qty-control"><button class="qty-btn" onclick="cartQty('${p.id}',-1)">−</button><span class="qty-num">${item.qty}</span><button class="qty-btn" onclick="cartQty('${p.id}',1)">+</button></div><button class="btn-remove" onclick="cartRemove('${p.id}')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button></div></div><div class="cart-item-price">${fmt(line)}</div></div>`;
+  }).join('');
+  const ship=sub>3000?0:300; const total=sub+ship;
+  document.getElementById('summary-subtotal').textContent=fmt(sub);
+  document.getElementById('summary-shipping').textContent=ship===0?'FREE':fmt(ship);
+  document.getElementById('summary-total').textContent=fmt(total);
+  Cart.badge();
+}
+function cartQty(pid,delta){ const c=API.getCart(); const it=c.find(i=>i.productId===pid); if(it){const nq=it.qty+delta; if(nq<1)Cart.remove(pid); else Cart.updateQty(pid,nq);} renderCart(); }
+function cartRemove(pid){ Cart.remove(pid); toast('Item removed','info'); renderCart(); }
+function clearCartConfirm(){ if(confirm('Remove all items from cart?')){Cart.clear();renderCart();} }
+
+/* ─── CHECKOUT ─── */
+function renderCheckout(){
+  const cart=API.getCart();
+  if(!cart.length){ navigate('cart'); return; }
+  let sub=0;
+  document.getElementById('checkout-items').innerHTML=cart.map(item=>{
+    const p=API.getProduct(item.productId); if(!p) return '';
+    const line=p.price*item.qty; sub+=line;
+    return `<div class="checkout-item"><div class="checkout-item-img"><img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=600&q=80'"></div><div class="checkout-item-details"><div class="checkout-item-name">${p.name}</div><div class="checkout-item-qty">Qty: ${item.qty}</div></div><div class="checkout-item-price">${fmt(line)}</div></div>`;
+  }).join('');
+  const ship=sub>3000?0:300;
+  document.getElementById('co-subtotal').textContent=fmt(sub);
+  document.getElementById('co-shipping').textContent=ship===0?'FREE':fmt(ship);
+  document.getElementById('co-total').textContent=fmt(sub+ship);
+}
+
+function placeOrder(e){
+  e.preventDefault();
+  const name=document.getElementById('co-name')?.value?.trim();
+  const phone=document.getElementById('co-phone')?.value?.trim();
+  const address=document.getElementById('co-address')?.value?.trim();
+  if(!name||!phone||!address){ toast('Please fill all required fields','error'); return; }
+  const cart=API.getCart();
+  const sub=cart.reduce((s,it)=>{ const p=API.getProduct(it.productId); return s+(p?p.price*it.qty:0); },0);
+  const ship=sub>3000?0:300;
+  const order={ id:genOid(), customer:{name,phone,address}, items:cart, subtotal:sub, shipping:ship, total:sub+ship, date:new Date().toISOString(), status:'pending' };
+  API.saveOrder(order);
+  Cart.clear();
+  document.getElementById('success-name').textContent=name;
+  document.getElementById('success-order-id').textContent=`Order ID: ${order.id}`;
+  document.getElementById('success-overlay').classList.add('show');
+}
+function closeSuccess(){ document.getElementById('success-overlay').classList.remove('show'); navigate('home'); }
+
+/* ─── ADMIN ─── */
+function renderAdmin(){
+  const ps=API.getProducts();
+  const tbody=document.getElementById('admin-products-tbody');
+  if(tbody){
+    if(!ps.length){ tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">No products</td></tr>'; }
+    else tbody.innerHTML=ps.map(p=>`<tr><td><img src="${p.image}" class="admin-product-img" onerror="this.src='https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=400&q=80'" alt="${p.name}"></td><td><strong style="color:var(--green-deep)">${p.name}</strong></td><td><span style="background:var(--green-pale);color:var(--green-mid);padding:3px 9px;border-radius:50px;font-size:.73rem">${p.category}</span></td><td>${fmt(p.price)}</td><td>${rStars(p.rating)} <span style="font-size:.73rem;color:var(--text-muted)">${p.rating}</span></td><td><button class="btn-edit" onclick="adminEdit('${p.id}')">Edit</button><button class="btn-delete" onclick="adminDelete('${p.id}')">Delete</button></td></tr>`).join('');
+  }
+  const orders=API.getOrders();
+  const dateEl=document.getElementById('dash-date'); if(dateEl) dateEl.textContent=new Date().toLocaleDateString('en-KE',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const sp=id=>{ const el=document.getElementById(id); if(el) return el; return {textContent:''};};
+  sp('stat-products').textContent=ps.length;
+  sp('stat-orders').textContent=orders.length;
+  sp('stat-revenue').textContent=fmt(orders.reduce((s,o)=>s+(o.total||0),0));
+}
+function renderAdminOrders(){
+  const orders=API.getOrders();
+  const list=document.getElementById('orders-list');
+  const noOrd=document.getElementById('no-orders');
+  if(!list) return;
+  if(!orders.length){ list.innerHTML=''; if(noOrd)noOrd.style.display='block'; return; }
+  if(noOrd)noOrd.style.display='none';
+  list.innerHTML=orders.slice().reverse().map(o=>{
+    const date=new Date(o.date).toLocaleDateString('en-KE',{day:'numeric',month:'short',year:'numeric'});
+    const cnt=o.items?.reduce((s,i)=>s+i.qty,0)||0;
+    return `<div class="order-card"><div class="order-card-header"><div><div class="order-id">${o.id}</div><div class="order-date">${date} · ${cnt} item${cnt!==1?'s':''}</div></div><span class="order-status">Pending</span></div><div class="order-customer">👤 <strong>${o.customer?.name||'N/A'}</strong> — 📞 ${o.customer?.phone||'N/A'}</div><div class="order-customer">📍 ${o.customer?.address||'N/A'}</div><div style="margin-top:9px;display:flex;justify-content:space-between;align-items:center"><div class="order-total">${fmt(o.total||0)}</div><button class="btn-edit" onclick="this.textContent='Fulfilled';this.style.background='var(--green-mid)';this.style.color='white'">Mark Fulfilled</button></div></div>`;
+  }).join('');
+}
+function switchAdminPanel(id){
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.admin-nav-item').forEach(n=>n.classList.remove('active'));
+  const panel=document.getElementById('admin-panel-'+id);
+  if(panel) panel.classList.add('active');
+  const navItem=document.querySelector(`.admin-nav-item[data-panel="${id}"]`);
+  if(navItem) navItem.classList.add('active');
+  if(id==='orders') renderAdminOrders();
+  if(id==='all-products'||id==='dashboard') renderAdmin();
+}
+function adminEdit(id){
+  _adminEditId=id;
+  const p=API.getProduct(id); if(!p) return;
+  document.getElementById('pf-name').value=p.name;
+  document.getElementById('pf-category').value=p.category;
+  document.getElementById('pf-price').value=p.price;
+  document.getElementById('pf-image').value=p.image;
+  document.getElementById('pf-desc').value=p.description;
+  document.getElementById('pf-badge').value=p.badge||'';
+  document.getElementById('form-title').textContent='Edit Product';
+  document.getElementById('submit-btn').textContent='Update Product';
+  previewImg(p.image);
+  switchAdminPanel('add-product');
+  document.getElementById('pf-name').scrollIntoView({behavior:'smooth'});
+}
+function adminDelete(id){ if(confirm('Delete this product?')){ API.deleteProduct(id); toast('Product deleted','info'); renderAdmin(); } }
+function submitProductForm(e){
+  e.preventDefault();
+  const name=document.getElementById('pf-name').value.trim();
+  const cat=document.getElementById('pf-category').value;
+  const price=parseInt(document.getElementById('pf-price').value);
+  const image=document.getElementById('pf-image').value.trim();
+  const desc=document.getElementById('pf-desc').value.trim();
+  const badge=document.getElementById('pf-badge').value;
+  if(!name||!cat||!price){ toast('Please fill required fields','error'); return; }
+  const data={ name, category:cat, price, image:image||'https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=600&q=80', description:desc||'', badge:badge||null, originalPrice:null, benefits:['Quality','Natural','Tested'], tags:['Organic'], rating:4.5, reviews:0, inStock:true };
+  if(_adminEditId){ API.updateProduct(_adminEditId,data); toast('Product updated'); _adminEditId=null; document.getElementById('form-title').textContent='Add New Product'; document.getElementById('submit-btn').textContent='Add Product'; }
+  else{ API.addProduct(data); toast('Product added!'); }
+  e.target.reset();
+  document.getElementById('img-preview').style.display='none';
+  renderAdmin();
+  switchAdminPanel('all-products');
+}
+function cancelAdminEdit(){ _adminEditId=null; document.getElementById('product-form').reset(); document.getElementById('form-title').textContent='Add New Product'; document.getElementById('submit-btn').textContent='Add Product'; document.getElementById('img-preview').style.display='none'; switchAdminPanel('all-products'); }
+function previewImg(url){ const img=document.getElementById('img-preview'); if(!img) return; if(url&&url.startsWith('http')){ img.src=url; img.style.display='block'; img.onerror=()=>img.style.display='none'; } else img.style.display='none'; }
+
+/* ─── NAVBAR INIT ─── */
+function initNavbar(){
+  window.addEventListener('scroll',()=>{ const n=document.getElementById('navbar'); if(n) n.classList.toggle('scrolled',window.scrollY>20); });
+  document.getElementById('mobile-toggle').addEventListener('click',()=>document.getElementById('mobile-menu').classList.add('open'));
+  document.getElementById('mobile-menu-close').addEventListener('click',closeMobileMenu);
+}
+function closeMobileMenu(){ document.getElementById('mobile-menu').classList.remove('open'); }
+
+/* ─── BOOTSTRAP ─── */
+document.addEventListener('DOMContentLoaded',()=>{
+  initNavbar();
+  Cart.badge();
+  navigate('home');
+  // Ensure products are seeded
+  API.getProducts();
+});
+</script>
+</body>
+</html>

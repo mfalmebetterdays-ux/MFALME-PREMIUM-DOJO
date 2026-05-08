@@ -1,0 +1,517 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>Parent Portal Login — Revision Dojo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+:root{
+  --sky:#eef6ff;--sky2:#d0e8fa;--ink:#1a2638;--ink2:#3b4d63;--ink3:#7088a0;
+  --gold:#ffc107;--gold-dk:#e6a800;--navy:#1a3a6b;--blue:#1976d2;
+  --red:#e53935;--green:#00b248;--purple:#7b1fa2;
+  --r:10px;--r2:16px;--r3:24px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Nunito',sans-serif;
+  background:linear-gradient(135deg, var(--navy) 0%, #1565c0 55%, #0288d1 100%);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  position:relative;
+}
+.auth-container{
+  width:100%;
+  max-width:480px;
+  animation:fadeInUp 0.5s ease;
+}
+@keyframes fadeInUp{
+  from{
+    opacity:0;
+    transform:translateY(30px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+.auth-card{
+  background:#fff;
+  border-radius:var(--r3);
+  padding:40px 32px;
+  box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);
+  position:relative;
+  overflow:hidden;
+}
+.auth-card::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:4px;
+  background:linear-gradient(90deg, var(--gold), var(--blue), var(--gold));
+}
+.logo{
+  text-align:center;
+  margin-bottom:24px;
+}
+.logo h1{
+  font-family:'Fredoka One',cursive;
+  font-size:32px;
+  color:var(--navy);
+  margin-bottom:4px;
+}
+.logo h1 span{
+  color:var(--gold);
+}
+.logo p{
+  font-size:13px;
+  font-weight:700;
+  color:var(--ink3);
+  letter-spacing:1px;
+}
+.tagline{
+  text-align:center;
+  margin-bottom:28px;
+  padding:12px;
+  background:linear-gradient(135deg, rgba(255,193,7,.1), rgba(25,118,210,.1));
+  border-radius:var(--r2);
+}
+.tagline i{
+  color:var(--gold);
+  margin-right:8px;
+}
+.tagline span{
+  font-size:13px;
+  font-weight:700;
+  color:var(--ink2);
+}
+.field-group{
+  margin-bottom:22px;
+}
+.field-label{
+  display:block;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--ink3);
+  margin-bottom:8px;
+}
+.field-label i{
+  margin-right:6px;
+  width:16px;
+}
+.input-wrapper{
+  position:relative;
+}
+.input-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--ink3);
+  font-size:14px;
+}
+.field-input{
+  width:100%;
+  background:var(--sky);
+  border:2.5px solid var(--sky2);
+  border-radius:var(--r2);
+  padding:14px 16px 14px 42px;
+  font-family:'Nunito',sans-serif;
+  font-size:15px;
+  font-weight:700;
+  color:var(--navy);
+  outline:none;
+  transition:all 0.2s;
+}
+.field-input:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 4px rgba(25,118,210,.12);
+  background:#fff;
+}
+.field-input::placeholder{
+  color:var(--ink3);
+  font-weight:400;
+  font-size:13px;
+}
+.checkbox-group{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:20px 0;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.checkbox-label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink2);
+}
+.checkbox-label input{
+  width:18px;
+  height:18px;
+  cursor:pointer;
+}
+.forgot-link{
+  font-size:12px;
+  font-weight:700;
+  color:var(--blue);
+  text-decoration:none;
+  transition:color 0.2s;
+}
+.forgot-link:hover{
+  color:var(--gold-dk);
+  text-decoration:underline;
+}
+.btn-login{
+  background:var(--gold);
+  color:var(--navy);
+  font-family:'Fredoka One',cursive;
+  font-size:18px;
+  padding:14px 26px;
+  border:none;
+  border-radius:var(--r2);
+  width:100%;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  transition:all 0.2s;
+  box-shadow:0 4px 0 var(--gold-dk);
+  margin-bottom:20px;
+}
+.btn-login:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 0 var(--gold-dk);
+}
+.btn-login:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+  transform:none;
+}
+.divider{
+  text-align:center;
+  margin:20px 0;
+  position:relative;
+}
+.divider::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:50%;
+  width:100%;
+  height:1px;
+  background:var(--sky2);
+}
+.divider span{
+  background:#fff;
+  padding:0 15px;
+  position:relative;
+  font-size:11px;
+  font-weight:800;
+  color:var(--ink3);
+  text-transform:uppercase;
+}
+.back-link{
+  text-align:center;
+  margin-top:16px;
+}
+.back-link a{
+  color:var(--ink3);
+  text-decoration:none;
+  font-size:13px;
+  font-weight:700;
+  transition:color 0.2s;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.back-link a:hover{
+  color:var(--blue);
+}
+.alert{
+  border-radius:var(--r);
+  padding:12px 16px;
+  margin-bottom:20px;
+  font-size:12px;
+  font-weight:800;
+  display:none;
+  align-items:center;
+  gap:10px;
+}
+.alert i{
+  font-size:14px;
+}
+.alert-error{
+  background:rgba(229,57,53,.08);
+  border:1.5px solid rgba(229,57,53,.25);
+  color:var(--red);
+}
+.alert-success{
+  background:rgba(0,178,72,.08);
+  border:1.5px solid rgba(0,178,72,.25);
+  color:var(--green);
+}
+.alert.show{
+  display:flex;
+}
+.spinner{
+  width:20px;
+  height:20px;
+  border:3px solid rgba(26,58,107,.2);
+  border-top-color:var(--navy);
+  border-radius:50%;
+  animation:spin 0.7s linear infinite;
+  display:inline-block;
+}
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+.info-box{
+  background:var(--sky);
+  border-radius:var(--r2);
+  padding:14px;
+  margin-top:20px;
+  text-align:center;
+}
+.info-box p{
+  font-size:11px;
+  color:var(--ink2);
+  margin-bottom:6px;
+}
+.info-box i{
+  color:var(--gold);
+  margin-right:5px;
+}
+.info-box strong{
+  color:var(--navy);
+}
+@media(max-width:480px){
+  .auth-card{
+    padding:30px 20px;
+  }
+  .logo h1{
+    font-size:28px;
+  }
+  .checkbox-group{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+}
+</style>
+</head>
+<body>
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="logo">
+      <h1>Revision<span>Dojo</span></h1>
+      <p>Parent Portal</p>
+    </div>
+    
+    <div class="tagline">
+      <i class="fas fa-heart"></i>
+      <span>Track your child's learning journey</span>
+    </div>
+    
+    <div id="alertMsg" class="alert alert-error"></div>
+    
+    <form id="loginForm" onsubmit="return false;">
+      <div class="field-group">
+        <label class="field-label">
+          <i class="fas fa-envelope"></i> Email Address
+        </label>
+        <div class="input-wrapper">
+          <i class="fas fa-user input-icon"></i>
+          <input type="email" id="loginEmail" class="field-input" placeholder="parent@example.com" autocomplete="email" required>
+        </div>
+      </div>
+      
+      <div class="field-group">
+        <label class="field-label">
+          <i class="fas fa-lock"></i> Password
+        </label>
+        <div class="input-wrapper">
+          <i class="fas fa-key input-icon"></i>
+          <input type="password" id="loginPassword" class="field-input" placeholder="Your password or phone number" autocomplete="current-password" required>
+        </div>
+      </div>
+      
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="rememberMe">
+          <span><i class="fas fa-check-circle"></i> Remember me (stay logged in)</span>
+        </label>
+        <a href="{% url 'dojo:password_reset' %}" class="forgot-link">
+          <i class="fas fa-question-circle"></i> Forgot password?
+        </a>
+      </div>
+      
+      <button type="submit" id="btnLogin" class="btn-login">
+        <i class="fas fa-sign-in-alt"></i> Login to Parent Portal
+      </button>
+    </form>
+    
+    <div class="divider">
+      <span>or</span>
+    </div>
+    
+    <div class="back-link">
+      <a href="{% url 'dojo:home' %}">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+    </div>
+    
+    <div class="info-box">
+      <p><i class="fas fa-info-circle"></i> <strong>First time logging in?</strong></p>
+      <p>Use the email and phone number provided by your child during their registration.</p>
+      
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'dojo/js/csrf.js' %}"></script>
+<script>
+const loginBtn = document.getElementById('btnLogin');
+const loginEmail = document.getElementById('loginEmail');
+const loginPassword = document.getElementById('loginPassword');
+const rememberMe = document.getElementById('rememberMe');
+const alertDiv = document.getElementById('alertMsg');
+
+function showAlert(message, isError = true) {
+  alertDiv.textContent = message;
+  alertDiv.className = `alert ${isError ? 'alert-error' : 'alert-success'} show`;
+  
+  setTimeout(() => {
+    alertDiv.classList.remove('show');
+  }, 5000);
+}
+
+function hideAlert() {
+  alertDiv.classList.remove('show');
+}
+
+async function handleLogin() {
+  const email = loginEmail.value.trim().toLowerCase();
+  const password = loginPassword.value;
+  const remember = rememberMe.checked;
+  
+  // Validation
+  if (!email) {
+    showAlert('Please enter your email address');
+    loginEmail.focus();
+    return;
+  }
+  
+  if (!password) {
+    showAlert('Please enter your password');
+    loginPassword.focus();
+    return;
+  }
+  
+  // Email format validation
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) {
+    showAlert('Please enter a valid email address');
+    loginEmail.focus();
+    return;
+  }
+  
+  hideAlert();
+  
+  // Disable button and show loading state
+  loginBtn.disabled = true;
+  const originalHTML = loginBtn.innerHTML;
+  loginBtn.innerHTML = '<div class="spinner"></div> Logging in...';
+  
+  try {
+    const response = await fetch('/api/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        role: 'parent',
+        remember_me: remember
+      })
+    });
+    
+    const data = await response.json();
+    
+    if (data.error) {
+      showAlert(data.error);
+      loginBtn.disabled = false;
+      loginBtn.innerHTML = originalHTML;
+      return;
+    }
+    
+    if (data.user && data.user.role === 'parent') {
+      // Successful login
+      showAlert('✓ Login successful! Redirecting to dashboard...', false);
+      
+      setTimeout(() => {
+        window.location.href = '/parent-dashboard/';
+      }, 1500);
+    } else {
+      showAlert('This account is not registered as a parent. Please use the student login.');
+      loginBtn.disabled = false;
+      loginBtn.innerHTML = originalHTML;
+    }
+    
+  } catch (error) {
+    console.error('Login error:', error);
+    showAlert('Network error. Please check your connection and try again.');
+    loginBtn.disabled = false;
+    loginBtn.innerHTML = originalHTML;
+  }
+}
+
+// Event listeners
+loginBtn.addEventListener('click', handleLogin);
+
+// Allow Enter key to submit
+loginPassword.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    handleLogin();
+  }
+});
+
+loginEmail.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    loginPassword.focus();
+  }
+});
+
+// Optional: Auto-focus on email field on page load
+document.addEventListener('DOMContentLoaded', () => {
+  loginEmail.focus();
+  
+  // Check if there's a redirect message in URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const message = urlParams.get('message');
+  if (message === 'registered') {
+    showAlert('✓ Your parent account has been created! Please login with your email and phone number.', false);
+  } else if (message === 'linked') {
+    showAlert('✓ A new child has been linked to your account!', false);
+  }
+});
+</script>
+</body>
+</html>

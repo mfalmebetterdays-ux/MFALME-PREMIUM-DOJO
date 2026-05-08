@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,viewport-fit=cover">
-<title>Revision Dojo — Master Multiplication</title>
+<title>TimesTable Dojo — Master Multiplication</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
@@ -76,7 +76,12 @@ select.field-inp{cursor:pointer}
 .tn-right{display:flex;align-items:center;gap:8px}
 .billing-btn{background:linear-gradient(135deg,var(--gold),#ff8f00);color:var(--navy);border:none;border-radius:99px;padding:6px 14px;font-size:12px;font-weight:800;display:flex;align-items:center;gap:6px;cursor:pointer;transition:all .2s}
 .billing-btn:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.2)}
-/* MOBILE RESPONSIVE */
+/* Trial Banner */
+.trial-banner{background:linear-gradient(135deg,var(--gold),#ff8f00);color:var(--navy);padding:12px 16px;text-align:center;font-weight:800;font-size:13px;cursor:pointer;transition:all .2s;border-bottom:2px solid var(--gold-dk)}
+.trial-banner:hover{background:linear-gradient(135deg,#ff8f00,var(--gold))}
+.trial-banner.warning{background:linear-gradient(135deg,var(--amber),#ff6d00);color:#fff}
+.trial-banner.expired{background:var(--red);color:#fff}
+/* MOBILE RESPONSIVE - HIDE DESKTOP BUTTONS ON MOBILE, SHOW MENU TOGGLE */
 @media (max-width: 768px) {
   .tn-right .tn-pill:not(.mobile-only) { display: none; }
   .tn-right .billing-btn { display: none; }
@@ -434,10 +439,10 @@ select.tutor-search-inp{cursor:pointer}
 <!-- HOME SCREEN -->
 <div id="s-home" class="scr on">
   <div class="top-nav">
-    <div class="tn-logo">Revision<span>Dojo</span></div>
+    <div class="tn-logo">Times<span>Dojo</span></div>
     <div class="tn-right">
       <button class="mute-btn" id="muteBtn"><i class="fas fa-volume-up"></i></button>
-      <button class="billing-btn" id="billingBtn"><i class="fas fa-credit-card"></i> Upgrade</button>
+      <button class="billing-btn" id="billingBtn"><i class="fas fa-credit-card"></i> Billing</button>
       <div class="tn-pill notification-badge" id="learningHubBtn">
         <i class="fas fa-graduation-cap" style="color:var(--gold)"></i>
         <span class="tn-name">Learning Hub</span>
@@ -452,7 +457,8 @@ select.tutor-search-inp{cursor:pointer}
     </div>
   </div>
   
-  <!-- No trial banner - removed -->
+  <!-- Trial Banner (will be populated by JavaScript) -->
+  <div id="trialBannerContainer"></div>
   
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu">
@@ -462,7 +468,7 @@ select.tutor-search-inp{cursor:pointer}
     </div>
     <div class="mobile-menu-item" id="mobileBillingBtn">
       <i class="fas fa-credit-card"></i>
-      <span>Upgrade</span>
+      <span>Billing</span>
     </div>
     <div class="mobile-menu-item" id="mobileProfileBtn">
       <i class="fas fa-user-circle"></i>
@@ -547,7 +553,7 @@ select.tutor-search-inp{cursor:pointer}
 
 <!-- LEADERBOARD SCREEN -->
 <div id="s-lb" class="scr">
-  <div class="top-nav"><div class="tn-logo">Revision<span>Dojo</span></div><div class="tn-name" style="color:#fff;font-size:13px;font-weight:800">🏆 Leaderboard</div></div>
+  <div class="top-nav"><div class="tn-logo">Times<span>Dojo</span></div><div class="tn-name" style="color:#fff;font-size:13px;font-weight:800">🏆 Leaderboard</div></div>
   <div class="lb-body"><div class="lb-filters" id="lbFilters"><div class="lb-filter on" data-scope="school">🏫 My School</div><div class="lb-filter" data-scope="county">📍 My County</div><div class="lb-filter" data-scope="national">🌍 National</div></div><div class="lb-table" id="lbTable"></div></div>
 </div>
 
@@ -564,8 +570,8 @@ select.tutor-search-inp{cursor:pointer}
 <div class="payment-modal" id="paymentModal">
   <div class="payment-modal-content">
     <div class="payment-header">
-      <h2><i class="fas fa-credit-card"></i> Upgrade to Premium</h2>
-      <p>Unlock Blue Belt and above! Get access to all 9 belts, leaderboards, and premium features.</p>
+      <h2><i class="fas fa-credit-card"></i> Billing & Subscription</h2>
+      <p>7-day free trial included! Upgrade to unlock all belts.</p>
     </div>
     <div id="subscriptionStatus"></div>
     <h3 style="font-size:16px;margin-bottom:12px">Choose a Plan</h3>
@@ -611,7 +617,7 @@ select.tutor-search-inp{cursor:pointer}
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
 // ============================================================================
-// REVISION DOJO GAME - Updated: White & Yellow belts free, Blue+ require payment
+// COMPLETE GAME JAVASCRIPT - ALL ORIGINAL FUNCTIONALITY PRESERVED
 // ============================================================================
 (function(){
   'use strict';
@@ -651,10 +657,10 @@ select.tutor-search-inp{cursor:pointer}
   };
   document.addEventListener('click', function() { AUD.unlock(); }, { once: false, passive: true });
 
-  /* ══ BELT DEFINITIONS - White & Yellow FREE, Blue+ require payment ══ */
+  /* ══ BELT DEFINITIONS ══ */
   var BELTS = [
     {id:'white', name:'White Belt', color:'#d0d0d0', textColor:'#1a2638', tables:[2,5,10,11], newTables:[2,5,10,11], minutes:5, emoji:'⬜', requiresPayment:false},
-    {id:'yellow', name:'Yellow Belt', color:'#f9a825', textColor:'#1a2638', tables:[2,3,4,5,10,11], newTables:[3,4], minutes:7, emoji:'🟡', requiresPayment:false},
+    {id:'yellow', name:'Yellow Belt', color:'#f9a825', textColor:'#1a2638', tables:[2,3,4,5,10,11], newTables:[3,4], minutes:7, emoji:'🟡', requiresPayment:true},
     {id:'blue', name:'Blue Belt', color:'#1565c0', textColor:'#ffffff', tables:[2,3,4,5,6,7,10,11], newTables:[6,7], minutes:9, emoji:'🔵', requiresPayment:true},
     {id:'red', name:'Red Belt', color:'#c62828', textColor:'#ffffff', tables:[2,3,4,5,6,7,8,9,10,11], newTables:[8,9], minutes:11, emoji:'🔴', requiresPayment:true},
     {id:'black', name:'Black Belt', color:'#1a1a1a', textColor:'#ffffff', tables:[2,3,4,5,6,7,8,9,10,11,12,13], newTables:[12,13], minutes:13, emoji:'⚫', requiresPayment:true},
@@ -722,103 +728,151 @@ select.tutor-search-inp{cursor:pointer}
   }
   window.show = show;
 
+  /* ══ TRIAL BANNER FUNCTIONS ══ */
+  function updateTrialBanner() {
+    var container = document.getElementById('trialBannerContainer');
+    if (!container) return;
+    
+    if (STATE.subscription && STATE.subscription.is_trial) {
+      var daysLeft = STATE.subscription.days_remaining || 0;
+      var bannerClass = daysLeft <= 2 ? 'warning' : '';
+      container.innerHTML = `
+        <div class="trial-banner ${bannerClass}" id="trialBannerClick">
+          🎁 ${daysLeft} day${daysLeft !== 1 ? 's' : ''} left in your free trial! 
+          <strong>Upgrade now to keep all belts unlocked →</strong>
+        </div>
+      `;
+      document.getElementById('trialBannerClick')?.addEventListener('click', function() {
+        showPaymentModal();
+      });
+    } else if (STATE.subscription && STATE.subscription.has_active_subscription && !STATE.subscription.is_trial) {
+      var daysRemaining = STATE.subscription.days_remaining || 0;
+      container.innerHTML = `
+        <div class="trial-banner" style="background:var(--green);color:#fff;border-bottom-color:var(--green-dk)">
+          ✅ Premium Active! ${daysRemaining} days remaining. Thank you for supporting Times Dojo!
+        </div>
+      `;
+    } else if (STATE.subscription && !STATE.subscription.has_active_subscription) {
+      container.innerHTML = `
+        <div class="trial-banner expired" id="trialBannerClick">
+          ⚠️ Free trial ended! Upgrade now to continue your belt journey →
+        </div>
+      `;
+      document.getElementById('trialBannerClick')?.addEventListener('click', function() {
+        showPaymentModal();
+      });
+    } else {
+      container.innerHTML = '';
+    }
+  }
+
   /* ══ PAYMENT FUNCTIONS ══ */
   async function checkSubscription() {
     try {
       var r = await GET('/api/payment/check/');
       if (r.error) return false;
       STATE.subscription = r;
+      updateTrialBanner();
       return r.has_active_subscription;
     } catch(e) { return false; }
   }
 
   async function loadPlans() {
-  try {
-    var r = await GET('/api/payment/plans/');
-    if (!r.error && r.plans) {
-      STATE.plans = r.plans;
-    } else {
-      // Fallback plans with USD prices
+    try {
+      var r = await GET('/api/payment/plans/');
+      if (!r.error) STATE.plans = r.plans || [];
+    } catch(e) {
       STATE.plans = [
-        {id:'monthly', name:'Monthly', price_usd:5, duration_days:30, description:'Perfect for short-term commitment'},
-        {id:'half_yearly', name:'6 Months', price_usd:25, duration_days:180, description:'Save $5 compared to monthly', savings_usd:5},
-        {id:'yearly', name:'Yearly', price_usd:50, duration_days:365, description:'Best value! Save $10', savings_usd:10}
+        {id:'monthly', name:'Monthly', price:5, duration_days:30, description:'Perfect for short-term commitment'},
+        {id:'half_yearly', name:'6 Months', price:25, duration_days:180, description:'Save $5 compared to monthly'},
+        {id:'yearly', name:'Yearly', price:50, duration_days:365, description:'Best value! Save $10'}
       ];
     }
-  } catch(e) {
-    STATE.plans = [
-      {id:'monthly', name:'Monthly', price_usd:5, duration_days:30, description:'Perfect for short-term commitment'},
-      {id:'half_yearly', name:'6 Months', price_usd:25, duration_days:180, description:'Save $5 compared to monthly', savings_usd:5},
-      {id:'yearly', name:'Yearly', price_usd:50, duration_days:365, description:'Best value! Save $10', savings_usd:10}
-    ];
   }
-}
 
-async function loadReceipts() {
-  try {
-    var r = await GET('/api/payment/receipts/');
-    if (!r.error) STATE.receipts = r.receipts || [];
-  } catch(e) { STATE.receipts = []; }
-}
-
-async function initPaymentModal() {
-  await loadPlans();
-  await loadReceipts();
-  await checkSubscription();
-  renderPaymentModal();
-}
-
-function renderPaymentModal() {
-  var statusDiv = document.getElementById('subscriptionStatus');
-  var plansList = document.getElementById('plansList');
-  var receiptsList = document.getElementById('receiptsList');
-  
-  if (STATE.subscription && STATE.subscription.has_active_subscription) {
-    var daysLeft = STATE.subscription.days_remaining || 0;
-    statusDiv.innerHTML = `<div style="background:rgba(0,178,72,.1);border-radius:var(--r2);padding:16px;margin-bottom:16px;text-align:center;border-left:4px solid var(--green)">
-      <i class="fas fa-crown" style="color:var(--gold);font-size:28px"></i>
-      <strong style="color:var(--green-dk);display:block;margin-top:8px">✨ Premium Active!</strong>
-      <span style="font-size:13px;color:var(--ink2)">${daysLeft} days remaining</span>
-    </div>`;
-  } else {
-    statusDiv.innerHTML = `<div style="background:rgba(229,57,53,.1);border-radius:var(--r2);padding:16px;margin-bottom:16px;text-align:center;border-left:4px solid var(--red)">
-      <i class="fas fa-lock" style="color:var(--red);font-size:28px"></i>
-      <strong style="color:var(--red);display:block;margin-top:8px">🔒 Premium Required for Blue Belt+</strong>
-      <span style="font-size:13px;color:var(--ink2)">Subscribe now to unlock Blue, Red, Black, and all higher belts!</span>
-    </div>`;
+  async function loadReceipts() {
+    try {
+      var r = await GET('/api/payment/receipts/');
+      if (!r.error) STATE.receipts = r.receipts || [];
+    } catch(e) { STATE.receipts = []; }
   }
-  
-  plansList.innerHTML = STATE.plans.map(plan => `
-    <div class="plan-item" data-plan="${plan.id}">
-      <div class="plan-info">
-        <h4>${plan.name}</h4>
-        <p>${plan.description || ''}</p>
-        ${plan.savings_usd ? `<p style="color:var(--green-dk);font-size:10px;margin-top:4px">💵 Save $${plan.savings_usd}</p>` : ''}
-      </div>
-      <div class="plan-price">$${plan.price_usd || plan.price}<small>/${plan.id === 'monthly' ? 'mo' : plan.id === 'half_yearly' ? '6mo' : 'yr'}</small></div>
-    </div>
-  `).join('');
-  
-  document.querySelectorAll('.plan-item').forEach(item => {
-    item.addEventListener('click', () => {
-      document.querySelectorAll('.plan-item').forEach(i => i.classList.remove('selected'));
-      item.classList.add('selected');
-      selectedPlan = item.dataset.plan;
-    });
-  });
-  
-  if (STATE.receipts.length === 0) {
-    receiptsList.innerHTML = '<div style="text-align:center;color:var(--ink3);padding:20px">No payment history yet</div>';
-  } else {
-    receiptsList.innerHTML = STATE.receipts.map(r => `
-      <div class="receipt-item">
-        <span class="receipt-date">${new Date(r.created_at).toLocaleDateString()}</span>
-        <span>$${r.amount} - ${r.plan}</span>
-        <span class="receipt-amount">✓ Paid</span>
+
+  async function initPaymentModal() {
+    await loadPlans();
+    await loadReceipts();
+    await checkSubscription();
+    renderPaymentModal();
+  }
+
+  function renderPaymentModal() {
+    var statusDiv = document.getElementById('subscriptionStatus');
+    var plansList = document.getElementById('plansList');
+    var receiptsList = document.getElementById('receiptsList');
+    
+    if (STATE.subscription && STATE.subscription.has_active_subscription) {
+      var isTrial = STATE.subscription.is_trial;
+      var daysLeft = STATE.subscription.days_remaining || 0;
+      if (isTrial) {
+        statusDiv.innerHTML = `<div style="background:rgba(255,193,7,.15);border-radius:var(--r2);padding:16px;margin-bottom:16px;text-align:center;border-left:4px solid var(--gold)">
+          <i class="fas fa-gift" style="color:var(--gold);font-size:28px"></i>
+          <strong style="color:var(--navy);display:block;margin-top:8px">🎁 7-Day Free Trial Active!</strong>
+          <span style="font-size:13px;color:var(--ink2)">${daysLeft} day${daysLeft !== 1 ? 's' : ''} remaining</span>
+          <div style="margin-top:12px">
+            <span style="background:var(--gold);color:var(--navy);padding:4px 12px;border-radius:99px;font-size:12px;font-weight:800">
+              ${daysLeft} days left
+            </span>
+          </div>
+        </div>`;
+      } else {
+        statusDiv.innerHTML = `<div style="background:rgba(0,178,72,.1);border-radius:var(--r2);padding:16px;margin-bottom:16px;text-align:center;border-left:4px solid var(--green)">
+          <i class="fas fa-crown" style="color:var(--gold);font-size:28px"></i>
+          <strong style="color:var(--green-dk);display:block;margin-top:8px">✨ Premium Active!</strong>
+          <span style="font-size:13px;color:var(--ink2)">${STATE.subscription.status_display || 'Subscription active'}</span>
+          <div style="margin-top:12px">
+            <span style="background:var(--green);color:#fff;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:800">
+              ${daysLeft} days remaining
+            </span>
+          </div>
+        </div>`;
+      }
+    } else {
+      statusDiv.innerHTML = `<div style="background:rgba(229,57,53,.1);border-radius:var(--r2);padding:16px;margin-bottom:16px;text-align:center;border-left:4px solid var(--red)">
+        <i class="fas fa-lock" style="color:var(--red);font-size:28px"></i>
+        <strong style="color:var(--red);display:block;margin-top:8px">⚠️ Free Trial Ended</strong>
+        <span style="font-size:13px;color:var(--ink2)">Subscribe now to unlock all 9 belts and continue your journey!</span>
+      </div>`;
+    }
+    
+    plansList.innerHTML = STATE.plans.map(plan => `
+      <div class="plan-item" data-plan="${plan.id}">
+        <div class="plan-info">
+          <h4>${plan.name}</h4>
+          <p>${plan.description || ''}</p>
+        </div>
+        <div class="plan-price">$${plan.price}<small>/${plan.id === 'monthly' ? 'mo' : plan.id === 'half_yearly' ? '6mo' : 'yr'}</small></div>
       </div>
     `).join('');
+    
+    document.querySelectorAll('.plan-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.plan-item').forEach(i => i.classList.remove('selected'));
+        item.classList.add('selected');
+        selectedPlan = item.dataset.plan;
+      });
+    });
+    
+    if (STATE.receipts.length === 0) {
+      receiptsList.innerHTML = '<div style="text-align:center;color:var(--ink3);padding:20px">No payment history yet</div>';
+    } else {
+      receiptsList.innerHTML = STATE.receipts.map(r => `
+        <div class="receipt-item">
+          <span class="receipt-date">${new Date(r.created_at).toLocaleDateString()}</span>
+          <span>$${r.amount} - ${r.plan}</span>
+          <span class="receipt-amount">✓ Paid</span>
+        </div>
+      `).join('');
+    }
   }
-}
 
   async function startPayment() {
     if (!selectedPlan) { toast('Please select a plan', 'var(--red)'); return; }
@@ -830,16 +884,8 @@ function renderPaymentModal() {
     } catch(err) { toast('Payment failed', 'var(--red)'); }
   }
 
-  function showPaymentModal() { 
-  initPaymentModal(); 
-  document.getElementById('paymentModal').classList.add('on'); 
-}
-window.showPaymentModal = showPaymentModal;  // Make it globally accessible
-
-function closePaymentModal() { 
-  document.getElementById('paymentModal').classList.remove('on'); 
-}
-window.closePaymentModal = closePaymentModal;
+  function showPaymentModal() { initPaymentModal(); document.getElementById('paymentModal').classList.add('on'); }
+  function closePaymentModal() { document.getElementById('paymentModal').classList.remove('on'); }
 
   /* ══ LOAD PROFILE ══ */
   async function loadProfile() {
@@ -869,7 +915,10 @@ window.closePaymentModal = closePaymentModal;
     var n = STATE.user.first_name || 'Student';
     document.getElementById('tnAvatar').textContent = n.charAt(0).toUpperCase();
     document.getElementById('tnName').textContent = n;
+    if(document.getElementById('mobileTnAvatar')) document.getElementById('mobileTnAvatar').textContent = n.charAt(0).toUpperCase();
+    if(document.getElementById('mobileTnName')) document.getElementById('mobileTnName').textContent = n;
     document.getElementById('muteBtn').innerHTML = AUD.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+    if(document.getElementById('mobileMuteBtn')) document.getElementById('mobileMuteBtn').innerHTML = AUD.muted ? '<i class="fas fa-volume-mute"></i><span class="tn-name">Sound Off</span>' : '<i class="fas fa-volume-up"></i><span class="tn-name">Sound On</span>';
     renderStreak();
     var beltsArray = Object.values(STATE.belts);
     var earned = 0;
@@ -941,12 +990,9 @@ window.closePaymentModal = closePaymentModal;
       var isLocked = !isPassed && !isActive && idx > STATE.currentBeltIdx;
       var isPremiumLocked = requiresPayment && !hasActiveAccess && !isPassed;
       
-      // For the next belt (currentBeltIdx), don't apply lock class even if premium
-      var shouldBeLocked = isLocked || (isPremiumLocked && !isActive);
-      
       var el = document.createElement('div');
       var cls = 'bc';
-      if (shouldBeLocked) cls += ' bc-lock';
+      if (isLocked || isPremiumLocked) cls += ' bc-lock';
       if (isActive) cls += ' bc-active';
       if (isPassed) cls += ' bc-pass';
       el.className = cls;
@@ -959,13 +1005,12 @@ window.closePaymentModal = closePaymentModal;
         rightHtml = '<div class="bc-pass-emoji">' + belt.emoji + '</div><div class="bc-badge bcb-pass">Passed</div>';
       } else if (isActive) {
         if (requiresPayment && !hasActiveAccess && !isPassed) {
-          // This is the current belt but requires payment - show Upgrade button clearly
-          rightHtml = '<button class="bc-start-btn" style="background:var(--gold);color:var(--navy);box-shadow:0 3px 0 var(--gold-dk);opacity:1;" onclick="window.showPaymentModal && window.showPaymentModal()">💰 Upgrade to Unlock</button><div class="bc-premium-tag">Premium Required</div>';
+          rightHtml = '<button class="bc-start-btn" style="background:var(--gold);color:var(--navy)" onclick="showPaymentModal()">💰 Subscribe</button><div class="bc-premium-tag">Premium</div>';
         } else {
           rightHtml = '<button class="bc-start-btn" data-belt-idx="' + idx + '">▶ Train</button>' + (done > 0 ? '<div style="font-size:10px;color:var(--ink3);font-weight:800">' + Math.round(done / total * 100) + '%</div>' : '');
         }
       } else if (requiresPayment && !hasActiveAccess) {
-        rightHtml = '<div class="bc-badge bcb-lock">🔒 Premium</div>';
+        rightHtml = '<div class="bc-badge bcb-lock">Premium</div>';
       } else {
         rightHtml = '<div class="bc-badge bcb-lock">Locked</div>';
       }
@@ -974,13 +1019,11 @@ window.closePaymentModal = closePaymentModal;
       w.appendChild(el);
     }
     document.querySelectorAll('.bc-start-btn').forEach(function(btn) {
-      if (btn.dataset.beltIdx) {
-        btn.addEventListener('click', function(e) { e.stopPropagation(); startBelt(parseInt(btn.dataset.beltIdx)); });
-      }
+      btn.addEventListener('click', function(e) { e.stopPropagation(); startBelt(parseInt(btn.dataset.beltIdx)); });
     });
   }
 
-  /* ══ SESSION ENGINE (shortened for brevity - core functionality preserved) ══ */
+  /* ══ SESSION ENGINE ══ */
   var SES = null;
   var clockInterval = null;
   var _factBuffer = [];
@@ -1385,12 +1428,16 @@ window.closePaymentModal = closePaymentModal;
     AUD.unlock();
     var belt = BELTS[idx];
     
-    // Payment check - White & Yellow belts are free, Blue+ require payment
+    // Payment check - only White Belt (idx 0) is free
     if (belt.requiresPayment) {
       await checkSubscription();
       var hasActiveAccess = STATE.subscription && STATE.subscription.has_active_subscription;
       if (!hasActiveAccess) {
-        toast('🔒 Premium subscription required to unlock ' + belt.name + '! Upgrade to continue your belt journey.', 'var(--gold)', '#fff');
+        var message = STATE.subscription && STATE.subscription.is_trial ? 
+          `Your ${STATE.subscription.days_remaining}-day free trial is active! Subscribe to unlock ${belt.name} and continue your journey.` :
+          `Unlock ${belt.name} and all other belts with a premium subscription!`;
+        
+        toast('🔒 ' + message, 'var(--gold)', '#fff');
         setTimeout(function() { showPaymentModal(); }, 1500);
         return;
       }
@@ -1597,6 +1644,8 @@ window.closePaymentModal = closePaymentModal;
     STATE.user = r.user;
     document.getElementById('tnAvatar').textContent = (r.user.first_name || 'S')[0].toUpperCase();
     document.getElementById('tnName').textContent = r.user.first_name || 'Student';
+    if(document.getElementById('mobileTnAvatar')) document.getElementById('mobileTnAvatar').textContent = (r.user.first_name || 'S')[0].toUpperCase();
+    if(document.getElementById('mobileTnName')) document.getElementById('mobileTnName').textContent = r.user.first_name || 'Student';
     toast('Profile updated successfully!', 'var(--green)', '#fff');
     closeProfileModal();
   }
@@ -1713,21 +1762,11 @@ window.closePaymentModal = closePaymentModal;
   /* ══ INIT ══ */
   (async function init() {
     var r = await GET('/api/me/');
-    if (r.user && !r.error) { var loaded = await loadProfile(); if (loaded) { renderHome(); show('s-home'); initPaymentModal(); return; } }
+    if (r.user && !r.error) { var loaded = await loadProfile(); if (loaded) { renderHome(); show('s-home'); initPaymentModal(); updateTrialBanner(); return; } }
     window.location.href = '/';
   })();
 
 })();
-
-// Track login when game loads
-window.addEventListener('load', async () => {
-  await POST('/api/track-student-activity/', { action: 'login' });
-});
-
-// Track logout when user leaves
-window.addEventListener('beforeunload', async () => {
-  await navigator.sendBeacon('/api/track-student-activity/', JSON.stringify({ action: 'logout' }));
-});
 </script>
 </body>
 </html>

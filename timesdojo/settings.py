@@ -330,3 +330,37 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_PRELOAD = True
+
+
+    # Email settings (configure based on your email provider)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # or your email provider
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'inforevisionea@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'tgzxwwvthvsuygwj')
+DEFAULT_FROM_EMAIL = 'Revision Dojo <inforevisionea@gmail.com>'
+
+# Site URL for password reset links
+SITE_URL = os.environ.get('SITE_URL', 'https//www.revisionea.online')
+USD_TO_KES_RATE = 130
+# Subscription prices in USD (original)
+SUBSCRIPTION_PRICES_USD = {
+    'monthly': 5.00,
+    'half_yearly': 25.00,
+    'yearly': 50.00,
+}
+
+# Subscription prices in KES (calculated)
+SUBSCRIPTION_PRICES = {
+    'monthly': 5.00 * USD_TO_KES_RATE,  # 650 KES
+    'half_yearly': 25.00 * USD_TO_KES_RATE,  # 3,250 KES
+    'yearly': 50.00 * USD_TO_KES_RATE,  # 6,500 KES
+}
+
+# Subscription durations in days (unchanged)
+SUBSCRIPTION_DURATIONS = {
+    'monthly': 30,
+    'half_yearly': 180,
+    'yearly': 365,
+}
