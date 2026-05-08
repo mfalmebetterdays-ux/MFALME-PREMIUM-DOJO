@@ -61,3 +61,5 @@ cryptography==42.0.5
 # - gunicorn is the production WSGI server
 # - whitenoise serves static files in production
 # =============================================================================
+
+PyPDF2==3.0.1
