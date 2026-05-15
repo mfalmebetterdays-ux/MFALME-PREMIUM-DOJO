@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Sign In — Revision Dojo</title>
+<title>Sign In — Times Dojo</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
@@ -27,6 +27,7 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(155deg,var(--nav
 .btn{font-family:'Fredoka One',cursive;font-size:17px;border:none;cursor:pointer;padding:12px 26px;border-radius:var(--r2);display:inline-flex;align-items:center;justify-content:center;gap:7px;width:100%;text-decoration:none}
 .btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 4px 0 var(--gold-dk)}
 .btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--gold-dk)}
+.btn-gold:disabled{opacity:0.6;cursor:not-allowed;transform:none}
 .auth-switch{text-align:center;margin-top:14px;font-size:13px;font-weight:600;color:var(--ink2)}
 .auth-switch a{color:var(--blue);cursor:pointer;font-weight:800;text-decoration:none}
 .auth-switch a:hover{text-decoration:underline}
@@ -65,19 +66,19 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(155deg,var(--nav
 </head>
 <body>
 <div class="auth-box">
-  <div class="auth-logo">Revision<span>Dojo</span></div>
-  <div class="auth-tagline">Welcome back, Student</div>
+  <div class="auth-logo">Times<span>Dojo</span></div>
+  <div class="auth-tagline">Student Login — Master your times tables</div>
   
   <div class="auth-err" id="loginErr"></div>
   
   <div class="field-wrap">
     <label class="field-lbl">Email Address</label>
-    <input class="field-inp" id="loginEmail" type="email" placeholder="your@email.com" autocomplete="email">
+    <input class="field-inp" id="loginEmail" type="email" placeholder="student@email.com" autocomplete="off">
   </div>
   
   <div class="field-wrap">
     <label class="field-lbl">Password</label>
-    <input class="field-inp" id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password">
+    <input class="field-inp" id="loginPass" type="password" placeholder="••••••••" autocomplete="off">
   </div>
   
   <div class="remember-me-row">
@@ -96,30 +97,42 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(155deg,var(--nav
   
   <div class="auth-switch">No account? <a href="{% url 'dojo:register' %}">Create one free</a></div>
   <div class="auth-switch" style="margin-top:6px"><a href="{% url 'dojo:home' %}">← Back to Home</a></div>
+  <div class="auth-switch" style="margin-top:6px"><a href="{% url 'dojo:parent_login' %}">Parent Portal →</a></div>
 </div>
 
 <script src="{% static 'dojo/js/csrf.js' %}"></script>
 <script>
-// Helper function to redirect based on student's curriculum
-function redirectToDashboard(user) {
-  console.log('Redirecting student:', user);
-  
-  // Check if student has curriculum set
-  if (user.curriculum === 'cbc') {
-    window.location.href = '/cbc-dashboard/';
-  } else if (user.curriculum === '844') {
-    window.location.href = '/844-dashboard/';
-  } else if (user.curriculum === 'igcse') {
-    window.location.href = '/igcse-dashboard/';
-  } else if (user.curriculum === 'cambridge') {
-    window.location.href = '/igcse-dashboard/';
-  } else {
-    // No curriculum set - redirect to setup profile
-    window.location.href = '/setup-profile/';
-  }
+// Helper function to show toast message
+function showToast(message, type) {
+  const toast = document.createElement('div');
+  toast.style.position = 'fixed';
+  toast.style.bottom = '20px';
+  toast.style.left = '50%';
+  toast.style.transform = 'translateX(-50%)';
+  toast.style.backgroundColor = type === 'error' ? 'var(--red)' : 'var(--green)';
+  toast.style.color = '#fff';
+  toast.style.padding = '12px 24px';
+  toast.style.borderRadius = '99px';
+  toast.style.fontFamily = "'Fredoka One', cursive";
+  toast.style.fontSize = '14px';
+  toast.style.zIndex = '1000';
+  toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+  toast.style.whiteSpace = 'nowrap';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
 }
 
-// Login submission
+// Helper function to redirect to game (STUDENT ONLY)
+function redirectToGame() {
+  console.log('Redirecting to Times Dojo game...');
+  window.location.href = '/game/';
+}
+
+// Login submission - STUDENTS ONLY
 document.getElementById('btnLoginSubmit').addEventListener('click', async () => {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPass').value;
@@ -133,12 +146,14 @@ document.getElementById('btnLoginSubmit').addEventListener('click', async () => 
   if (!email) {
     errDiv.textContent = 'Please enter your email address';
     errDiv.classList.add('on');
+    showToast('Please enter your email address', 'error');
     return;
   }
   
   if (!password) {
     errDiv.textContent = 'Please enter your password';
     errDiv.classList.add('on');
+    showToast('Please enter your password', 'error');
     return;
   }
   
@@ -149,6 +164,7 @@ document.getElementById('btnLoginSubmit').addEventListener('click', async () => 
   btn.innerHTML = '<div class="spinner"></div> Signing In...';
   
   try {
+    // FORCE student role in login request
     const response = await fetch('/api/login/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -156,41 +172,87 @@ document.getElementById('btnLoginSubmit').addEventListener('click', async () => 
       body: JSON.stringify({ 
         email: email, 
         password: password, 
-        role: 'student', 
+        role: 'student',  // FORCE student role
         remember_me: rememberMe 
       })
     });
     
     const data = await response.json();
+    console.log('Login response:', data);
     
     if (data.error) {
       errDiv.textContent = data.error;
       errDiv.classList.add('on');
+      showToast(data.error, 'error');
       btn.disabled = false;
       btn.innerHTML = originalText;
       return;
     }
     
-    // Successful login - redirect based on curriculum
+    // Check user role - if parent, show error and don't redirect
     if (data.user) {
-      redirectToDashboard(data.user);
-    } else {
-      // Fallback - get user info
-      const meResponse = await fetch('/api/me/', {
-        credentials: 'include'
-      });
-      const meData = await meResponse.json();
-      if (meData.user) {
-        redirectToDashboard(meData.user);
-      } else {
-        window.location.href = '/';
+      console.log('User role:', data.user.role);
+      
+      if (data.user.role === 'student') {
+        // Save email if remember me is checked
+        if (rememberMe) {
+          localStorage.setItem('timesDojoEmail', email);
+        } else {
+          localStorage.removeItem('timesDojoEmail');
+        }
+        showToast('Welcome back! Redirecting to Times Dojo...', 'success');
+        setTimeout(() => {
+          redirectToGame();
+        }, 500);
+        return;
+      } 
+      
+      if (data.user.role === 'parent') {
+        errDiv.textContent = 'This is a parent account. Please use the Parent Portal login page.';
+        errDiv.classList.add('on');
+        showToast('Parent accounts cannot access the student game', 'error');
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        return;
       }
+    }
+    
+    // Fallback - check /api/me/
+    const meResponse = await fetch('/api/me/', {
+      credentials: 'include'
+    });
+    const meData = await meResponse.json();
+    console.log('Me response:', meData);
+    
+    if (meData.user && meData.user.role === 'student') {
+      if (rememberMe) {
+        localStorage.setItem('timesDojoEmail', email);
+      } else {
+        localStorage.removeItem('timesDojoEmail');
+      }
+      showToast('Welcome back! Redirecting to Times Dojo...', 'success');
+      setTimeout(() => {
+        redirectToGame();
+      }, 500);
+    } else if (meData.user && meData.user.role === 'parent') {
+      errDiv.textContent = 'Parent accounts cannot access the student game. Please use the Parent Portal.';
+      errDiv.classList.add('on');
+      showToast('Parent accounts cannot access the student game', 'error');
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    } else {
+      errDiv.textContent = 'No student account found with these credentials';
+      errDiv.classList.add('on');
+      showToast('No student account found', 'error');
+      btn.disabled = false;
+      btn.innerHTML = originalText;
     }
     
   } catch (error) {
     console.error('Login error:', error);
     errDiv.textContent = 'Network error. Please check your connection and try again.';
     errDiv.classList.add('on');
+    showToast('Network error. Please try again.', 'error');
     btn.disabled = false;
     btn.innerHTML = originalText;
   }
@@ -199,18 +261,29 @@ document.getElementById('btnLoginSubmit').addEventListener('click', async () => 
 // Enter key support
 document.getElementById('loginPass').addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
+    e.preventDefault();
     document.getElementById('btnLoginSubmit').click();
   }
 });
 
 document.getElementById('loginEmail').addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
+    e.preventDefault();
     document.getElementById('btnLoginSubmit').click();
   }
 });
 
 // Auto-focus on email field
 document.getElementById('loginEmail').focus();
+
+// Load saved email if exists
+try {
+  const savedEmail = localStorage.getItem('timesDojoEmail');
+  if (savedEmail) {
+    document.getElementById('loginEmail').value = savedEmail;
+    document.getElementById('rememberMe').checked = true;
+  }
+} catch(e) { console.log('Could not load saved email'); }
 </script>
 </body>
 </html>

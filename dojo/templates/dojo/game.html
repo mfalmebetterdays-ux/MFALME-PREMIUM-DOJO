@@ -4,11 +4,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,viewport-fit=cover">
-<title>Revision Dojo — Master Multiplication</title>
+<title>Times Dojo — Master Multiplication, Earn Your Belt</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-/* ========== ALL ORIGINAL STYLES (KEPT COMPLETE) ========== */
+/* ========== ALL STYLES (KEPT COMPLETE) ========== */
 :root{
   --sky:#eef6ff;--sky2:#d0e8fa;--sky3:#b8d8f5;
   --white:#fff;--ink:#1a2638;--ink2:#3b4d63;--ink3:#7088a0;
@@ -50,8 +50,6 @@ body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);min-
 .mobile-menu .mobile-menu-item:hover{background:rgba(255,255,255,.15)}
 .mobile-menu .mobile-menu-item i{width:22px;font-size:16px;color:var(--gold)}
 .mobile-menu .mobile-divider{height:1px;background:rgba(255,255,255,.15);margin:4px 0}
-.notification-badge{position:relative}
-.notification-badge .badge-count{position:absolute;top:-6px;right:-10px;background:var(--red);color:#fff;font-size:9px;font-weight:900;border-radius:50%;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 4px}
 .field-wrap{margin-bottom:16px}
 .field-lbl{font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px;display:block}
 .field-inp{width:100%;background:var(--sky);border:2.5px solid var(--sky2);border-radius:var(--r2);padding:12px 15px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--navy);outline:none;transition:border-color .2s,box-shadow .2s}
@@ -76,11 +74,14 @@ select.field-inp{cursor:pointer}
 .tn-right{display:flex;align-items:center;gap:8px}
 .billing-btn{background:linear-gradient(135deg,var(--gold),#ff8f00);color:var(--navy);border:none;border-radius:99px;padding:6px 14px;font-size:12px;font-weight:800;display:flex;align-items:center;gap:6px;cursor:pointer;transition:all .2s}
 .billing-btn:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.parent-portal-link{background:rgba(255,255,255,.08);border-radius:99px;padding:6px 12px;font-size:10px;font-weight:800;color:rgba(255,255,255,.8);text-decoration:none;display:flex;align-items:center;gap:5px;transition:all .2s}
+.parent-portal-link:hover{background:rgba(255,255,255,.18);color:#fff}
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
   .tn-right .tn-pill:not(.mobile-only) { display: none; }
   .tn-right .billing-btn { display: none; }
   .tn-right .tn-logout { display: none; }
+  .tn-right .parent-portal-link { display: none; }
   .menu-toggle { display: flex; }
   .hbody { padding-bottom: 120px; }
   .stats-row { gap: 6px; }
@@ -155,33 +156,6 @@ select.field-inp{cursor:pointer}
 .bt-icon{font-size:24px;margin-bottom:4px;display:block;line-height:1.3}
 .bt-name{font-size:10px;font-weight:800;color:var(--navy);letter-spacing:.3px;line-height:1.3}
 .bt-sub{font-size:9px;font-weight:600;color:var(--ink3)}
-/* TUTOR SEARCH */
-.tutor-search-box{background:#fff;border-radius:var(--r2);box-shadow:var(--sh2);padding:16px;margin-bottom:12px;border-top:4px solid var(--purple)}
-.tutor-search-title{font-family:'Fredoka One',cursive;font-size:16px;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:7px}
-.tutor-search-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-@media(max-width:400px){.tutor-search-row{grid-template-columns:1fr}}
-.tutor-search-inp{width:100%;background:var(--sky);border:2.5px solid var(--sky2);border-radius:var(--r2);padding:10px 13px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--navy);outline:none;transition:border-color .2s}
-.tutor-search-inp:focus{border-color:var(--purple);box-shadow:0 0 0 4px rgba(123,31,162,.1)}
-select.tutor-search-inp{cursor:pointer}
-.tutor-search-name-row{display:flex;gap:8px;margin-bottom:10px}
-.tutor-search-name-row .tutor-search-inp{flex:1}
-.ts-search-btn{background:var(--purple);color:#fff;border:none;border-radius:var(--r2);padding:10px 20px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;transition:all .14s;display:flex;align-items:center;gap:6px;width:100%;justify-content:center}
-.ts-search-btn:hover{background:#6a1b9a;transform:translateY(-1px)}
-.tutor-empty{text-align:center;padding:28px 16px;background:#fff;border-radius:var(--r2);box-shadow:var(--sh)}
-.tutor-empty-icon{font-size:38px;margin-bottom:8px}
-.tutor-empty-title{font-family:'Fredoka One',cursive;font-size:16px;color:var(--navy);margin-bottom:4px}
-.tutor-empty-sub{font-size:12px;font-weight:600;color:var(--ink3);line-height:1.5}
-.tutor-card{background:#fff;border-radius:var(--r2);box-shadow:var(--sh);padding:14px 15px;display:flex;align-items:center;gap:13px;margin-bottom:8px;transition:all .15s;border-left:4px solid transparent}
-.tutor-card:hover{box-shadow:var(--sh2);transform:translateY(-2px);border-left-color:var(--purple)}
-.tutor-avatar{width:46px;height:46px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:18px;color:#fff;flex-shrink:0}
-.tutor-info{flex:1}
-.tutor-name{font-family:'Fredoka One',cursive;font-size:16px;color:var(--navy);margin-bottom:2px}
-.tutor-meta{font-size:11px;font-weight:700;color:var(--ink2)}
-.tutor-meta span{background:var(--sky);border-radius:99px;padding:2px 8px;margin-right:4px;font-size:10px;display:inline-block;margin-bottom:2px}
-.tutor-rating{font-family:'Fredoka One',cursive;font-size:16px;color:var(--gold);flex-shrink:0}
-.req-btn{background:var(--blue);color:#fff;border:none;border-radius:var(--r);padding:7px 14px;font-family:'Fredoka One',cursive;font-size:13px;cursor:pointer;transition:all .14s}
-.req-btn:hover{background:var(--navy)}
-.req-btn.sent{background:var(--green);cursor:default}
 /* SESSION */
 #s-sess{overflow:hidden;position:relative}
 .belt-bg{position:fixed;inset:0;z-index:0;transition:background .6s ease}
@@ -410,23 +384,6 @@ select.tutor-search-inp{cursor:pointer}
 .receipt-date{color:var(--ink3)}
 .receipt-amount{font-weight:800;color:var(--green-dk)}
 .payment-actions{display:flex;gap:12px;margin-top:20px}
-
-/* COMING SOON MODAL STYLES */
-.coming-soon-modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:2000;opacity:0;visibility:hidden;transition:all .3s ease}
-.coming-soon-modal-overlay.active{opacity:1;visibility:visible}
-.coming-soon-modal-content{background:#fff;border-radius:28px;max-width:450px;width:90%;padding:32px;text-align:center;box-shadow:0 25px 50px rgba(0,0,0,.3);transform:scale(.9);transition:transform .3s ease}
-.coming-soon-modal-overlay.active .coming-soon-modal-content{transform:scale(1)}
-.coming-soon-icon{width:80px;height:80px;background:linear-gradient(135deg,var(--purple),#9c27b0);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
-.coming-soon-icon i{font-size:40px;color:#fff}
-.coming-soon-title{font-family:'Fredoka One',cursive;font-size:28px;color:var(--navy);margin-bottom:12px}
-.coming-soon-sub{font-size:14px;color:var(--ink2);margin-bottom:24px;line-height:1.5}
-.coming-soon-email{width:100%;padding:14px 18px;border:2px solid var(--sky2);border-radius:var(--r2);font-size:15px;margin-bottom:16px;outline:none;font-family:'Nunito',sans-serif}
-.coming-soon-email:focus{border-color:var(--purple)}
-.coming-soon-btn{width:100%;background:var(--purple);color:#fff;border:none;border-radius:var(--r2);padding:14px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;transition:all .2s}
-.coming-soon-btn:hover{background:#6a1b9a;transform:translateY(-2px)}
-.coming-soon-close{background:none;border:none;color:var(--ink3);font-size:14px;margin-top:16px;cursor:pointer;padding:8px}
-.coming-soon-close:hover{color:var(--red)}
-.coming-soon-success{background:rgba(0,178,72,.1);border-radius:var(--r2);padding:16px;margin-top:16px;color:var(--green-dk);font-weight:600}
 </style>
 </head>
 <body>
@@ -434,15 +391,11 @@ select.tutor-search-inp{cursor:pointer}
 <!-- HOME SCREEN -->
 <div id="s-home" class="scr on">
   <div class="top-nav">
-    <div class="tn-logo">Revision<span>Dojo</span></div>
+    <div class="tn-logo">Times<span>Dojo</span></div>
     <div class="tn-right">
+      <a href="{% url 'dojo:parent_login' %}" class="parent-portal-link"><i class="fas fa-users"></i> Parent Portal</a>
       <button class="mute-btn" id="muteBtn"><i class="fas fa-volume-up"></i></button>
       <button class="billing-btn" id="billingBtn"><i class="fas fa-credit-card"></i> Upgrade</button>
-      <div class="tn-pill notification-badge" id="learningHubBtn">
-        <i class="fas fa-graduation-cap" style="color:var(--gold)"></i>
-        <span class="tn-name">Learning Hub</span>
-        <span class="badge-count" id="notificationBadge" style="display:none">0</span>
-      </div>
       <div class="tn-pill" id="profileBtn">
         <div class="tn-avatar" id="tnAvatar">S</div>
         <div class="tn-name" id="tnName">Student</div>
@@ -452,13 +405,11 @@ select.tutor-search-inp{cursor:pointer}
     </div>
   </div>
   
-  <!-- No trial banner - removed -->
-  
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu">
-    <div class="mobile-menu-item" id="mobileLearningHubBtn">
-      <i class="fas fa-graduation-cap"></i>
-      <span>Learning Hub</span>
+    <div class="mobile-menu-item" id="mobileParentPortalBtn">
+      <i class="fas fa-users"></i>
+      <span>Parent Portal</span>
     </div>
     <div class="mobile-menu-item" id="mobileBillingBtn">
       <i class="fas fa-credit-card"></i>
@@ -499,17 +450,6 @@ select.tutor-search-inp{cursor:pointer}
     <div class="badges-grid" id="badgesGrid"></div>
     <div class="sec-h">The Belt Wall</div>
     <div class="belt-wall" id="beltWall"></div>
-    <div class="sec-h">Find a Tutor</div>
-    <div class="tutor-search-box">
-      <div class="tutor-search-title">🔍 Search Tutors</div>
-      <input class="tutor-search-inp" id="tutorSearchName" placeholder="Search by name…" style="margin-bottom:10px">
-      <div class="tutor-search-row">
-        <select class="tutor-search-inp" id="tutorSearchCounty"><option value="">All Counties</option><option>Nairobi</option><option>Mombasa</option><option>Kisumu</option><option>Nakuru</option><option>Eldoret</option><option>Thika</option><option>Kiambu</option></select>
-        <select class="tutor-search-inp" id="tutorSearchSpec"><option value="">All Specialisations</option><option>Primary (Grades 1–4)</option><option>Junior (Grades 5–7)</option><option>Senior (Grades 8–10)</option><option>All Levels</option></select>
-      </div>
-      <button class="ts-search-btn" id="searchTutorsBtn">Search Available Tutors</button>
-    </div>
-    <div id="tutorResults"></div>
   </div>
 </div>
 
@@ -547,7 +487,7 @@ select.tutor-search-inp{cursor:pointer}
 
 <!-- LEADERBOARD SCREEN -->
 <div id="s-lb" class="scr">
-  <div class="top-nav"><div class="tn-logo">Revision<span>Dojo</span></div><div class="tn-name" style="color:#fff;font-size:13px;font-weight:800">🏆 Leaderboard</div></div>
+  <div class="top-nav"><div class="tn-logo">Times<span>Dojo</span></div><div class="tn-name" style="color:#fff;font-size:13px;font-weight:800">🏆 Leaderboard</div></div>
   <div class="lb-body"><div class="lb-filters" id="lbFilters"><div class="lb-filter on" data-scope="school">🏫 My School</div><div class="lb-filter" data-scope="county">📍 My County</div><div class="lb-filter" data-scope="national">🌍 National</div></div><div class="lb-table" id="lbTable"></div></div>
 </div>
 
@@ -565,7 +505,7 @@ select.tutor-search-inp{cursor:pointer}
   <div class="payment-modal-content">
     <div class="payment-header">
       <h2><i class="fas fa-credit-card"></i> Upgrade to Premium</h2>
-      <p>Unlock Blue Belt and above! Get access to all 9 belts, leaderboards, and premium features.</p>
+      <p>Unlock Blue Belt and above! Plans starting at just $5/month.</p>
     </div>
     <div id="subscriptionStatus"></div>
     <h3 style="font-size:16px;margin-bottom:12px">Choose a Plan</h3>
@@ -590,28 +530,13 @@ select.tutor-search-inp{cursor:pointer}
 <div id="ctt"><div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy);margin-bottom:3px" id="ctF">7×8=56</div><div style="font-size:11px;font-weight:700;color:var(--ink2);margin-bottom:2px" id="ctSeen">Seen: 0</div><div style="font-size:11px;font-weight:700;color:var(--ink2)" id="ctAcc">Accuracy: —</div></div>
 <div id="toast"></div>
 
-<!-- COMING SOON MODAL -->
-<div class="coming-soon-modal-overlay" id="comingSoonModal">
-  <div class="coming-soon-modal-content">
-    <div class="coming-soon-icon">
-      <i class="fas fa-chalkboard-user"></i>
-    </div>
-    <div class="coming-soon-title">Coming Soon!</div>
-    <div class="coming-soon-sub">We're working hard to bring you tutor features. Leave your email and we'll notify you when it's ready.</div>
-    <input type="email" id="comingSoonEmail" class="coming-soon-email" placeholder="Enter your email address">
-    <button class="coming-soon-btn" id="submitComingSoonBtn">Notify Me When Ready</button>
-    <div id="comingSoonSuccessMsg" class="coming-soon-success" style="display:none">
-      <i class="fas fa-check-circle"></i> Thanks! We'll notify you when tutor features launch.
-    </div>
-    <button class="coming-soon-close" id="closeComingSoonBtn">Continue Learning</button>
-  </div>
-</div>
-
 <script src="{% static 'dojo/js/csrf.js' %}"></script>
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
 // ============================================================================
-// REVISION DOJO GAME - Updated: White & Yellow belts free, Blue+ require payment
+// TIMES DOJO GAME - Master Multiplication, Earn Your Belt
+// White & Yellow belts FREE, Blue+ require payment
+// Parent portal monitoring enabled
 // ============================================================================
 (function(){
   'use strict';
@@ -725,7 +650,7 @@ select.tutor-search-inp{cursor:pointer}
   /* ══ PAYMENT FUNCTIONS ══ */
   async function checkSubscription() {
     try {
-      var r = await GET('/api/payment/check/');
+      var r = await GET('/api/subscription/status/');
       if (r.error) return false;
       STATE.subscription = r;
       return r.has_active_subscription;
@@ -733,113 +658,130 @@ select.tutor-search-inp{cursor:pointer}
   }
 
   async function loadPlans() {
-  try {
-    var r = await GET('/api/payment/plans/');
-    if (!r.error && r.plans) {
-      STATE.plans = r.plans;
-    } else {
-      // Fallback plans with USD prices
+    try {
+      var r = await GET('/api/payment/plans/');
+      if (!r.error && r.plans) {
+        STATE.plans = r.plans;
+      } else {
+        STATE.plans = [
+          {id:1, name:'Monthly', price_usd:5, duration_days:30, description:'Perfect for short-term commitment'},
+          {id:2, name:'6 Months', price_usd:25, duration_days:180, description:'Save $5 compared to monthly', savings_usd:5},
+          {id:3, name:'Yearly', price_usd:50, duration_days:365, description:'Best value! Save $10', savings_usd:10}
+        ];
+      }
+    } catch(e) {
       STATE.plans = [
-        {id:'monthly', name:'Monthly', price_usd:5, duration_days:30, description:'Perfect for short-term commitment'},
-        {id:'half_yearly', name:'6 Months', price_usd:25, duration_days:180, description:'Save $5 compared to monthly', savings_usd:5},
-        {id:'yearly', name:'Yearly', price_usd:50, duration_days:365, description:'Best value! Save $10', savings_usd:10}
+        {id:1, name:'Monthly', price_usd:5, duration_days:30, description:'Perfect for short-term commitment'},
+        {id:2, name:'6 Months', price_usd:25, duration_days:180, description:'Save $5 compared to monthly', savings_usd:5},
+        {id:3, name:'Yearly', price_usd:50, duration_days:365, description:'Best value! Save $10', savings_usd:10}
       ];
     }
-  } catch(e) {
-    STATE.plans = [
-      {id:'monthly', name:'Monthly', price_usd:5, duration_days:30, description:'Perfect for short-term commitment'},
-      {id:'half_yearly', name:'6 Months', price_usd:25, duration_days:180, description:'Save $5 compared to monthly', savings_usd:5},
-      {id:'yearly', name:'Yearly', price_usd:50, duration_days:365, description:'Best value! Save $10', savings_usd:10}
-    ];
   }
-}
 
-async function loadReceipts() {
-  try {
-    var r = await GET('/api/payment/receipts/');
-    if (!r.error) STATE.receipts = r.receipts || [];
-  } catch(e) { STATE.receipts = []; }
-}
-
-async function initPaymentModal() {
-  await loadPlans();
-  await loadReceipts();
-  await checkSubscription();
-  renderPaymentModal();
-}
-
-function renderPaymentModal() {
-  var statusDiv = document.getElementById('subscriptionStatus');
-  var plansList = document.getElementById('plansList');
-  var receiptsList = document.getElementById('receiptsList');
-  
-  if (STATE.subscription && STATE.subscription.has_active_subscription) {
-    var daysLeft = STATE.subscription.days_remaining || 0;
-    statusDiv.innerHTML = `<div style="background:rgba(0,178,72,.1);border-radius:var(--r2);padding:16px;margin-bottom:16px;text-align:center;border-left:4px solid var(--green)">
-      <i class="fas fa-crown" style="color:var(--gold);font-size:28px"></i>
-      <strong style="color:var(--green-dk);display:block;margin-top:8px">✨ Premium Active!</strong>
-      <span style="font-size:13px;color:var(--ink2)">${daysLeft} days remaining</span>
-    </div>`;
-  } else {
-    statusDiv.innerHTML = `<div style="background:rgba(229,57,53,.1);border-radius:var(--r2);padding:16px;margin-bottom:16px;text-align:center;border-left:4px solid var(--red)">
-      <i class="fas fa-lock" style="color:var(--red);font-size:28px"></i>
-      <strong style="color:var(--red);display:block;margin-top:8px">🔒 Premium Required for Blue Belt+</strong>
-      <span style="font-size:13px;color:var(--ink2)">Subscribe now to unlock Blue, Red, Black, and all higher belts!</span>
-    </div>`;
+  async function loadReceipts() {
+    try {
+      var r = await GET('/api/payment/history/');
+      if (!r.error) STATE.receipts = r.transactions || [];
+    } catch(e) { STATE.receipts = []; }
   }
-  
-  plansList.innerHTML = STATE.plans.map(plan => `
-    <div class="plan-item" data-plan="${plan.id}">
-      <div class="plan-info">
-        <h4>${plan.name}</h4>
-        <p>${plan.description || ''}</p>
-        ${plan.savings_usd ? `<p style="color:var(--green-dk);font-size:10px;margin-top:4px">💵 Save $${plan.savings_usd}</p>` : ''}
-      </div>
-      <div class="plan-price">$${plan.price_usd || plan.price}<small>/${plan.id === 'monthly' ? 'mo' : plan.id === 'half_yearly' ? '6mo' : 'yr'}</small></div>
-    </div>
-  `).join('');
-  
-  document.querySelectorAll('.plan-item').forEach(item => {
-    item.addEventListener('click', () => {
-      document.querySelectorAll('.plan-item').forEach(i => i.classList.remove('selected'));
-      item.classList.add('selected');
-      selectedPlan = item.dataset.plan;
-    });
-  });
-  
-  if (STATE.receipts.length === 0) {
-    receiptsList.innerHTML = '<div style="text-align:center;color:var(--ink3);padding:20px">No payment history yet</div>';
-  } else {
-    receiptsList.innerHTML = STATE.receipts.map(r => `
-      <div class="receipt-item">
-        <span class="receipt-date">${new Date(r.created_at).toLocaleDateString()}</span>
-        <span>$${r.amount} - ${r.plan}</span>
-        <span class="receipt-amount">✓ Paid</span>
+
+  async function initPaymentModal() {
+    await loadPlans();
+    await loadReceipts();
+    await checkSubscription();
+    renderPaymentModal();
+  }
+
+  function renderPaymentModal() {
+    var statusDiv = document.getElementById('subscriptionStatus');
+    var plansList = document.getElementById('plansList');
+    var receiptsList = document.getElementById('receiptsList');
+    
+    if (STATE.subscription && STATE.subscription.has_active_subscription) {
+      var daysLeft = STATE.subscription.days_remaining || 0;
+      statusDiv.innerHTML = `<div style="background:rgba(0,178,72,.1);border-radius:var(--r2);padding:16px;margin-bottom:16px;text-align:center;border-left:4px solid var(--green)">
+        <i class="fas fa-crown" style="color:var(--gold);font-size:28px"></i>
+        <strong style="color:var(--green-dk);display:block;margin-top:8px">✨ Premium Active!</strong>
+        <span style="font-size:13px;color:var(--ink2)">${daysLeft} days remaining</span>
+      </div>`;
+    } else {
+      statusDiv.innerHTML = `<div style="background:rgba(229,57,53,.1);border-radius:var(--r2);padding:16px;margin-bottom:16px;text-align:center;border-left:4px solid var(--red)">
+        <i class="fas fa-lock" style="color:var(--red);font-size:28px"></i>
+        <strong style="color:var(--red);display:block;margin-top:8px">🔒 Premium Required for Blue Belt+</strong>
+        <span style="font-size:13px;color:var(--ink2)">Subscribe now to unlock Blue, Red, Black, and all higher belts!</span>
+      </div>`;
+    }
+    
+    plansList.innerHTML = STATE.plans.map(plan => `
+      <div class="plan-item" data-plan-id="${plan.id}">
+        <div class="plan-info">
+          <h4>${plan.name}</h4>
+          <p>${plan.description || ''}</p>
+          ${plan.savings_usd ? `<p style="color:var(--green-dk);font-size:10px;margin-top:4px">💵 Save $${plan.savings_usd}</p>` : ''}
+        </div>
+        <div class="plan-price">$${plan.price_usd || plan.price}<small>/${plan.id === 1 ? 'mo' : plan.id === 2 ? '6mo' : 'yr'}</small></div>
       </div>
     `).join('');
+    
+    document.querySelectorAll('.plan-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.plan-item').forEach(i => i.classList.remove('selected'));
+        item.classList.add('selected');
+        selectedPlan = parseInt(item.dataset.planId);
+      });
+    });
+    
+    if (STATE.receipts.length === 0) {
+      receiptsList.innerHTML = '<div style="text-align:center;color:var(--ink3);padding:20px">No payment history yet</div>';
+    } else {
+      receiptsList.innerHTML = STATE.receipts.map(r => `
+        <div class="receipt-item">
+          <span class="receipt-date">${new Date(r.date || r.created_at).toLocaleDateString()}</span>
+          <span>$${r.amount_usd || r.amount} - ${r.plan_name || r.plan}</span>
+          <span class="receipt-amount">✓ Paid</span>
+        </div>
+      `).join('');
+    }
   }
-}
 
   async function startPayment() {
     if (!selectedPlan) { toast('Please select a plan', 'var(--red)'); return; }
-    toast('Redirecting to payment...', 'var(--gold)');
+    toast('Processing...', 'var(--gold)');
     try {
-      var response = await POST('/api/payment/initialize/', { plan: selectedPlan });
-      if (response.error) { toast(response.error, 'var(--red)'); return; }
-      window.location.href = response.authorization_url;
-    } catch(err) { toast('Payment failed', 'var(--red)'); }
+      var response = await POST('/api/subscription/initiate/', { plan_id: selectedPlan });
+      
+      if (response.error) { 
+        toast(response.error, 'var(--red)'); 
+        return; 
+      }
+      
+      if (response.authorization_url) {
+        toast('Redirecting to payment...', 'var(--gold)');
+        window.location.href = response.authorization_url;
+      } else if (response.success && response.test_mode) {
+        toast(response.message, 'var(--green)');
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      } else {
+        toast('Payment initialization failed', 'var(--red)');
+      }
+    } catch(err) { 
+      console.error('Payment error:', err);
+      toast('Payment failed. Please try again.', 'var(--red)'); 
+    }
   }
 
   function showPaymentModal() { 
-  initPaymentModal(); 
-  document.getElementById('paymentModal').classList.add('on'); 
-}
-window.showPaymentModal = showPaymentModal;  // Make it globally accessible
+    initPaymentModal(); 
+    document.getElementById('paymentModal').classList.add('on'); 
+  }
+  window.showPaymentModal = showPaymentModal;
 
-function closePaymentModal() { 
-  document.getElementById('paymentModal').classList.remove('on'); 
-}
-window.closePaymentModal = closePaymentModal;
+  function closePaymentModal() { 
+    document.getElementById('paymentModal').classList.remove('on'); 
+  }
+  window.closePaymentModal = closePaymentModal;
 
   /* ══ LOAD PROFILE ══ */
   async function loadProfile() {
@@ -891,7 +833,6 @@ window.closePaymentModal = closePaymentModal;
     document.getElementById('hcProgFill').style.width = Math.round(done / total * 100) + '%';
     renderBadgesGrid();
     renderBeltWall();
-    document.getElementById('tutorResults').innerHTML = '<div class="tutor-empty"><div class="tutor-empty-icon">🎓</div><div class="tutor-empty-title">Find your perfect tutor</div><div class="tutor-empty-sub">Search above to find tutors by county or specialisation.</div></div>';
   }
 
   function renderStreak() {
@@ -935,13 +876,11 @@ window.closePaymentModal = closePaymentModal;
       var isPassed = !!bd.passed;
       var isActive = idx === STATE.currentBeltIdx && !isPassed;
       
-      // Check if belt requires payment and user has no active subscription
       var requiresPayment = belt.requiresPayment;
       var hasActiveAccess = STATE.subscription && STATE.subscription.has_active_subscription;
       var isLocked = !isPassed && !isActive && idx > STATE.currentBeltIdx;
       var isPremiumLocked = requiresPayment && !hasActiveAccess && !isPassed;
       
-      // For the next belt (currentBeltIdx), don't apply lock class even if premium
       var shouldBeLocked = isLocked || (isPremiumLocked && !isActive);
       
       var el = document.createElement('div');
@@ -959,7 +898,6 @@ window.closePaymentModal = closePaymentModal;
         rightHtml = '<div class="bc-pass-emoji">' + belt.emoji + '</div><div class="bc-badge bcb-pass">Passed</div>';
       } else if (isActive) {
         if (requiresPayment && !hasActiveAccess && !isPassed) {
-          // This is the current belt but requires payment - show Upgrade button clearly
           rightHtml = '<button class="bc-start-btn" style="background:var(--gold);color:var(--navy);box-shadow:0 3px 0 var(--gold-dk);opacity:1;" onclick="window.showPaymentModal && window.showPaymentModal()">💰 Upgrade to Unlock</button><div class="bc-premium-tag">Premium Required</div>';
         } else {
           rightHtml = '<button class="bc-start-btn" data-belt-idx="' + idx + '">▶ Train</button>' + (done > 0 ? '<div style="font-size:10px;color:var(--ink3);font-weight:800">' + Math.round(done / total * 100) + '%</div>' : '');
@@ -980,7 +918,7 @@ window.closePaymentModal = closePaymentModal;
     });
   }
 
-  /* ══ SESSION ENGINE (shortened for brevity - core functionality preserved) ══ */
+  /* ══ SESSION ENGINE (abbreviated for brevity - same as original) ══ */
   var SES = null;
   var clockInterval = null;
   var _factBuffer = [];
@@ -1385,7 +1323,6 @@ window.closePaymentModal = closePaymentModal;
     AUD.unlock();
     var belt = BELTS[idx];
     
-    // Payment check - White & Yellow belts are free, Blue+ require payment
     if (belt.requiresPayment) {
       await checkSubscription();
       var hasActiveAccess = STATE.subscription && STATE.subscription.has_active_subscription;
@@ -1415,86 +1352,6 @@ window.closePaymentModal = closePaymentModal;
     show('s-sess');
     startClock();
     startCurrentLevel();
-  }
-
-  /* ══ TUTOR SEARCH - COMING SOON ══ */
-  function searchTutors() {
-    openComingSoonModal();
-  }
-
-  /* ══ COMING SOON MODAL FUNCTIONS ══ */
-  var comingSoonModal = document.getElementById('comingSoonModal');
-  var comingSoonEmail = document.getElementById('comingSoonEmail');
-  var submitComingSoonBtn = document.getElementById('submitComingSoonBtn');
-  var closeComingSoonBtn = document.getElementById('closeComingSoonBtn');
-  var comingSoonSuccessMsg = document.getElementById('comingSoonSuccessMsg');
-
-  function openComingSoonModal() {
-    if (comingSoonModal) {
-      comingSoonModal.classList.add('active');
-      comingSoonEmail.value = '';
-      comingSoonSuccessMsg.style.display = 'none';
-      submitComingSoonBtn.style.display = 'block';
-      comingSoonEmail.style.display = 'block';
-      submitComingSoonBtn.disabled = false;
-      submitComingSoonBtn.innerHTML = 'Notify Me When Ready';
-    }
-  }
-
-  function closeComingSoonModal() {
-    if (comingSoonModal) {
-      comingSoonModal.classList.remove('active');
-    }
-  }
-
-  async function submitComingSoonInterest() {
-    var email = comingSoonEmail.value.trim();
-    if (!email) {
-      toast('Please enter your email address', 'var(--red)');
-      return;
-    }
-    if (!email.includes('@') || !email.includes('.')) {
-      toast('Please enter a valid email address', 'var(--red)');
-      return;
-    }
-    
-    submitComingSoonBtn.disabled = true;
-    submitComingSoonBtn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;margin:0 auto"></div>';
-    
-    try {
-      var response = await fetch('/api/tutor-interest/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ email: email })
-      });
-      var data = await response.json();
-      
-      if (data.error) {
-        toast(data.error, 'var(--red)');
-        submitComingSoonBtn.disabled = false;
-        submitComingSoonBtn.innerHTML = 'Notify Me When Ready';
-        return;
-      }
-      
-      comingSoonSuccessMsg.style.display = 'block';
-      submitComingSoonBtn.style.display = 'none';
-      comingSoonEmail.style.display = 'none';
-      
-      setTimeout(function() {
-        closeComingSoonModal();
-        submitComingSoonBtn.style.display = 'block';
-        comingSoonEmail.style.display = 'block';
-        submitComingSoonBtn.disabled = false;
-        submitComingSoonBtn.innerHTML = 'Notify Me When Ready';
-        comingSoonSuccessMsg.style.display = 'none';
-      }, 2500);
-      
-    } catch(e) {
-      toast('Network error. Please try again.', 'var(--red)');
-      submitComingSoonBtn.disabled = false;
-      submitComingSoonBtn.innerHTML = 'Notify Me When Ready';
-    }
   }
 
   /* ══ LEADERBOARD ══ */
@@ -1631,7 +1488,6 @@ window.closePaymentModal = closePaymentModal;
   document.getElementById('btnSkip').addEventListener('click', function() { onSkip(); });
   document.getElementById('btnTrain').addEventListener('click', function(e) { e.stopPropagation(); startBelt(STATE.currentBeltIdx); });
   document.getElementById('heroCard').addEventListener('click', function(e) { if (e.target.id !== 'btnTrain') startBelt(STATE.currentBeltIdx); });
-  document.getElementById('searchTutorsBtn').addEventListener('click', searchTutors);
   document.getElementById('profileBtn').addEventListener('click', openProfileModal);
   document.getElementById('closeProfileBtn').addEventListener('click', closeProfileModal);
   document.getElementById('logoutBtn').addEventListener('click', function() { POST('/api/logout/', {}); window.location.href = '/'; });
@@ -1642,6 +1498,9 @@ window.closePaymentModal = closePaymentModal;
   document.getElementById('closePaymentModalBtn').addEventListener('click', closePaymentModal);
   document.getElementById('paymentModal').addEventListener('click', function(e) { if (e.target === this) closePaymentModal(); });
   
+  // Parent Portal buttons
+  document.getElementById('mobileParentPortalBtn').addEventListener('click', function() { window.location.href = '/parent-login/'; });
+  
   // Mobile menu handlers
   var menuToggle = document.getElementById('menuToggle');
   var mobileMenu = document.getElementById('mobileMenu');
@@ -1651,7 +1510,6 @@ window.closePaymentModal = closePaymentModal;
   }
   
   // Mobile menu item handlers
-  document.getElementById('mobileLearningHubBtn')?.addEventListener('click', function() { openComingSoonModal(); });
   document.getElementById('mobileBillingBtn')?.addEventListener('click', function() { showPaymentModal(); if(mobileMenu) mobileMenu.style.display = 'none'; });
   document.getElementById('mobileProfileBtn')?.addEventListener('click', function() { openProfileModal(); if(mobileMenu) mobileMenu.style.display = 'none'; });
   document.getElementById('mobileMuteBtn')?.addEventListener('click', function() {
@@ -1663,42 +1521,9 @@ window.closePaymentModal = closePaymentModal;
   });
   document.getElementById('mobileLogoutBtn')?.addEventListener('click', function() { POST('/api/logout/', {}); window.location.href = '/'; });
   
-  // Learning Hub button handlers - Show Coming Soon Modal
-  var hubBtns = [document.getElementById('learningHubBtn'), document.getElementById('mobileLearningHubBtn')];
-  hubBtns.forEach(function(btn) { 
-    if(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        openComingSoonModal();
-      });
-    }
-  });
-  
-  // Coming Soon Modal event listeners
-  if (submitComingSoonBtn) submitComingSoonBtn.addEventListener('click', submitComingSoonInterest);
-  if (closeComingSoonBtn) closeComingSoonBtn.addEventListener('click', closeComingSoonModal);
-  if (comingSoonModal) comingSoonModal.addEventListener('click', function(e) { if (e.target === comingSoonModal) closeComingSoonModal(); });
-  
   // Update mute button icon
   var muteBtn = document.getElementById('muteBtn');
   if(muteBtn) muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-  
-  // Notification badge update function
-  async function updateNotificationBadge() {
-    try {
-      const r = await GET('/api/student/notifications/unread-count/');
-      if(!r.error && r.count > 0) {
-        const badge = document.getElementById('notificationBadge');
-        if(badge) { badge.textContent = r.count; badge.style.display = 'flex'; }
-      } else {
-        const badge = document.getElementById('notificationBadge');
-        if(badge) badge.style.display = 'none';
-      }
-    } catch(e) { console.log('Notification check failed'); }
-  }
-  
-  setInterval(updateNotificationBadge, 30000);
-  updateNotificationBadge();
   
   document.querySelectorAll('.lb-filter').forEach(function(f) { f.addEventListener('click', function() { setLbScope(f.dataset.scope); }); });
   document.querySelectorAll('.nb').forEach(function(btn) { btn.addEventListener('click', function() { var page = btn.dataset.page; if (page === 'home') show('s-home'); else if (page === 'leaderboard') { renderLB(); show('s-lb'); } else if (page === 'map') { renderMatrix(); show('s-matrix'); } }); });

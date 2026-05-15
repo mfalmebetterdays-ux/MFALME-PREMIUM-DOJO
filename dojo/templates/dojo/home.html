@@ -3,23 +3,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,viewport-fit=cover">
-<title>Revision Dojo — Master Any Subject, Ace Your Exams</title>
-<meta name="description" content="Your all-in-one revision platform for CBC, 8-4-4, IGCSE, and more. Practice multiplication, master subjects, and win prizes!">
-<meta name="keywords" content="revision, exams, CBC, 8-4-4, IGCSE, mathematics, english, science, practice, quizzes">
-<meta name="author" content="Revision Dojo">
-<meta name="robots" content="index, follow">
-
-<!-- Open Graph -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://revisiondojo.com/">
-<meta property="og:title" content="Revision Dojo — Master Any Subject, Ace Your Exams">
-<meta property="og:description" content="Practice multiplication, master subjects, and win prizes! Your all-in-one revision platform.">
-
-
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TimesTable Dojo — Master Multiplication</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
 <style>
 :root{
   --sky:#eef6ff;--sky2:#d0e8fa;--sky3:#b8d8f5;
@@ -36,86 +23,65 @@
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);min-height:100vh}
-.btn{font-family:'Fredoka One',cursive;font-size:16px;border:none;cursor:pointer;padding:12px 26px;border-radius:var(--r2);transition:transform .13s,box-shadow .13s;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn{font-family:'Fredoka One',cursive;font-size:17px;border:none;cursor:pointer;padding:12px 26px;border-radius:var(--r2);transition:transform .13s,box-shadow .13s;display:inline-flex;align-items:center;gap:7px;text-decoration:none}
 .btn:active{transform:scale(.97)}
 .btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 4px 0 var(--gold-dk),var(--sh)}
 .btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--gold-dk),var(--sh2)}
 .btn-navy{background:var(--navy);color:#fff;box-shadow:0 4px 0 #0d1f3a,var(--sh)}
 .btn-navy:hover{transform:translateY(-2px);box-shadow:0 6px 0 #0d1f3a,var(--sh2)}
-.btn-outline-white{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.4);text-decoration:none}
-.btn-outline-white:hover{background:rgba(255,255,255,.1);text-decoration:none}
-.btn-outline{background:transparent;color:var(--navy);border:2px solid var(--sky2);text-decoration:none}
-.btn-outline:hover{background:var(--sky2);border-color:var(--gold)}
-.btn-sm{padding:8px 18px;font-size:14px}
+.btn-outline-white{background:transparent;color:#fff;border:2.5px solid rgba(255,255,255,.45);text-decoration:none}
+.btn-outline-white:hover{background:rgba(255,255,255,.12);text-decoration:none}
+.btn-sm{padding:8px 16px;font-size:13px}
 a{text-decoration:none}
-/* Hero Section */
-.hero{background:linear-gradient(135deg,var(--navy) 0%,#1565c0 55%,#0288d1 100%);padding:0 20px 80px;position:relative;overflow:hidden}
-.navbar{display:flex;align-items:center;justify-content:space-between;padding:20px 0;position:relative;z-index:2}
-.logo{font-family:'Fredoka One',cursive;font-size:24px;letter-spacing:1px;color:#fff}
-.logo span{color:var(--gold)}
-.nav-btns{display:flex;gap:12px}
-.menu-toggle{display:none;background:rgba(255,255,255,.15);border:none;border-radius:50%;width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:20px}
-.mobile-menu{position:fixed;top:70px;right:20px;background:var(--navy);border-radius:var(--r2);padding:16px;display:none;flex-direction:column;gap:12px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.2);min-width:180px}
+.land-hero{background:linear-gradient(155deg,var(--navy) 0%,#1565c0 55%,#0288d1 100%);padding:0 20px 60px;position:relative;overflow:hidden;text-align:center}
+.land-nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0;position:relative;z-index:2}
+.land-logo{font-family:'Fredoka One',cursive;font-size:22px;letter-spacing:1.5px;color:#fff;text-decoration:none}
+.land-logo span{color:var(--gold)}
+/* Desktop Navigation */
+.land-nav-btns{display:flex;gap:12px}
+/* Mobile Menu Button - Hidden on Desktop */
+.menu-toggle{display:none;background:rgba(255,255,255,.15);border:none;border-radius:50%;width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:20px;transition:all .2s}
+.menu-toggle:hover{background:rgba(255,255,255,.25)}
+/* Mobile Menu */
+.mobile-menu{position:fixed;top:70px;right:20px;background:var(--navy);border-radius:var(--r2);padding:16px;display:none;flex-direction:column;gap:12px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.2);min-width:160px}
 .mobile-menu .mobile-btn{display:block;width:100%;text-align:center;margin:0}
 @media(max-width:768px){
-  .nav-btns{display:none}
+  .land-nav-btns{display:none}
   .menu-toggle{display:flex}
-  .navbar{padding:12px 0}
+  .land-nav{padding:12px 0}
+  .land-title{font-size:clamp(32px,8vw,60px)}
+  .land-sub{font-size:14px;padding:0 16px}
+  .land-cta-row{flex-direction:column;align-items:center}
+  .land-cta-row .btn{width:200px;justify-content:center}
 }
-.hero-content{text-align:center;padding-top:40px;position:relative;z-index:2;max-width:800px;margin:0 auto}
-.hero-badge{display:inline-block;background:rgba(255,193,7,.2);border:1px solid rgba(255,193,7,.5);color:var(--gold);font-size:12px;font-weight:800;letter-spacing:2px;border-radius:99px;padding:6px 16px;margin-bottom:20px}
-.hero-badge i{margin-right:6px}
-.hero-title{font-family:'Fredoka One',cursive;font-size:clamp(42px,8vw,68px);color:#fff;line-height:1.1;margin-bottom:20px}
-.hero-title span{color:var(--gold)}
-.hero-sub{font-size:clamp(16px,4vw,20px);color:rgba(255,255,255,.85);max-width:600px;margin:0 auto 32px;line-height:1.5}
-.hero-stats{display:flex;justify-content:center;gap:40px;margin-top:40px;flex-wrap:wrap}
-.hero-stat{text-align:center}
-.hero-stat-num{font-family:'Fredoka One',cursive;font-size:32px;color:var(--gold)}
-.hero-stat-label{font-size:12px;color:rgba(255,255,255,.7);margin-top:4px}
-/* Curriculum Section */
-.curriculum-section{padding:60px 20px;background:var(--sky)}
-.section-header{text-align:center;margin-bottom:48px}
-.section-title{font-family:'Fredoka One',cursive;font-size:clamp(28px,5vw,42px);color:var(--navy);margin-bottom:12px}
-.section-sub{font-size:16px;color:var(--ink2);max-width:600px;margin:0 auto}
-.curriculum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1200px;margin:0 auto}
-.curriculum-card{background:#fff;border-radius:var(--r3);overflow:hidden;box-shadow:var(--sh);transition:all .3s ease;cursor:pointer;border:1px solid var(--sky2)}
-.curriculum-card:hover{transform:translateY(-6px);box-shadow:var(--sh3);border-color:var(--gold)}
-.curriculum-header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:24px;text-align:center;color:#fff}
-.curriculum-icon{font-size:48px;margin-bottom:12px}
-.curriculum-name{font-family:'Fredoka One',cursive;font-size:22px}
-.curriculum-body{padding:20px}
-.curriculum-subjects{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.subject-tag{background:var(--sky);padding:6px 12px;border-radius:99px;font-size:12px;font-weight:600;color:var(--ink2)}
-.curriculum-levels{font-size:12px;color:var(--ink3);display:flex;align-items:center;gap:6px;margin-bottom:16px}
-.curriculum-btn{width:100%;background:var(--gold);color:var(--navy);border:none;padding:10px;border-radius:var(--r2);font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;transition:all .2s}
-.curriculum-btn:hover{transform:translateY(-2px);box-shadow:0 4px 0 var(--gold-dk)}
-/* Subjects Section */
-.subjects-section{padding:60px 20px;background:var(--white)}
-.subjects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:1200px;margin:0 auto}
-.subject-card{background:var(--sky);border-radius:var(--r2);padding:24px 16px;text-align:center;cursor:pointer;transition:all .25s;border:2px solid transparent}
-.subject-card:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:var(--sh2)}
-.subject-icon{font-size:48px;margin-bottom:16px}
-.subject-name{font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);margin-bottom:8px}
-.subject-desc{font-size:12px;color:var(--ink3);margin-bottom:12px}
-.subject-badge{display:inline-block;background:var(--gold);color:var(--navy);padding:4px 12px;border-radius:99px;font-size:11px;font-weight:800}
-/* Featured Module */
-.featured-section{background:linear-gradient(135deg,var(--navy) 0%,#1565c0 100%);padding:60px 20px;color:#fff}
-.featured-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-.featured-content h2{font-family:'Fredoka One',cursive;font-size:36px;margin-bottom:16px}
-.featured-content h2 span{color:var(--gold)}
-.featured-content p{font-size:16px;margin-bottom:24px;opacity:.9;line-height:1.6}
-.featured-features{list-style:none;margin-bottom:28px}
-.featured-features li{margin-bottom:12px;display:flex;align-items:center;gap:10px}
-.featured-features li i{color:var(--gold);font-size:18px}
-.featured-image{text-align:center}
-.featured-image .featured-card{background:rgba(255,255,255,.1);border-radius:24px;padding:24px;text-align:center}
-.featured-image .belt-strip{display:flex;gap:8px;justify-content:center;margin-bottom:16px}
-.featured-image .belt{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
-@media(max-width:768px){
-  .featured-container{grid-template-columns:1fr;text-align:center}
-  .featured-features li{justify-content:center}
-}
-/* Prize Showcase */
+.land-hero-body{position:relative;z-index:2;padding-top:40px}
+.land-badge{display:inline-block;background:rgba(255,193,7,.2);border:1.5px solid rgba(255,193,7,.5);color:var(--gold);font-size:11px;font-weight:900;letter-spacing:2px;border-radius:99px;padding:4px 14px;margin-bottom:16px}
+.land-title{font-family:'Fredoka One',cursive;font-size:clamp(38px,10vw,76px);color:#fff;line-height:.95;margin-bottom:14px}
+.land-title span{color:var(--gold)}
+.land-sub{font-size:clamp(14px,3vw,18px);font-weight:600;color:rgba(255,255,255,.75);max-width:520px;margin:0 auto 32px}
+.land-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.land-belts{display:flex;gap:6px;justify-content:center}
+.lbp{height:10px;border-radius:99px;flex:1;max-width:34px}
+.land-stats{display:grid;grid-template-columns:repeat(3,1fr);background:var(--navy);border-top:3px solid var(--gold)}
+.lst{padding:22px 16px;text-align:center;border-right:1px solid rgba(255,255,255,.08)}
+.lst:last-child{border-right:none}
+.lst-n{font-family:'Fredoka One',cursive;font-size:34px;color:var(--gold);margin-bottom:3px}
+.lst-l{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.land-features{padding:60px 20px;max-width:1200px;margin:0 auto}
+.land-features-title{font-family:'Fredoka One',cursive;font-size:clamp(26px,6vw,44px);text-align:center;color:var(--navy);margin-bottom:8px}
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+@media(max-width:1024px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.feat-grid{grid-template-columns:1fr}}
+.feat-card{background:#fff;border-radius:var(--r2);box-shadow:var(--sh);padding:22px 18px;border-top:4px solid var(--sky2);transition:transform .15s;text-decoration:none}
+.feat-card:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
+.feat-card.fc-g{border-top-color:var(--gold)}
+.feat-card.fc-b{border-top-color:var(--blue)}
+.feat-card.fc-gr{border-top-color:var(--green)}
+.feat-card.fc-p{border-top-color:var(--purple)}
+.feat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.feat-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy);margin-bottom:6px}
+.feat-desc{font-size:13px;font-weight:600;color:var(--ink2);line-height:1.5}
+/* Prize Showcase Styles */
 .prize-showcase {
   background: linear-gradient(135deg, #f8f9fa 0%, var(--sky) 100%);
   padding: 60px 20px;
@@ -323,25 +289,25 @@ a{text-decoration:none}
     right: 12px;
   }
 }
-/* CTA Banner */
-.cta-banner{background:linear-gradient(135deg,var(--gold) 0%,#ff8f00 100%);padding:50px 20px;text-align:center}
-.cta-title{font-family:'Fredoka One',cursive;font-size:clamp(24px,6vw,42px);color:var(--navy);margin-bottom:8px}
-.cta-sub{font-size:14px;font-weight:700;color:rgba(26,58,107,.7);margin-bottom:24px}
-/* Footer */
-.footer{background:var(--navy);padding:48px 20px 24px;color:rgba(255,255,255,.7)}
-.footer-content{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;margin-bottom:32px}
-.footer-logo{font-family:'Fredoka One',cursive;font-size:24px;color:#fff;margin-bottom:12px}
-.footer-logo span{color:var(--gold)}
-.footer-about p{font-size:13px;line-height:1.6}
-.footer-links h4{color:#fff;margin-bottom:16px;font-size:14px}
-.footer-links ul{list-style:none}
-.footer-links li{margin-bottom:8px}
-.footer-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:13px;transition:color .2s}
-.footer-links a:hover{color:var(--gold)}
-.footer-bottom{text-align:center;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);font-size:12px}
-/* Image Preview Modal */
-.image-preview-modal {
-  background: rgba(0,0,0,0.92);
+/* Modal Styles for Image Preview */
+.modal-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,.7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+  opacity:0;
+  visibility:hidden;
+  transition:all .3s ease
+}
+.modal-overlay.active{
+  opacity:1;
+  visibility:visible
 }
 .image-preview-modal .preview-container {
   max-width: 90vw;
@@ -389,185 +355,82 @@ a{text-decoration:none}
     right: 0;
   }
 }
-/* Modal */
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;visibility:hidden;transition:all .3s ease}
-.modal-overlay.active{opacity:1;visibility:visible}
-.modal-content{background:#fff;border-radius:28px;max-width:450px;width:90%;padding:32px;text-align:center;box-shadow:0 25px 50px rgba(0,0,0,.3);transform:scale(.9);transition:transform .3s ease}
-.modal-overlay.active .modal-content{transform:scale(1)}
-.modal-icon{width:80px;height:80px;background:linear-gradient(135deg,var(--purple),#9c27b0);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
-.modal-icon i{font-size:40px;color:#fff}
-.modal-title{font-family:'Fredoka One',cursive;font-size:28px;color:var(--navy);margin-bottom:12px}
-.modal-sub{font-size:14px;color:var(--ink2);margin-bottom:24px;line-height:1.5}
-.modal-email{width:100%;padding:14px 18px;border:2px solid var(--sky2);border-radius:var(--r2);font-size:15px;margin-bottom:16px;outline:none}
-.modal-email:focus{border-color:var(--purple)}
-.modal-btn{width:100%;background:var(--purple);color:#fff;border:none;border-radius:var(--r2);padding:14px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;transition:all .2s}
-.modal-btn:hover{background:#6a1b9a;transform:translateY(-2px)}
-.modal-close{background:none;border:none;color:var(--ink3);font-size:14px;margin-top:16px;cursor:pointer;padding:8px}
-.modal-close:hover{color:var(--red)}
-.success-message{background:rgba(0,178,72,.1);border-radius:var(--r2);padding:16px;margin-top:16px;color:var(--green-dk);font-weight:600}
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:2000;background:var(--navy);color:#fff;padding:10px 24px;border-radius:99px;font-family:'Fredoka One',cursive;font-size:13px;opacity:0;transition:opacity .25s;box-shadow:var(--sh2);white-space:nowrap}
-#toast.show{opacity:1}
+/* Minimalist FAQ Section - 2 Columns */
+.faq-section{background:#fff;padding:48px 20px}
+.faq-container{max-width:1000px;margin:0 auto}
+.faq-header{text-align:center;margin-bottom:32px}
+.faq-header h2{font-family:'Fredoka One',cursive;font-size:clamp(24px,5vw,32px);color:var(--navy);margin-bottom:8px}
+.faq-header p{font-size:14px;color:var(--ink2)}
+.faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:768px){.faq-grid{grid-template-columns:1fr}}
+.faq-item{background:var(--sky);border-radius:var(--r);overflow:hidden}
+.faq-question{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;cursor:pointer;font-weight:700;font-size:14px;color:var(--navy);transition:all .2s}
+.faq-question:hover{background:var(--sky2)}
+.faq-question i{transition:transform .2s;font-size:12px;color:var(--ink3)}
+.faq-answer{padding:0 18px;max-height:0;overflow:hidden;transition:max-height .3s ease;color:var(--ink2);font-size:13px;line-height:1.5}
+.faq-item.open .faq-answer{padding:0 18px 14px;max-height:150px}
+.faq-item.open .faq-question i{transform:rotate(180deg)}
+@media(max-width:768px){
+  .faq-question{padding:12px 16px;font-size:13px}
+  .faq-answer{font-size:12px}
+}
+.land-cta-banner{background:linear-gradient(135deg,var(--gold) 0%,#ff8f00 100%);padding:50px 20px;text-align:center}
+.lcb-title{font-family:'Fredoka One',cursive;font-size:clamp(24px,6vw,42px);color:var(--navy);margin-bottom:8px}
+.lcb-sub{font-size:14px;font-weight:700;color:rgba(26,58,107,.7);margin-bottom:24px}
+.land-footer{background:var(--navy);padding:24px 20px;text-align:center}
+.land-footer p{font-size:12px;font-weight:700;color:rgba(255,255,255,.3)}
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="navbar">
-    <a href="{% url 'dojo:home' %}" class="logo">Revision<span>Dojo</span></a>
-    <div class="nav-btns">
-      <a href="{% url 'dojo:login' %}" class="btn btn-outline-white btn-sm"><i class="fas fa-sign-in-alt"></i> Sign In</a>
-      <a href="{% url 'dojo:register' %}" class="btn btn-gold btn-sm"><i class="fas fa-rocket"></i> Get Started</a>
+<div class="land-hero">
+  <nav class="land-nav">
+    <a href="{% url 'dojo:home' %}" class="land-logo">Revision<span>Dojo</span></a>
+    <!-- Desktop Buttons -->
+    <div class="land-nav-btns">
+      <a href="{% url 'dojo:login' %}" class="btn btn-outline-white btn-sm">Sign In</a>
+      <a href="{% url 'dojo:register' %}" class="btn btn-gold btn-sm">Get Started</a>
     </div>
+    <!-- Mobile Menu Toggle Button -->
     <button class="menu-toggle" id="menuToggle">
       <i class="fas fa-bars"></i>
     </button>
-  </div>
+  </nav>
   
+  <!-- Mobile Menu (Hidden by default) -->
   <div class="mobile-menu" id="mobileMenu">
-    <a href="{% url 'dojo:login' %}" class="btn btn-outline-white btn-sm mobile-btn"><i class="fas fa-sign-in-alt"></i> Sign In</a>
-    <a href="{% url 'dojo:register' %}" class="btn btn-gold btn-sm mobile-btn"><i class="fas fa-rocket"></i> Get Started</a>
+    <a href="{% url 'dojo:login' %}" class="btn btn-outline-white btn-sm mobile-btn">Sign In</a>
+    <a href="{% url 'dojo:register' %}" class="btn btn-gold btn-sm mobile-btn">Get Started</a>
   </div>
   
-  <div class="hero-content">
-    <div class="hero-badge"><i class="fas fa-graduation-cap"></i> Your All-in-One Revision Platform</div>
-    <div class="hero-title">Master Any Subject<br><span>Ace Your Exams</span></div>
-    <div class="hero-sub">Practice with interactive games, track your progress, and compete with thousands of students across all curricula.</div>
-    <a href="{% url 'dojo:register' %}" class="btn btn-gold" style="font-size:18px;padding:14px 36px"><i class="fas fa-play"></i> Start Learning Now</a>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-num" id="statStudents">—</div><div class="hero-stat-label">Active Students</div></div>
-      <div class="hero-stat"><div class="hero-stat-num" id="statQuestions">—</div><div class="hero-stat-label">Practice Questions</div></div>
-      <div class="hero-stat"><div class="hero-stat-num" id="statSubjects">10+</div><div class="hero-stat-label">Subjects</div></div>
+  <div class="land-hero-body">
+    <div class="land-badge">The #1 Multiplication Platform for Schools</div>
+    <div class="land-title">Master Your<br><span>Times Tables</span><br>Earn Your Belt</div>
+    <div class="land-sub">9 belt levels from White to Master. Timed belt sessions, skip mechanics, real competition. Multiplication up to ×20.</div>
+    <div class="land-cta-row">
+      <a href="{% url 'dojo:register' %}" class="btn btn-gold" style="font-size:18px;padding:15px 32px">▶ Start Free</a>
     </div>
+    <div class="land-belts" id="landBeltPips"></div>
+  </div>
+</div>
+<div class="land-stats">
+  <div class="lst"><div class="lst-n" id="landStudents">—</div><div class="lst-l">Students</div></div>
+  <div class="lst"><div class="lst-n" id="landBelts">—</div><div class="lst-l">Belts Earned</div></div>
+  <div class="lst"><div class="lst-n" id="landQ">—</div><div class="lst-l">Questions Answered</div></div>
+</div>
+
+<!-- Features Section - 4 Cards in One Row -->
+<div class="land-features">
+  <div class="land-features-title">Everything a Student Needs</div>
+  <div class="feat-grid">
+    <div class="feat-card fc-g"><div class="feat-icon" style="background:rgba(255,193,7,.12)">★</div><div class="feat-title">Belt System</div><div class="feat-desc">9 progressive belts. White starts with 4 tables. Master covers ×2 through ×20.</div></div>
+    <div class="feat-card fc-b"><div class="feat-icon" style="background:rgba(25,118,210,.1)">⏱</div><div class="feat-title">Timed Sessions</div><div class="feat-desc">Belt-wide countdown clock. Skip hard questions — they come back. 3 attempts per belt.</div></div>
+    <div class="feat-card fc-gr"><div class="feat-icon" style="background:rgba(0,178,72,.1)">📊</div><div class="feat-title">Up to ×20</div><div class="feat-desc">Every table from ×1 to ×20. Lower belts start easy. Master belt tests everything at speed.</div></div>
+    <div class="feat-card fc-p"><div class="feat-icon" style="background:rgba(123,31,162,.1)">🎓</div><div class="feat-title">Find a Tutor</div><div class="feat-desc">Search verified tutors by county and specialisation. They see your exact weak spots.</div></div>
   </div>
 </div>
 
-<!-- Choose Your Curriculum -->
-<div class="curriculum-section">
-  <div class="section-header">
-    <div class="section-title">Choose Your Curriculum</div>
-    <div class="section-sub">Select the curriculum that matches your studies</div>
-  </div>
-  <div class="curriculum-grid">
-    <div class="curriculum-card" data-curriculum="cbc">
-      <div class="curriculum-header">
-        <div class="curriculum-icon"><i class="fas fa-flag-checkered"></i></div>
-        <div class="curriculum-name">Kenya CBC</div>
-      </div>
-      <div class="curriculum-body">
-        <div class="curriculum-subjects">
-          <span class="subject-tag"><i class="fas fa-calculator"></i> Mathematics</span>
-          <span class="subject-tag"><i class="fas fa-book"></i> English</span>
-          <span class="subject-tag"><i class="fas fa-language"></i> Kiswahili</span>
-          <span class="subject-tag"><i class="fas fa-flask"></i> Science</span>
-        </div>
-        <div class="curriculum-levels"><i class="fas fa-graduation-cap"></i> Grade 1-9 (Competency Based)</div>
-        <button class="curriculum-btn" onclick="window.location.href='{% url 'dojo:register' %}'"><i class="fas fa-arrow-right"></i> Explore Subjects</button>
-      </div>
-    </div>
-    
-    <div class="curriculum-card" data-curriculum="844">
-      <div class="curriculum-header" style="background:linear-gradient(135deg,#1a5f7a,#0f4c63)">
-        <div class="curriculum-icon"><i class="fas fa-book-open"></i></div>
-        <div class="curriculum-name">8-4-4 Curriculum</div>
-      </div>
-      <div class="curriculum-body">
-        <div class="curriculum-subjects">
-          <span class="subject-tag"><i class="fas fa-calculator"></i> Mathematics</span>
-          <span class="subject-tag"><i class="fas fa-book"></i> English</span>
-          <span class="subject-tag"><i class="fas fa-language"></i> Kiswahili</span>
-          <span class="subject-tag"><i class="fas fa-flask"></i> Sciences</span>
-          <span class="subject-tag"><i class="fas fa-globe"></i> Humanities</span>
-        </div>
-        <div class="curriculum-levels"><i class="fas fa-graduation-cap"></i> Standard 1-8, Form 1-4</div>
-        <button class="curriculum-btn" onclick="window.location.href='{% url 'dojo:register' %}'"><i class="fas fa-arrow-right"></i> Explore Subjects</button>
-      </div>
-    </div>
-    
-    <div class="curriculum-card" data-curriculum="igcse">
-      <div class="curriculum-header" style="background:linear-gradient(135deg,#2d3748,#1a202c)">
-        <div class="curriculum-icon"><i class="fas fa-globe-americas"></i></div>
-        <div class="curriculum-name">IGCSE / Cambridge</div>
-      </div>
-      <div class="curriculum-body">
-        <div class="curriculum-subjects">
-          <span class="subject-tag"><i class="fas fa-calculator"></i> Mathematics</span>
-          <span class="subject-tag"><i class="fas fa-book"></i> English</span>
-          <span class="subject-tag"><i class="fas fa-atom"></i> Physics</span>
-          <span class="subject-tag"><i class="fas fa-flask"></i> Chemistry</span>
-          <span class="subject-tag"><i class="fas fa-dna"></i> Biology</span>
-        </div>
-        <div class="curriculum-levels"><i class="fas fa-graduation-cap"></i> Year 7-11, A-Levels</div>
-        <button class="curriculum-btn" onclick="window.location.href='{% url 'dojo:register' %}'"><i class="fas fa-arrow-right"></i> Explore Subjects</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Featured Module - Multiplication Dojo -->
-<div class="featured-section">
-  <div class="featured-container">
-    <div class="featured-content">
-      <h2><i class="fas fa-gamepad"></i> <span>Multiplication Dojo</span></h2>
-      <p>Our signature learning game! Master multiplication tables from ×1 to ×20, earn belts, and win amazing prizes. Perfect for building mental math speed and accuracy.</p>
-      <ul class="featured-features">
-        <li><i class="fas fa-check-circle"></i> 9 Progressive Belt Levels (White to Master)</li>
-        <li><i class="fas fa-stopwatch"></i> Timed Challenges & Skip Mechanics</li>
-        <li><i class="fas fa-trophy"></i> Weekly Leaderboard & Prizes</li>
-        <li><i class="fas fa-chart-line"></i> Track Your Fastest Times</li>
-      </ul>
-      <a href="{% url 'dojo:register' %}" class="btn btn-gold"><i class="fas fa-play"></i> Play Multiplication Dojo</a>
-    </div>
-    <div class="featured-image">
-      <div class="featured-card">
-        <i class="fas fa-chart-line" style="font-size:80px;color:var(--gold);margin-bottom:16px;display:block"></i>
-        <div class="belt-strip">
-          <div class="belt" style="background:#fff;color:var(--navy)"><i class="fas fa-circle"></i></div>
-          <div class="belt" style="background:var(--gold);color:var(--navy)"><i class="fas fa-circle"></i></div>
-          <div class="belt" style="background:#1565c0;color:#fff"><i class="fas fa-circle"></i></div>
-          <div class="belt" style="background:#c62828;color:#fff"><i class="fas fa-circle"></i></div>
-          <div class="belt" style="background:#1a1a1a;color:#fff"><i class="fas fa-circle"></i></div>
-        </div>
-        <div style="font-size:13px;color:rgba(255,255,255,.9)"><i class="fas fa-users"></i> 1,247+ students mastering their times tables!</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Subjects Hub -->
-<div class="subjects-section">
-  <div class="section-header">
-    <div class="section-title">Explore More Subjects</div>
-    <div class="section-sub">More subjects are being added. Create your account to get early access!</div>
-  </div>
-  <div class="subjects-grid">
-    <div class="subject-card" onclick="window.location.href='{% url 'dojo:register' %}'">
-      <div class="subject-icon"><i class="fas fa-book-open"></i></div>
-      <div class="subject-name">English</div>
-      <div class="subject-desc">Grammar, comprehension, and writing skills</div>
-      <div class="subject-badge"><i class="fas fa-lock"></i> Join to Access</div>
-    </div>
-    <div class="subject-card" onclick="window.location.href='{% url 'dojo:register' %}'">
-      <div class="subject-icon"><i class="fas fa-flask"></i></div>
-      <div class="subject-name">Science</div>
-      <div class="subject-desc">Biology, Chemistry, Physics</div>
-      <div class="subject-badge"><i class="fas fa-lock"></i> Join to Access</div>
-    </div>
-    <div class="subject-card" onclick="window.location.href='{% url 'dojo:register' %}'">
-      <div class="subject-icon"><i class="fas fa-globe-africa"></i></div>
-      <div class="subject-name">Social Studies</div>
-      <div class="subject-desc">History, Geography, Civics</div>
-      <div class="subject-badge"><i class="fas fa-lock"></i> Join to Access</div>
-    </div>
-    <div class="subject-card" onclick="window.location.href='{% url 'dojo:register' %}'">
-      <div class="subject-icon"><i class="fas fa-calculator"></i></div>
-      <div class="subject-name">Algebra</div>
-      <div class="subject-desc">Equations, functions, and more</div>
-      <div class="subject-badge"><i class="fas fa-lock"></i> Join to Access</div>
-    </div>
-  </div>
-</div>
-
-<!-- Prize Showcase -->
+<!-- Prize Showcase - UP FOR GRABS Section -->
 <div class="prize-showcase">
   <div class="showcase-header">
     <div class="compete-badge">
@@ -616,49 +479,52 @@ a{text-decoration:none}
   </div>
 </div>
 
-<!-- CTA Banner -->
-<div class="cta-banner">
-  <div class="cta-title">Ready to Start Winning?</div>
-  <div class="cta-sub">Join thousands of students competing for amazing prizes every week</div>
-  <a href="{% url 'dojo:register' %}" class="btn btn-navy" style="font-size:18px;padding:15px 36px"><i class="fas fa-user-plus"></i> Create Free Account</a>
+<!-- Minimalist FAQ Section - 2 Columns -->
+<div class="faq-section">
+  <div class="faq-container">
+    <div class="faq-header">
+      <h2><i class="fas fa-question-circle"></i> FAQs</h2>
+      <p>Quick answers to common questions</p>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span><i class="fas fa-belt"></i> How do I earn belts?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">Complete all table levels within the time limit. Each belt has multiple tables to master. Pass all tables to unlock the next belt. You have 3 attempts per belt.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span><i class="fas fa-chalkboard-user"></i> How do I find a tutor?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">After logging in, go to "Learning Hub" → "Find a Tutor". Search by county or specialisation, send a request. Once accepted, you can chat and schedule video calls.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span><i class="fas fa-video"></i> How do video calls work?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">Click the video call button in chat to create a Google Meet link. Share the link with your tutor/student and join the call. No additional software needed.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span><i class="fas fa-tasks"></i> What are assignments?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">Tutors create custom assignments with questions. Students submit answers, tutors grade them. Perfect for homework and extra practice.</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="footer">
-  <div class="footer-content">
-    <div class="footer-about">
-      <div class="footer-logo">Revision<span>Dojo</span></div>
-      <p>Your all-in-one revision platform for Kenyan and international curricula. Master subjects, earn belts, and win prizes.</p>
-    </div>
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <ul>
-        <li><a href="{% url 'dojo:home' %}"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="{% url 'dojo:login' %}"><i class="fas fa-sign-in-alt"></i> Sign In</a></li>
-        <li><a href="{% url 'dojo:register' %}"><i class="fas fa-user-plus"></i> Create Account</a></li>
-      </ul>
-    </div>
-    <div class="footer-links">
-      <h4>Subjects</h4>
-      <ul>
-        <li><a href="{% url 'dojo:register' %}"><i class="fas fa-calculator"></i> Mathematics</a></li>
-        <li><a href="{% url 'dojo:register' %}"><i class="fas fa-book"></i> English</a></li>
-        <li><a href="{% url 'dojo:register' %}"><i class="fas fa-flask"></i> Science</a></li>
-        <li><a href="{% url 'dojo:register' %}"><i class="fas fa-language"></i> Kiswahili</a></li>
-      </ul>
-    </div>
-    <div class="footer-links">
-      <h4>Support</h4>
-      <ul>
-        <li><a href="mailto:support@revisiondojo.com"><i class="fas fa-envelope"></i> Contact Us</a></li>
-        <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
-        <li><a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p><i class="fas fa-copyright"></i> <span id="currentYear"></span> Revision Dojo · Master Any Subject, Ace Your Exams</p>
-  </div>
+<div class="land-cta-banner">
+  <div class="lcb-title">Ready to Earn Your Belt?</div>
+  <div class="lcb-sub">Join thousands of students already competing</div>
+  <a href="{% url 'dojo:register' %}" class="btn btn-navy" style="font-size:18px;padding:15px 36px">Create Free Account</a>
 </div>
+<div class="land-footer"><p>© <span id="currentYear"></span> TimesTable Dojo · Built for serious learners</p></div>
 
 <!-- Image Preview Modal -->
 <div class="modal-overlay image-preview-modal" id="imagePreviewModal">
@@ -668,33 +534,73 @@ a{text-decoration:none}
   </div>
 </div>
 
-<div id="toast"></div>
-
 <script>
-// Stats loading
+// Belt pips
+const BELTS = [
+  {color:'#d0d0d0'}, {color:'#f9a825'}, {color:'#1565c0'}, {color:'#c62828'},
+  {color:'#1a1a1a'}, {color:'#4e342e'}, {color:'#6a1b9a'}, {color:'#b8860b'}, {color:'#1a237e'}
+];
+const pips = document.getElementById('landBeltPips');
+BELTS.forEach(belt => {
+  const d = document.createElement('div');
+  d.className = 'lbp';
+  d.style.background = belt.color;
+  pips.appendChild(d);
+});
+
+// Set current year dynamically
+document.getElementById('currentYear').textContent = new Date().getFullYear();
+
 async function loadStats() {
   try {
     const r = await fetch('/api/public/stats/');
     const data = await r.json();
-    document.getElementById('statStudents').textContent = (data.total_students || 1247).toLocaleString();
-    document.getElementById('statQuestions').textContent = (data.total_questions || 45231).toLocaleString();
+    document.getElementById('landStudents').textContent = (data.total_students || 1247).toLocaleString();
+    document.getElementById('landBelts').textContent = (data.total_belts || 3892).toLocaleString();
+    document.getElementById('landQ').textContent = (data.total_questions || 45231).toLocaleString();
   } catch(e) {
-    document.getElementById('statStudents').textContent = '1,247';
-    document.getElementById('statQuestions').textContent = '45,231';
+    document.getElementById('landStudents').textContent = '1,247';
+    document.getElementById('landBelts').textContent = '3,892';
+    document.getElementById('landQ').textContent = '45,231';
   }
 }
 loadStats();
-document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-function toast(msg, bg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = bg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+// FAQ Toggle Function
+function toggleFaq(element) {
+  const faqItem = element.closest('.faq-item');
+  faqItem.classList.toggle('open');
 }
 
-// Image Preview Modal
+// Mobile Menu Toggle
+const menuToggle = document.getElementById('menuToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+
+if (menuToggle && mobileMenu) {
+  menuToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const isVisible = mobileMenu.style.display === 'flex';
+    mobileMenu.style.display = isVisible ? 'none' : 'flex';
+  });
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', function(e) {
+    if (mobileMenu.style.display === 'flex' && 
+        !mobileMenu.contains(e.target) && 
+        e.target !== menuToggle) {
+      mobileMenu.style.display = 'none';
+    }
+  });
+  
+  // Close menu when a link is clicked
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function() {
+      mobileMenu.style.display = 'none';
+    });
+  });
+}
+
+// Image Preview Modal Functionality
 const previewModal = document.getElementById('imagePreviewModal');
 const fullPreviewImg = document.getElementById('fullPreviewImage');
 const closePreviewBtn = document.getElementById('closePreviewBtn');
@@ -742,23 +648,7 @@ document.querySelectorAll('.prize-image-section').forEach(section => {
 });
 
 if (closePreviewBtn) closePreviewBtn.addEventListener('click', closeImagePreview);
-previewModal.addEventListener('click', (e) => { if (e.target === previewModal) closeImagePreview(); });
-
-// Mobile Menu
-const menuToggle = document.getElementById('menuToggle');
-const mobileMenu = document.getElementById('mobileMenu');
-
-if (menuToggle && mobileMenu) {
-  menuToggle.addEventListener('click', function(e) {
-    e.stopPropagation();
-    mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
-  });
-  document.addEventListener('click', function(e) {
-    if (mobileMenu.style.display === 'flex' && !mobileMenu.contains(e.target) && e.target !== menuToggle) {
-      mobileMenu.style.display = 'none';
-    }
-  });
-}
+if (previewModal) previewModal.addEventListener('click', (e) => { if (e.target === previewModal) closeImagePreview(); });
 </script>
 </body>
 </html>
