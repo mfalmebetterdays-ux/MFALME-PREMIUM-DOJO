@@ -26,6 +26,7 @@ from django.contrib.auth.hashers import make_password
 from django.db import transaction, IntegrityError
 from django.db.models import Avg, Count, F, Q, Sum, Value
 from django.db.models.functions import Coalesce
+from django.core.mail import EmailMultiAlternatives
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
@@ -628,6 +629,7 @@ def api_register(request):
                 
                 try:
                     parent_account = User.objects.get(email=parent_email, role='parent')
+                    logger.info(f"Found existing parent account: {parent_account.email}")
                 except User.DoesNotExist:
                     parent_username = parent_email
                     counter = 1
@@ -647,28 +649,56 @@ def api_register(request):
                         is_active=True
                     )
                     is_new_parent = True
+                    logger.info(f"Created new parent account: {parent_account.email} with password: {parent_phone}")
                 except User.MultipleObjectsReturned:
                     parent_account = User.objects.filter(email=parent_email, role='parent').first()
+                    logger.warning(f"Multiple parent accounts found, using first: {parent_account.email}")
                 
+                # Create parent-student link
                 ParentStudentLink.objects.get_or_create(
                     parent=parent_account,
                     student=user,
                     defaults={'relationship': 'guardian', 'can_pay': True, 'can_view': True}
                 )
+                logger.info(f"Parent-student link created between {parent_account.email} and {user.email}")
                 
+                # Send emails with better error handling (non-blocking)
+                email_errors = []
+                
+                # Send student welcome email
                 try:
                     send_welcome_email(user, password, role)
+                    logger.info(f"Student welcome email sent successfully to {user.email}")
+                except Exception as email_error:
+                    error_msg = f"Failed to send student welcome email to {user.email}: {str(email_error)}"
+                    logger.error(error_msg)
+                    email_errors.append(error_msg)
+                
+                # Send parent email based on whether parent is new or existing
+                try:
                     if is_new_parent:
                         send_parent_welcome_email(parent_account, user, parent_phone)
+                        logger.info(f"Parent welcome email sent successfully to {parent_account.email}")
                     else:
                         send_parent_child_linked_email(parent_account, user)
+                        logger.info(f"Parent child linked email sent successfully to {parent_account.email}")
                 except Exception as email_error:
-                    logger.error(f"Failed to send email: {email_error}")
+                    error_msg = f"Failed to send parent email to {parent_account.email}: {str(email_error)}"
+                    logger.error(error_msg)
+                    email_errors.append(error_msg)
                 
+                # Log summary of email sending
+                if email_errors:
+                    logger.warning(f"Email sending completed with {len(email_errors)} errors: {email_errors}")
+                else:
+                    logger.info("All emails sent successfully")
+                
+                # Login the user and return success (even if emails failed)
                 login(request, user)
                 return ok(user=user_json(user))
                 
             else:
+                # Parent registration (standalone - no student)
                 if User.objects.filter(email=email).exists():
                     return err("Email already registered")
                 
@@ -688,10 +718,14 @@ def api_register(request):
                     county=county,
                 )
                 
+                logger.info(f"Parent account created: {user.email}")
+                
+                # Send welcome email to parent
                 try:
                     send_welcome_email(user, password, role)
+                    logger.info(f"Parent welcome email sent successfully to {user.email}")
                 except Exception as email_error:
-                    logger.error(f"Failed to send welcome email: {email_error}")
+                    logger.error(f"Failed to send parent welcome email to {user.email}: {email_error}")
                 
                 login(request, user)
                 return ok(user=user_json(user))
@@ -705,7 +739,9 @@ def api_register(request):
 
 
 def send_welcome_email(user, plain_password, role):
+    """Send welcome email to new student"""
     try:
+        logger.info(f"Sending welcome email to student: {user.email}")
         login_url = f"{settings.SITE_URL}/login/"
         context = {
             'user': user,
@@ -715,23 +751,35 @@ def send_welcome_email(user, plain_password, role):
             'site_url': settings.SITE_URL,
             'trial_days': 7,
         }
+        
         html_message = render_to_string('dojo/emails/welcome_email.html', context)
         plain_message = strip_tags(html_message)
-        send_mail(
+        
+        # Use EmailMultiAlternatives for better headers
+        email = EmailMultiAlternatives(
             subject=f'Welcome to Revision Dojo, {user.first_name}!',
-            message=plain_message,
+            body=plain_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[user.email],
-            html_message=html_message,
-            fail_silently=False,
+            to=[user.email],
+            reply_to=['inforevisionea@gmail.com'],
+            headers={
+                'X-Priority': '3',
+                'X-Mailer': 'Revision Dojo',
+                'List-Unsubscribe': f'<mailto:inforevisionea@gmail.com?subject=unsubscribe>',
+            }
         )
+        email.attach_alternative(html_message, "text/html")
+        email.send(fail_silently=False)
+        
+        logger.info(f"Welcome email sent successfully to {user.email}")
     except Exception as e:
-        logger.error(f"Failed to send welcome email: {e}")
-        raise
+        logger.error(f"Failed to send welcome email to {user.email}: {e}")
 
 
 def send_parent_welcome_email(parent_user, student_user, temp_password):
+    """Send welcome email to newly created parent account"""
     try:
+        logger.info(f"Sending parent welcome email to: {parent_user.email}")
         login_url = f"{settings.SITE_URL}/parent-login/"
         dashboard_url = f"{settings.SITE_URL}/parent-dashboard/"
         context = {
@@ -742,8 +790,10 @@ def send_parent_welcome_email(parent_user, student_user, temp_password):
             'dashboard_url': dashboard_url,
             'site_url': settings.SITE_URL,
         }
+        
         html_message = render_to_string('dojo/emails/parent_welcome_email.html', context)
         plain_message = strip_tags(html_message)
+        
         send_mail(
             subject=f'Your Parent Account for {student_user.first_name}\'s Revision Dojo Journey',
             message=plain_message,
@@ -752,13 +802,16 @@ def send_parent_welcome_email(parent_user, student_user, temp_password):
             html_message=html_message,
             fail_silently=False,
         )
+        logger.info(f"Parent welcome email sent successfully to {parent_user.email}")
+        return True
     except Exception as e:
-        logger.error(f"Failed to send parent welcome email: {e}")
-        raise
-
+        logger.error(f"Failed to send parent welcome email to {parent_user.email}: {e}")
+        raise  # Re-raise to be caught by caller
 
 def send_parent_child_linked_email(parent_user, student_user):
+    """Send notification to existing parent when a new child is linked"""
     try:
+        logger.info(f"Sending child linked email to existing parent: {parent_user.email}")
         dashboard_url = f"{settings.SITE_URL}/parent-dashboard/"
         context = {
             'parent': parent_user,
@@ -766,8 +819,27 @@ def send_parent_child_linked_email(parent_user, student_user):
             'dashboard_url': dashboard_url,
             'site_url': settings.SITE_URL,
         }
-        html_message = render_to_string('dojo/emails/parent_child_linked_email.html', context)
+        
+        # Try to load HTML template, fallback to plain text
+        try:
+            html_message = render_to_string('dojo/emails/parent_child_linked_email.html', context)
+        except Exception as template_error:
+            logger.warning(f"Parent child linked template not found, using plain text: {template_error}")
+            html_message = f"""
+            <html>
+            <body>
+            <h2>New Student Linked to Your Account!</h2>
+            <p>Hello {parent_user.first_name},</p>
+            <p><strong>{student_user.first_name} {student_user.last_name}</strong> has registered on Revision Dojo and linked your existing parent account.</p>
+            <p>This student is now visible in your parent dashboard.</p>
+            <p><a href="{dashboard_url}">Click here to view your updated dashboard</a></p>
+            <p>Best regards,<br>Revision Dojo Team</p>
+            </body>
+            </html>
+            """
+        
         plain_message = strip_tags(html_message)
+        
         send_mail(
             subject=f'New Student Linked to Your Revision Dojo Account',
             message=plain_message,
@@ -776,9 +848,10 @@ def send_parent_child_linked_email(parent_user, student_user):
             html_message=html_message,
             fail_silently=False,
         )
+        logger.info(f"Child linked email sent successfully to {parent_user.email}")
     except Exception as e:
-        logger.error(f"Failed to send parent child linked email: {e}")
-        raise
+        logger.error(f"Failed to send child linked email to {parent_user.email}: {e}")
+        # Don't raise - allow registration to complete
 
 
 @csrf_exempt
