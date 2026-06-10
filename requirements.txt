@@ -53,6 +53,8 @@ cryptography==42.0.5
 # -----------------------------------------------------------------------------
 # django-debug-toolbar==4.3.0  # Uncomment for local development only
 
+PyPDF2==3.0.1
+
 # -----------------------------------------------------------------------------
 # NOTES:
 # - psycopg2-binary is required for PostgreSQL on Railway
@@ -61,5 +63,3 @@ cryptography==42.0.5
 # - gunicorn is the production WSGI server
 # - whitenoise serves static files in production
 # =============================================================================
-
-PyPDF2==3.0.1
